@@ -31,4 +31,3 @@ QJsonObject Qtmdb::trending_tv(timeWindow time_window, std::string_view language
   };
   return _runGetRequest(request, params);
 }
-

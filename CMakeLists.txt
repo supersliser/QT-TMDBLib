@@ -29,6 +29,10 @@ set(PROJECT_SOURCES
         src/network_QTMDB.cpp
         src/reviews_QTMDB.cpp
         src/get_QTMDB.cpp
+        src/tv_series_QTMDB.cpp
+        src/tv_seasons_QTMDB.cpp
+        src/tv_episodes_QTMDB.cpp
+        src/watchProviders_QTMDB.cpp
 )
 
 set(QT_MODULES_NEEDED

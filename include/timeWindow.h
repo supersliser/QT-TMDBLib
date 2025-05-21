@@ -5,10 +5,25 @@
 #ifndef TIME_WINDOW_H
 #define TIME_WINDOW_H
 
-enum class timeWindow
+namespace timeWindow
 {
-    day = "day",
-    week = "week",
-};
+    enum class timeWindow
+    {
+        day,
+        week,
+    };
+
+    inline std::string_view to_string(const timeWindow& t)
+    {
+        switch (t)
+        {
+        case timeWindow::day:
+            return "day";
+        case timeWindow::week:
+            return "week";
+        default: return "day";
+        }
+    }
+}
 
 #endif //TIME_WINDOW_H

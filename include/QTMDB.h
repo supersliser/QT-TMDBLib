@@ -2,6 +2,7 @@
 
 #include "timeWindow.h"
 #include "timeWindow.h"
+#include <QDate>
 
 class Qtmdb : public QObject
 {
@@ -25,9 +26,9 @@ public:
     QJsonObject certifications_movie();
     QJsonObject certifications_tv();
 
-    QJsonObject changes_movie(QDate end_date = "2023-10-22", QDate start_date = "2023-10-22", int32_t page = 1);
-    QJsonObject changes_people(QDate end_date = "2023-10-22", QDate start_date = "2023-10-22", int32_t page = 1);
-    QJsonObject changes_tv(QDate end_date = "2023-10-22", QDate start_date = "2023-10-22", int32_t page = 1);
+    QJsonObject changes_movie(QDate end_date = QDate(2023,10,22), QDate start_date = QDate(2023,10,22), int32_t page = 1);
+    QJsonObject changes_people(QDate end_date = QDate(2023,10,22), QDate start_date = QDate(2023,10,22), int32_t page = 1);
+    QJsonObject changes_tv(QDate end_date = QDate(2023,10,22), QDate start_date = QDate(2023,10,22), int32_t page = 1);
 
     QJsonObject collection_details(int32_t collection_id, std::string_view language = "en-US");
     QJsonObject collection_images(int32_t collection_id, std::string_view language = "en-US");
@@ -49,14 +50,14 @@ public:
     QJsonObject genres_movie(std::string_view language = "en");
     QJsonObject genres_tv(std::string_view language = "en");
 
-    QJsonObject movieList_nowPlaying(std::string_view language = "en-US", int32_t page = 1, std::string_view region);
-    QJsonObject movieList_popular(std::string_view language = "en-US", int32_t page = 1, std::string_view region);
-    QJsonObject movieList_topRated(std::string_view language = "en-US", int32_t page = 1, std::string_view region);
-    QJsonObject movieList_upcoming(std::string_view language = "en-US", int32_t page = 1, std::string_view region);
+    QJsonObject movieList_nowPlaying(std::string_view region, std::string_view language = "en-US", int32_t page = 1);
+    QJsonObject movieList_popular(std::string_view region, std::string_view language = "en-US", int32_t page = 1);
+    QJsonObject movieList_topRated(std::string_view region, std::string_view language = "en-US", int32_t page = 1);
+    QJsonObject movieList_upcoming(std::string_view region, std::string_view language = "en-US", int32_t page = 1);
 
     QJsonObject movie_details(int32_t movie_id, std::string_view language = "en-US");
     QJsonObject movie_alternativeTitles(int32_t movie_id, std::string_view country = "US");
-    QJsonObject movie_changes(int32_t movie_id, QDate start_date = "2023-10-22", QDate end_date = "2023-10-22", int32_t page = 1);
+    QJsonObject movie_changes(int32_t movie_id, QDate start_date = QDate(2023,10,22), QDate end_date = QDate(2023,10,22), int32_t page = 1);
     QJsonObject movie_credits(int32_t movie_id, std::string_view language = "en-US");
     QJsonObject movie_externalIDs(int32_t movie_id);
     QJsonObject movie_images(int32_t movie_id, std::string_view language);
@@ -77,7 +78,7 @@ public:
 
     QJsonObject people_popular(std::string_view language = "en-US", int32_t page = 1);
     QJsonObject people_details(int32_t person_id, std::string_view language = "en-US");
-    QJsonObject people_changes(int32_t person_id, QDate start_date = "2023-10-22", QDate end_date = "2023-10-22", int32_t page = 1);
+    QJsonObject people_changes(int32_t person_id, QDate start_date = QDate(2023,10,22), QDate end_date = QDate(2023,10,22), int32_t page = 1);
     QJsonObject people_combinedCredits(int32_t person_id, std::string_view language = "en-US");
     QJsonObject people_externalIDs(int32_t person_id);
     QJsonObject people_images(int32_t person_id);
@@ -96,9 +97,9 @@ public:
     QJsonObject get_person(std::string_view query, bool include_adult = false, std::string_view language = "en-US", int32_t page = 1);
     QJsonObject get_tv(std::string_view query, int32_t first_air_date_year = 0, bool include_adult = false, std::string_view langauge = "en-US", int32_t page = 1, int32_t year = 0);
 
-    QJsonObject trending_movies(timeWindow time_window = timeWindow::day, std::string_view language = "en-US");
-    QJsonObject trending_people(timeWindow time_window = timeWindow::day, std::string_view language = "en-US");
-    QJsonObject trending_tv(timeWindow time_window, std::string_view language = "en-US");
+    QJsonObject trending_movies(timeWindow::timeWindow time_window = timeWindow::timeWindow::day, std::string_view language = "en-US");
+    QJsonObject trending_people(timeWindow::timeWindow time_window = timeWindow::timeWindow::day, std::string_view language = "en-US");
+    QJsonObject trending_tv(timeWindow::timeWindow time_window, std::string_view language = "en-US");
 
     QJsonObject tv_series_airingToday(std::string_view language = "en-US", int32_t page = 1, std::string_view timezone = "America/New_York");
     QJsonObject tv_series_onTheAir(std::string_view language = "en-US", int32_t page = 1, std::string_view timezone = "America/New_York");
@@ -108,7 +109,7 @@ public:
     QJsonObject tv_series_details(int32_t series_id, std::string_view language = "en-US");
     QJsonObject tv_series_aggregateCredits(int32_t series_id, std::string_view language = "en-US");
     QJsonObject tv_series_alternativeTitles(int32_t series_id);
-    QJsonObject tv_series_changes(int32_t series_id, QDate start_date = "2023-10-22", QDate end_date = "2023-10-22", int32_t page = 1);
+    QJsonObject tv_series_changes(int32_t series_id, QDate start_date = QDate(2023,10,22), QDate end_date = QDate(2023,10,22), int32_t page = 1);
     QJsonObject tv_series_contentRatings(int32_t series_id);
     QJsonObject tv_series_credits(int32_t series_id, std::string_view language = "en-US");
     QJsonObject tv_series_episodeGroups(int32_t series_id);
@@ -127,7 +128,7 @@ public:
 
     QJsonObject tv_seasons_details(int32_t series_id, int32_t season_number, std::string_view language = "en-US");
     QJsonObject tv_seasons_aggregateCredits(int32_t series_id, int32_t season_number, std::string_view language = "en-US");
-    QJsonObject tv_seasons_changes(int32_t season_id, QDate start_date = "2023-10-22", QDate end_date = "2023-10-22", int32_t page = 1);
+    QJsonObject tv_seasons_changes(int32_t season_id, QDate start_date = QDate(2023,10,22), QDate end_date = QDate(2023,10,22), int32_t page = 1);
     QJsonObject tv_seasons_credits(int32_t series_id, int32_t season_number, std::string_view language = "en-US");
     QJsonObject tv_seasons_externalIDs(int32_t series_id, int32_t season_number);
     QJsonObject tv_seasons_images(int32_t series_id, int32_t season_number, std::string_view language = "en-US");
@@ -136,7 +137,7 @@ public:
     QJsonObject tv_seasons_watchProviders(int32_t series_id, int32_t season_number);
 
     QJsonObject tv_episodes_details(int32_t series_id, int32_t season_number, int32_t episode_number, std::string_view language = "en-US");
-    QJsonObject tv_episodes_changes(int32_t episode_id, QDate start_date = "2023-10-22", QDate end_date = "2023-10-22", int32_t page = 1);
+    QJsonObject tv_episodes_changes(int32_t episode_id, QDate start_date = QDate(2023,10,22), QDate end_date = QDate(2023,10,22), int32_t page = 1);
     QJsonObject tv_episodes_credits(int32_t series_id, int32_t season_number, int32_t episode_number, std::string_view language = "en-US");
     QJsonObject tv_episodes_externalIDs(int32_t series_id, int32_t season_number, int32_t episode_number);
     QJsonObject tv_episodes_images(int32_t series_id, int32_t season_number, int32_t episode_number, std::string_view language = "en-US");
