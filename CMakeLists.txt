@@ -9,21 +9,23 @@ set(CMAKE_AUTORCC ON)
 set(CMAKE_CXX_STANDARD 17)
 set(CMAKE_CXX_STANDARD_REQUIRED ON)
 
-find_package(Qt6 REQUIRED COMPONENTS Network)
+find_package(Qt6 REQUIRED COMPONENTS Core Network Widgets)
 
 set(PROJECT_SOURCES
       include/QTMDB.h
       src/QTMDB.cpp
+        include/timeWindow.h
 )
 
 set(QT_MODULES_NEEDED
+        Qt6::Core
+        Qt6::Widgets
         Qt6::Network
 )
 
 include_directories(include)
 add_library(TMDBLib STATIC
       ${PROJECT_SOURCES}
-        tests/main.cpp
 )
 
 
