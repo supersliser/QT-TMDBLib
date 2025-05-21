@@ -21,11 +21,11 @@ void Qtmdb::setAccessToken(std::string_view i_accessToken)
 
 QJsonObject Qtmdb::_runGetRequest(std::string_view i_request, std::map<std::string_view, std::string_view> i_params)
 {
-    QUrl url(_m_baseUrl + i_request.data() + "?");
-    for (const auto& param : i_params)
-    {
-        url.setQuery(url.query() + QUrl::toPercentEncoding(param.first.data()) + "=" + QUrl::toPercentEncoding(param.second.data()));
-    }
+    QUrl url(_m_baseUrl + i_request.data());
+        for (const auto& param : i_params)
+        {
+            url.setQuery(url.query() + QUrl::toPercentEncoding(param.first.data()) + "=" + QUrl::toPercentEncoding(param.second.data()));
+        }
     QNetworkAccessManager manager;
     QNetworkRequest request(url);
     request.setRawHeader("Authorization", ("Bearer " + _m_accessToken).data());
@@ -54,10 +54,4 @@ QJsonObject Qtmdb::_runGetRequest(std::string_view i_request, std::map<std::stri
         return {};
     }
     return jsonObj;
-}
-
-QJsonObject Qtmdb::account_getDetails(int32_t account_id)
-{
-    std::string_view request = "account/" + std::to_string(account_id);
-    return _runGetRequest(request);
 }

@@ -15,6 +15,15 @@ set(PROJECT_SOURCES
       include/QTMDB.h
       src/QTMDB.cpp
         include/timeWindow.h
+        src/account_QTMDB.cpp
+        src/certifications_QTMDB.cpp
+        src/changes_QTMDB.cpp
+        src/collection_QTMDB.cpp
+        src/company_QTMDB.cpp
+        src/config_QTMDB.cpp
+        src/credits_QTMDB.cpp
+        src/genres_QTMDB.cpp
+        src/movieList_QTMDB.cpp
 )
 
 set(QT_MODULES_NEEDED
