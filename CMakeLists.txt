@@ -24,6 +24,11 @@ set(PROJECT_SOURCES
         src/credits_QTMDB.cpp
         src/genres_QTMDB.cpp
         src/movieList_QTMDB.cpp
+        src/people_QTMDB.cpp
+        src/movie_QTMDB.cpp
+        src/network_QTMDB.cpp
+        src/reviews_QTMDB.cpp
+        src/get_QTMDB.cpp
 )
 
 set(QT_MODULES_NEEDED

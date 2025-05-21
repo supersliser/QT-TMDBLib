@@ -92,12 +92,12 @@ public:
     QJsonObject get_collection(std::string_view query, bool include_adult = false, std::string_view language = "en-US", int32_t page = 1, std::string_view region = "");
     QJsonObject get_company(std::string_view query, int32_t page = 1);
     QJsonObject get_keyword(std::string_view query, int32_t page = 1);
-    QJsonObject get_movie(std::string_view query, bool include_adult = false, std::string_view language = "en-US", std::string primary_release_year = "", int32_t page = 1, std::string_view region = "", std::string_view year = "");
+    QJsonObject get_movie(std::string_view query, bool include_adult = false, std::string_view language = "en-US", std::string_view primary_release_year = "", int32_t page = 1, std::string_view region = "", std::string_view year = "");
     QJsonObject get_person(std::string_view query, bool include_adult = false, std::string_view language = "en-US", int32_t page = 1);
     QJsonObject get_tv(std::string_view query, int32_t first_air_date_year = 0, bool include_adult = false, std::string_view langauge = "en-US", int32_t page = 1, int32_t year = 0);
 
-    QJsonObject trending_movies(timeWindow time_window, std::string_view language = "en-US");
-    QJsonObject trending_people(timeWindow time_window, std::string_view language = "en-US");
+    QJsonObject trending_movies(timeWindow time_window = timeWindow::day, std::string_view language = "en-US");
+    QJsonObject trending_people(timeWindow time_window = timeWindow::day, std::string_view language = "en-US");
     QJsonObject trending_tv(timeWindow time_window, std::string_view language = "en-US");
 
     QJsonObject tv_series_airingToday(std::string_view language = "en-US", int32_t page = 1, std::string_view timezone = "America/New_York");
