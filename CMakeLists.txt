@@ -69,6 +69,9 @@ enable_testing()
 add_executable(TMDBTests
         ${PROJECT_SOURCES}
         tests/main.cpp
+        tests/account.cpp
+        tests/certifications.cpp
+        tests/changes.cpp
 )
 target_sources(TMDBTests PRIVATE)
 target_link_libraries(TMDBTests PRIVATE GTest::gtest GTest::gtest_main)
