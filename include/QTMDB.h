@@ -3,6 +3,7 @@
 #include "timeWindow.h"
 #include <QDate>
 #include <fmt/format.h>
+#include <QJsonArray>
 
 class Qtmdb : public QObject
 {
@@ -31,7 +32,7 @@ public:
     QJsonObject changes_tv(QDate end_date = QDate(2023,10,22), QDate start_date = QDate(2023,10,22), int32_t page = 1);
 
     QJsonObject collection_details(int32_t collection_id, std::string language = "en-US");
-    QJsonObject collection_images(int32_t collection_id, std::string language = "en-US");
+    QJsonObject collection_images(int32_t collection_id, std::string language = "en");
     QJsonObject collection_translations(int32_t collection_id);
 
     QJsonObject company_details(int32_t company_id);
@@ -39,13 +40,13 @@ public:
     QJsonObject company_images(int32_t company_id);
 
     QJsonObject config_details();
-    QJsonObject config_countries(std::string language = "en-US");
-    QJsonObject config_jobs();
-    QJsonObject config_languages();
-    QJsonObject config_primaryTranslations();
-    QJsonObject config_timezones();
+    QJsonArray config_countries(std::string language = "en-US");
+    QJsonArray config_jobs();
+    QJsonArray config_languages();
+    QJsonArray config_primaryTranslations();
+    QJsonArray config_timezones();
 
-    QJsonObject credits_details(int32_t credit_id);
+    QJsonObject credits_details(std::string credit_id);
 
     QJsonObject genres_movie(std::string language = "en");
     QJsonObject genres_tv(std::string language = "en");
@@ -151,5 +152,6 @@ public:
 private:
     const std::string _m_baseUrl = "https://api.themoviedb.org/3/";
     QJsonObject _runGetRequest(std::string i_request, std::map<std::string, std::string> i_params = {});
+    QJsonArray _runGetRequestArray(std::string i_request, std::map<std::string, std::string> i_params = {});
     std::string _m_accessToken;
 };

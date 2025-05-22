@@ -4,6 +4,7 @@
 
 #include "QTMDB.h"
 #include <QJsonObject>
+#include <QJsonArray>
 
 QJsonObject Qtmdb::config_details()
 {
@@ -11,35 +12,35 @@ QJsonObject Qtmdb::config_details()
     return _runGetRequest(request);
 }
 
-QJsonObject Qtmdb::config_countries(std::string language)
+QJsonArray Qtmdb::config_countries(std::string language)
 {
     std::string request = "configuration/countries";
     std::map<std::string, std::string> params = {
         {"language", language}
     };
-    return _runGetRequest(request, params);
+    return _runGetRequestArray(request, params);
 }
 
-QJsonObject Qtmdb::config_jobs()
+QJsonArray Qtmdb::config_jobs()
 {
     std::string request = "configuration/jobs";
-    return _runGetRequest(request);
+    return _runGetRequestArray(request);
 }
 
-QJsonObject Qtmdb::config_languages()
+QJsonArray Qtmdb::config_languages()
 {
     std::string request = "configuration/languages";
-    return _runGetRequest(request);
+    return _runGetRequestArray(request);
 }
 
-QJsonObject Qtmdb::config_primaryTranslations()
+QJsonArray Qtmdb::config_primaryTranslations()
 {
     std::string request = "configuration/primary_translations";
-    return _runGetRequest(request);
+    return _runGetRequestArray(request);
 }
 
-QJsonObject Qtmdb::config_timezones()
+QJsonArray Qtmdb::config_timezones()
 {
     std::string request = "configuration/timezones";
-    return _runGetRequest(request);
+    return _runGetRequestArray(request);
 }

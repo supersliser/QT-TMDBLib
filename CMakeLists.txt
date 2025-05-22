@@ -1,6 +1,6 @@
 cmake_minimum_required(VERSION 3.16)
 
-project(TMDBlib VERSION 0.1 LANGUAGES CXX)
+project(QTMDB VERSION 0.1 LANGUAGES CXX)
 
 set(CMAKE_AUTOUIC ON)
 set(CMAKE_AUTOMOC ON)
@@ -44,23 +44,23 @@ set(QT_MODULES_NEEDED
 )
 
 include_directories(include)
-add_library(TMDBLib STATIC
+add_library(QTMDB STATIC
       ${PROJECT_SOURCES}
 )
 
 
-target_link_libraries(TMDBLib PRIVATE ${QT_MODULES_NEEDED})
-target_link_libraries(TMDBLib PRIVATE fmt::fmt)
+target_link_libraries(QTMDB PRIVATE ${QT_MODULES_NEEDED})
+target_link_libraries(QTMDB PRIVATE fmt::fmt)
 
 include(GNUInstallDirs)
-install(TARGETS TMDBLib
+install(TARGETS QTMDB
     BUNDLE DESTINATION .
     LIBRARY DESTINATION ${CMAKE_INSTALL_LIBDIR}
     RUNTIME DESTINATION ${CMAKE_INSTALL_BINDIR}
 )
 
 if(QT_VERSION_MAJOR EQUAL 6)
-    qt_finalize_executable(TMDBLib)
+  qt_finalize_executable(QTMDB)
 endif()
 
 find_package(GTest CONFIG REQUIRED)
@@ -72,6 +72,12 @@ add_executable(TMDBTests
         tests/account.cpp
         tests/certifications.cpp
         tests/changes.cpp
+        tests/collection.cpp
+        tests/company.cpp
+        tests/config.cpp
+        tests/credits.cpp
+        tests/genres.cpp
+        tests/movieList.cpp
 )
 target_sources(TMDBTests PRIVATE)
 target_link_libraries(TMDBTests PRIVATE GTest::gtest GTest::gtest_main)

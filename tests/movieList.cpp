@@ -8,26 +8,34 @@
 #include <gtest/gtest.h>
 #include "QTMDB.h"
 
-TEST(Qtmdb_JSON_Changes_Test, movie)
+TEST(Qtmdb_JSON_MovieList_Test, nowPlaying)
 {
     Qtmdb qtmdb("eyJhbGciOiJIUzI1NiJ9.eyJhdWQiOiJmZWZjMDcwYTExNTZlZDExM2JjN2RhZDA1ZWM5OWMyOCIsIm5iZiI6MTc0Nzc2ODM5Mi44MDgsInN1YiI6IjY4MmNkNDQ4ODA2OTJiYWI1NTY0OTRiYyIsInNjb3BlcyI6WyJhcGlfcmVhZCJdLCJ2ZXJzaW9uIjoxfQ.4wbjpPC366q5YFsHnuo9g4bIQ2xgMB5hIHx84SejLMg");
-    QJsonObject response = qtmdb.changes_movie(QDate(2025, 5, 20), QDate(2025, 5, 19));
+    QJsonObject response = qtmdb.movieList_nowPlaying("GB");
     EXPECT_FALSE(response.isEmpty());
-    EXPECT_EQ(response.value("results").toArray()[0].toObject().value("id").toInt(), 1441234);
+    EXPECT_EQ(response.value("results").isArray(), true);
 }
 
-TEST(Qtmdb_JSON_Changes_Test, people)
+TEST(Qtmdb_JSON_MovieList_Test, popular)
 {
     Qtmdb qtmdb("eyJhbGciOiJIUzI1NiJ9.eyJhdWQiOiJmZWZjMDcwYTExNTZlZDExM2JjN2RhZDA1ZWM5OWMyOCIsIm5iZiI6MTc0Nzc2ODM5Mi44MDgsInN1YiI6IjY4MmNkNDQ4ODA2OTJiYWI1NTY0OTRiYyIsInNjb3BlcyI6WyJhcGlfcmVhZCJdLCJ2ZXJzaW9uIjoxfQ.4wbjpPC366q5YFsHnuo9g4bIQ2xgMB5hIHx84SejLMg");
-    QJsonObject response = qtmdb.changes_people(QDate(2025, 5, 20), QDate(2025, 5, 19));
+    QJsonObject response = qtmdb.movieList_popular("GB");
     EXPECT_FALSE(response.isEmpty());
-    EXPECT_EQ(response.value("results").toArray()[0].toObject().value("id").toInt(), 5447571);
+    EXPECT_EQ(response.value("results").isArray(), true);
 }
 
-TEST(Qtmdb_JSON_Changes_Test, tv)
+TEST(Qtmdb_JSON_MovieList_Test, topRated)
 {
     Qtmdb qtmdb("eyJhbGciOiJIUzI1NiJ9.eyJhdWQiOiJmZWZjMDcwYTExNTZlZDExM2JjN2RhZDA1ZWM5OWMyOCIsIm5iZiI6MTc0Nzc2ODM5Mi44MDgsInN1YiI6IjY4MmNkNDQ4ODA2OTJiYWI1NTY0OTRiYyIsInNjb3BlcyI6WyJhcGlfcmVhZCJdLCJ2ZXJzaW9uIjoxfQ.4wbjpPC366q5YFsHnuo9g4bIQ2xgMB5hIHx84SejLMg");
-    QJsonObject response = qtmdb.changes_tv(QDate(2025, 5, 20), QDate(2025, 5, 19));
+    QJsonObject response = qtmdb.movieList_topRated("GB");
     EXPECT_FALSE(response.isEmpty());
-    EXPECT_EQ(response.value("results").toArray()[0].toObject().value("id").toInt(), 2734);
+    EXPECT_EQ(response.value("results").isArray(), true);
+}
+
+TEST(Qtmdb_JSON_MovieList_Test, upcoming)
+{
+    Qtmdb qtmdb("eyJhbGciOiJIUzI1NiJ9.eyJhdWQiOiJmZWZjMDcwYTExNTZlZDExM2JjN2RhZDA1ZWM5OWMyOCIsIm5iZiI6MTc0Nzc2ODM5Mi44MDgsInN1YiI6IjY4MmNkNDQ4ODA2OTJiYWI1NTY0OTRiYyIsInNjb3BlcyI6WyJhcGlfcmVhZCJdLCJ2ZXJzaW9uIjoxfQ.4wbjpPC366q5YFsHnuo9g4bIQ2xgMB5hIHx84SejLMg");
+    QJsonObject response = qtmdb.movieList_upcoming("GB");
+    EXPECT_FALSE(response.isEmpty());
+    EXPECT_EQ(response.value("results").isArray(), true);
 }

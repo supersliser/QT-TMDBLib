@@ -7,12 +7,12 @@
 
 QJsonObject Qtmdb::certifications_movie()
 {
-    std::string request = "certifications/movie";
+    std::string request = "certification/movie/list";
     return _runGetRequest(request);
 }
 
 QJsonObject Qtmdb::certifications_tv()
 {
-    std::string request = "certifications/tv";
+    std::string request = "certification/tv/list";
     return _runGetRequest(request);
 }
