@@ -4,31 +4,31 @@
 #include <QNetworkAccessManager>
 #include <QNetworkReply>
 
-Qtmdb::Qtmdb(std::string_view i_accessToken, QObject* parent) : QObject(parent)
+Qtmdb::Qtmdb(std::string i_accessToken, QObject* parent) : QObject(parent)
 {
     _m_accessToken = i_accessToken;
 }
 
-std::string_view Qtmdb::accessToken()
+std::string Qtmdb::accessToken()
 {
     return _m_accessToken;
 }
 
-void Qtmdb::setAccessToken(std::string_view i_accessToken)
+void Qtmdb::setAccessToken(std::string i_accessToken)
 {
     _m_accessToken = i_accessToken;
 }
 
-QJsonObject Qtmdb::_runGetRequest(std::string_view i_request, std::map<std::string_view, std::string_view> i_params)
+QJsonObject Qtmdb::_runGetRequest(std::string i_request, std::map<std::string, std::string> i_params)
 {
-    QUrl url(_m_baseUrl + i_request.data());
+    QUrl url((fmt::format("{}{}", _m_baseUrl, i_request).data()));
         for (const auto& param : i_params)
         {
-            url.setQuery(url.query() + QUrl::toPercentEncoding(param.first.data()) + "=" + QUrl::toPercentEncoding(param.second.data()));
+            url.setQuery(fmt::format("{}{}{}{}",url.query().toStdString(), QUrl::toPercentEncoding(param.first.data()).toStdString(), "=", QUrl::toPercentEncoding(param.second.data()).toStdString()).c_str());
         }
     QNetworkAccessManager manager;
     QNetworkRequest request(url);
-    request.setRawHeader("Authorization", ("Bearer " + _m_accessToken).data());
+    request.setRawHeader("Authorization", fmt::format("{}{}", "Bearer ", _m_accessToken).data());
     request.setRawHeader("accept", "application/json");
     QNetworkReply* reply = manager.get(request);
     while (!reply->isFinished())

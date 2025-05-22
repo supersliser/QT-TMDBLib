@@ -10,6 +10,7 @@ set(CMAKE_CXX_STANDARD 17)
 set(CMAKE_CXX_STANDARD_REQUIRED ON)
 
 find_package(Qt6 REQUIRED COMPONENTS Core Network Widgets)
+find_package(fmt REQUIRED)
 
 set(PROJECT_SOURCES
       include/QTMDB.h
@@ -28,6 +29,7 @@ set(PROJECT_SOURCES
         src/movie_QTMDB.cpp
         src/network_QTMDB.cpp
         src/reviews_QTMDB.cpp
+        src/trending_QTMDB.cpp
         src/get_QTMDB.cpp
         src/tv_series_QTMDB.cpp
         src/tv_seasons_QTMDB.cpp
@@ -48,6 +50,7 @@ add_library(TMDBLib STATIC
 
 
 target_link_libraries(TMDBLib PRIVATE ${QT_MODULES_NEEDED})
+target_link_libraries(TMDBLib PRIVATE fmt::fmt)
 
 include(GNUInstallDirs)
 install(TARGETS TMDBLib
@@ -70,4 +73,5 @@ add_executable(TMDBTests
 target_sources(TMDBTests PRIVATE)
 target_link_libraries(TMDBTests PRIVATE GTest::gtest GTest::gtest_main)
 target_link_libraries(TMDBTests PRIVATE ${QT_MODULES_NEEDED})
+target_link_libraries(TMDBTests PRIVATE fmt::fmt)
 gtest_discover_tests(TMDBTests)

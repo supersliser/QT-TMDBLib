@@ -13,7 +13,7 @@ namespace timeWindow
         week,
     };
 
-    inline std::string_view to_string(const timeWindow& t)
+    inline std::string to_string(const timeWindow& t)
     {
         switch (t)
         {

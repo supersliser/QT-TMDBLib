@@ -5,8 +5,8 @@
 #include "QTMDB.h"
 #include <QJsonObject>
 
-QJsonObject Qtmdb::reviews_details(std::string_view review_id)
+QJsonObject Qtmdb::reviews_details(std::string review_id)
 {
-    std::string_view request = "review/" + std::string(review_id);
+    std::string request = fmt::format("{}{}", "review/", std::string(review_id));
     return _runGetRequest(request);
 }

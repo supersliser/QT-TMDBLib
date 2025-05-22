@@ -7,6 +7,6 @@
 
 QJsonObject Qtmdb::credits_details(int32_t credit_id)
 {
-    std::string_view request = "credit/" + std::to_string(credit_id);
+    std::string request = fmt::format("{}{}","credit/", std::to_string(credit_id));
     return _runGetRequest(request);
 }

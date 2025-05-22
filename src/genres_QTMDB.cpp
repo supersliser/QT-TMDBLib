@@ -5,19 +5,19 @@
 #include "QTMDB.h"
 #include <QJsonObject>
 
-QJsonObject Qtmdb::genres_movie(std::string_view language)
+QJsonObject Qtmdb::genres_movie(std::string language)
 {
-    std::string_view request = "genre/movie/list";
-    std::map<std::string_view, std::string_view> params = {
+    std::string request = "genre/movie/list";
+    std::map<std::string, std::string> params = {
         {"language", language}
     };
     return _runGetRequest(request, params);
 }
 
-QJsonObject Qtmdb::genres_tv(std::string_view language)
+QJsonObject Qtmdb::genres_tv(std::string language)
 {
-    std::string_view request = "genre/tv/list";
-    std::map<std::string_view, std::string_view> params = {
+    std::string request = "genre/tv/list";
+    std::map<std::string, std::string> params = {
         {"language", language}
     };
     return _runGetRequest(request, params);

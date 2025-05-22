@@ -5,10 +5,10 @@
 #include "QTMDB.h"
 #include <QJsonObject>
 
-QJsonObject Qtmdb::get_collection(std::string_view query, bool include_adult, std::string_view language, int32_t page, std::string_view region)
+QJsonObject Qtmdb::get_collection(std::string query, bool include_adult, std::string language, int32_t page, std::string region)
 {
-    std::string_view request = "search/collection";
-    std::map<std::string_view, std::string_view> params = {
+    std::string request = "search/collection";
+    std::map<std::string, std::string> params = {
         {"query", query},
         {"include_adult", include_adult ? "true" : "false"},
         {"language", language},
@@ -18,30 +18,30 @@ QJsonObject Qtmdb::get_collection(std::string_view query, bool include_adult, st
     return _runGetRequest(request, params);
 }
 
-QJsonObject Qtmdb::get_company(std::string_view query, int32_t page)
+QJsonObject Qtmdb::get_company(std::string query, int32_t page)
 {
-    std::string_view request = "search/company";
-    std::map<std::string_view, std::string_view> params = {
+    std::string request = "search/company";
+    std::map<std::string, std::string> params = {
         {"query", query},
         {"page", std::to_string(page)}
     };
     return _runGetRequest(request, params);
 }
 
-QJsonObject Qtmdb::get_keyword(std::string_view query, int32_t page)
+QJsonObject Qtmdb::get_keyword(std::string query, int32_t page)
 {
-  std::string_view request = "search/keyword";
-  std::map<std::string_view, std::string_view> params = {
+  std::string request = "search/keyword";
+  std::map<std::string, std::string> params = {
     {"query", query},
     {"page", std::to_string(page)}
   };
   return _runGetRequest(request, params);
 }
 
-QJsonObject Qtmdb::get_movie(std::string_view query, bool include_adult, std::string_view language, std::string_view primary_release_year, int32_t page, std::string_view region, std::string_view year)
+QJsonObject Qtmdb::get_movie(std::string query, bool include_adult, std::string language, std::string primary_release_year, int32_t page, std::string region, std::string year)
 {
-  std::string_view request = "search/movie";
-  std::map<std::string_view, std::string_view> params = {
+  std::string request = "search/movie";
+  std::map<std::string, std::string> params = {
     {"query", query},
     {"include_adult", std::to_string(include_adult)},
     {"language", language},
@@ -53,10 +53,10 @@ QJsonObject Qtmdb::get_movie(std::string_view query, bool include_adult, std::st
   return _runGetRequest(request, params);
 }
 
-QJsonObject Qtmdb::get_person(std::string_view query, bool include_adult, std::string_view language, int32_t page) 
+QJsonObject Qtmdb::get_person(std::string query, bool include_adult, std::string language, int32_t page) 
 {
-  std::string_view request = "search/person";
-  std::map<std::string_view, std::string_view> params = {
+  std::string request = "search/person";
+  std::map<std::string, std::string> params = {
     {"query", query},
     {"include_adult", std::to_string(include_adult)},
     {"language", language},
@@ -65,10 +65,10 @@ QJsonObject Qtmdb::get_person(std::string_view query, bool include_adult, std::s
   return _runGetRequest(request, params);
 }
 
-QJsonObject Qtmdb::get_tv(std::string_view query, int32_t first_air_date_year, bool include_adult, std::string_view language, int32_t page, int32_t year)
+QJsonObject Qtmdb::get_tv(std::string query, int32_t first_air_date_year, bool include_adult, std::string language, int32_t page, int32_t year)
 {
-  std::string_view request = "search/tv";
-  std::map<std::string_view, std::string_view> params = {
+  std::string request = "search/tv";
+  std::map<std::string, std::string> params = {
     {"query", query},
     {"first_air_date_year", std::to_string(first_air_date_year)},
     {"include_adult", std::to_string(include_adult)},
