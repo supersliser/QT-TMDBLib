@@ -78,6 +78,7 @@ add_executable(TMDBTests
         tests/credits.cpp
         tests/genres.cpp
         tests/movieList.cpp
+        tests/movie.cpp
 )
 target_sources(TMDBTests PRIVATE)
 target_link_libraries(TMDBTests PRIVATE GTest::gtest GTest::gtest_main)
