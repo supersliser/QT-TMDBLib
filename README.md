@@ -14,19 +14,20 @@ git clone https://github.com/supersliser/QT-TMDBLib.git ./external/TMDBLib
 cd ./external/TMDBLib
 ```
 3. Install Dependencies
-3.1. For Debian based distros
+
+   3.1. For Debian based distros
    ```sh
    sudo apt install -y gtest cmake fmt qtbase6-dev build-essential
    sudo apt-get install -y ninja-build
    ```
-3.2. For Fedora based distros
-  ```sh
-  sudo dnf install -y ninja-build cmake gtest fmt qt6-qtbase-devel qt6-qtbase-private-devel
-  ```
-3.3. For Arch based distros
-  ```sh
-  sudo pacman -S qt6-base ninja-build gtest cmake fmt
-  ```
+   3.2. For Fedora based distros
+   ```sh
+   sudo dnf install -y ninja-build cmake gtest fmt qt6-qtbase-devel qt6-qtbase-private-devel
+   ```
+   3.3. For Arch based distros
+   ```sh
+   sudo pacman -S qt6-base ninja-build gtest cmake fmt
+   ```
 4. Build the program and run the tests
 ```sh
 cmake -G Ninja -B build .
