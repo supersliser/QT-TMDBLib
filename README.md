@@ -10,7 +10,7 @@ mkdir external
 ```
 2. Clone this repository into the `external` directory
 ```sh
-git clone https://github.com/supersliser/QT-TMDBLib.git ./external/TMDBLib
+git submodule add https://github.com/supersliser/QT-TMDBLib.git ./external/TMDBLib
 cd ./external/TMDBLib
 ```
 3. Install Dependencies
