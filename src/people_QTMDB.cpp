@@ -91,6 +91,6 @@ QJsonObject Qtmdb::people_taggedImages(int32_t person_id, int32_t page)
 
 QJsonObject Qtmdb::people_translations(int32_t person_id)
 {
-    std::string request = fmt::format("{}{}","person/", std::to_string(person_id));
+    std::string request = fmt::format("{}{}{}","person/", std::to_string(person_id), "/translations");
     return _runGetRequest(request);
 }

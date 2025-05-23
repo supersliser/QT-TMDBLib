@@ -42,7 +42,7 @@ QJsonObject Qtmdb::tv_episodes_externalIDs(int32_t series_id, int32_t season_num
 
 QJsonObject Qtmdb::tv_episodes_images(int32_t series_id, int32_t season_number, int32_t episode_number, std::string language)
 {
-    std::string request = fmt::format("{}{}", "tv/", std::to_string(series_id), "/season/", std::to_string(season_number), "/episode/", std::to_string(episode_number), "/images");
+    std::string request = fmt::format("{}{}{}{}{}{}{}", "tv/", std::to_string(series_id), "/season/", std::to_string(season_number), "/episode/", std::to_string(episode_number), "/images");
     std::map<std::string, std::string> params = {
         {"language", language}
     };

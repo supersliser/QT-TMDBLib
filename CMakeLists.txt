@@ -79,6 +79,15 @@ add_executable(TMDBTests
         tests/genres.cpp
         tests/movieList.cpp
         tests/movie.cpp
+        tests/networks.cpp
+        tests/people.cpp
+        tests/reviews.cpp
+        tests/get.cpp
+        tests/trending.cpp
+        tests/tvSeries.cpp
+        tests/tvSeasons.cpp
+        tests/tvEpisodes.cpp
+        tests/watchProviders.cpp
 )
 target_sources(TMDBTests PRIVATE)
 target_link_libraries(TMDBTests PRIVATE GTest::gtest GTest::gtest_main)

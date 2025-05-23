@@ -8,54 +8,50 @@
 #include <gtest/gtest.h>
 #include "QTMDB.h"
 
-TEST(Qtmdb_JSON_Config_Test, details)
+TEST(Qtmdb_JSON_Get_Test, collection)
 {
     Qtmdb qtmdb("eyJhbGciOiJIUzI1NiJ9.eyJhdWQiOiJmZWZjMDcwYTExNTZlZDExM2JjN2RhZDA1ZWM5OWMyOCIsIm5iZiI6MTc0Nzc2ODM5Mi44MDgsInN1YiI6IjY4MmNkNDQ4ODA2OTJiYWI1NTY0OTRiYyIsInNjb3BlcyI6WyJhcGlfcmVhZCJdLCJ2ZXJzaW9uIjoxfQ.4wbjpPC366q5YFsHnuo9g4bIQ2xgMB5hIHx84SejLMg");
-    QJsonObject response = qtmdb.config_details();
+    QJsonObject response = qtmdb.get_collection("Avengers");
     EXPECT_FALSE(response.isEmpty());
-    EXPECT_EQ(response.value("change_keys").toArray()[0].toString(), "adult");
+    EXPECT_TRUE(response.value("results").isArray());
 }
 
-TEST(Qtmdb_JSON_Config_Test, countries)
+TEST(Qtmdb_JSON_Get_Test, company)
 {
     Qtmdb qtmdb("eyJhbGciOiJIUzI1NiJ9.eyJhdWQiOiJmZWZjMDcwYTExNTZlZDExM2JjN2RhZDA1ZWM5OWMyOCIsIm5iZiI6MTc0Nzc2ODM5Mi44MDgsInN1YiI6IjY4MmNkNDQ4ODA2OTJiYWI1NTY0OTRiYyIsInNjb3BlcyI6WyJhcGlfcmVhZCJdLCJ2ZXJzaW9uIjoxfQ.4wbjpPC366q5YFsHnuo9g4bIQ2xgMB5hIHx84SejLMg");
-    QJsonArray response = qtmdb.config_countries("en-GB");
+    QJsonObject response = qtmdb.get_company("HBO");
     EXPECT_FALSE(response.isEmpty());
-    EXPECT_EQ(response[0].toObject().value("iso_3166_1").toString(), "AD");
+    EXPECT_TRUE(response.value("results").isArray());
 }
 
-TEST(Qtmdb_JSON_Config_Test, jobs)
+TEST(Qtmdb_JSON_Get_Test, keyword)
 {
     Qtmdb qtmdb("eyJhbGciOiJIUzI1NiJ9.eyJhdWQiOiJmZWZjMDcwYTExNTZlZDExM2JjN2RhZDA1ZWM5OWMyOCIsIm5iZiI6MTc0Nzc2ODM5Mi44MDgsInN1YiI6IjY4MmNkNDQ4ODA2OTJiYWI1NTY0OTRiYyIsInNjb3BlcyI6WyJhcGlfcmVhZCJdLCJ2ZXJzaW9uIjoxfQ.4wbjpPC366q5YFsHnuo9g4bIQ2xgMB5hIHx84SejLMg");
-    QJsonArray response = qtmdb.config_jobs();
+    QJsonObject response = qtmdb.get_keyword("lost");
     EXPECT_FALSE(response.isEmpty());
-    EXPECT_TRUE(response[0].toObject().value("jobs").toArray()[0].isString());
+    EXPECT_TRUE(response.value("results").isArray());
 }
 
-TEST(Qtmdb_JSON_Config_Test, languages)
+TEST(Qtmdb_JSON_Get_Test, movie)
 {
     Qtmdb qtmdb("eyJhbGciOiJIUzI1NiJ9.eyJhdWQiOiJmZWZjMDcwYTExNTZlZDExM2JjN2RhZDA1ZWM5OWMyOCIsIm5iZiI6MTc0Nzc2ODM5Mi44MDgsInN1YiI6IjY4MmNkNDQ4ODA2OTJiYWI1NTY0OTRiYyIsInNjb3BlcyI6WyJhcGlfcmVhZCJdLCJ2ZXJzaW9uIjoxfQ.4wbjpPC366q5YFsHnuo9g4bIQ2xgMB5hIHx84SejLMg");
-    QJsonArray response = qtmdb.config_languages();
+    QJsonObject response = qtmdb.get_movie("Fight Club");
     EXPECT_FALSE(response.isEmpty());
-    QJsonObject temp;
-    temp.insert("iso_639_1", "xx");
-    temp.insert("english_name", "No Language");
-    temp.insert("name", "No Language");
-    EXPECT_TRUE(response.contains(temp));
+    EXPECT_TRUE(response.value("results").isArray());
 }
 
-TEST(Qtmdb_JSON_Config_Test, primaryTranslations)
+TEST(Qtmdb_JSON_Get_Test, person)
 {
     Qtmdb qtmdb("eyJhbGciOiJIUzI1NiJ9.eyJhdWQiOiJmZWZjMDcwYTExNTZlZDExM2JjN2RhZDA1ZWM5OWMyOCIsIm5iZiI6MTc0Nzc2ODM5Mi44MDgsInN1YiI6IjY4MmNkNDQ4ODA2OTJiYWI1NTY0OTRiYyIsInNjb3BlcyI6WyJhcGlfcmVhZCJdLCJ2ZXJzaW9uIjoxfQ.4wbjpPC366q5YFsHnuo9g4bIQ2xgMB5hIHx84SejLMg");
-    QJsonArray response = qtmdb.config_primaryTranslations();
+    QJsonObject response = qtmdb.get_person("Tom Hanks");
     EXPECT_FALSE(response.isEmpty());
-    EXPECT_EQ(response[0].toString(), "af-ZA");
+    EXPECT_TRUE(response.value("results").isArray());
 }
 
-TEST(Qtmdb_JSON_Config_Test, timezones)
+TEST(Qtmdb_JSON_Get_Test, tv)
 {
     Qtmdb qtmdb("eyJhbGciOiJIUzI1NiJ9.eyJhdWQiOiJmZWZjMDcwYTExNTZlZDExM2JjN2RhZDA1ZWM5OWMyOCIsIm5iZiI6MTc0Nzc2ODM5Mi44MDgsInN1YiI6IjY4MmNkNDQ4ODA2OTJiYWI1NTY0OTRiYyIsInNjb3BlcyI6WyJhcGlfcmVhZCJdLCJ2ZXJzaW9uIjoxfQ.4wbjpPC366q5YFsHnuo9g4bIQ2xgMB5hIHx84SejLMg");
-    QJsonArray response = qtmdb.config_timezones();
+    QJsonObject response = qtmdb.get_tv("Breaking Bad");
     EXPECT_FALSE(response.isEmpty());
-    EXPECT_EQ(response[0].toObject().value("iso_3166_1").toString(), "AD");
+    EXPECT_TRUE(response.value("results").isArray());
 }
