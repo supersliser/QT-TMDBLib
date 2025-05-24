@@ -13,7 +13,7 @@
 /// It is based on the QT framework and uses its QJson classes for simplicity of design.
 /// To be able to use this class, you must have a valid access token from the TMDB API. This can be obtained by creating an account on the TMDB website and generating an API key. [https://www.themoviedb.org/documentation/api] (https://www.themoviedb.org/documentation/api)
 /// @note This is a placeholder that will be replaced with true C++ classes and methods, rather than relying on the JSON setup.
-/// @cite Special THanks to JustWatch for access to data for the TMDB API
+/// @cite Special Thanks to JustWatch for access to data for the TMDB API
 class Qtmdb : public QObject
 {
     Q_OBJECT
@@ -36,13 +36,13 @@ public:
 
     //|------------------------------------- API ENDPOINTS -------------------------------------------------|
     //|-------------------------------------    Account    -------------------------------------------------|
-    ///@brief Get the details of an account.
+    ///@brief Get the public details of an account on TMDB.
     ///@param account_id The ID of the account.
     ///@return A QJsonObject containing the account details.
     ///@details For more information, see the TMDB API documentation: @link https://developers.themoviedb.org/3/accounts/get-account-details @endlink
     QJsonObject account_details(int32_t account_id);
 
-    ///@brief Gets the favorite movies of an account.
+    ///@brief Get a users list of favourite movies.
     ///@param account_id The ID of the account.
     ///@param language The language to use for the results, default is "en-US".
     ///@param page The page number to retrieve, default is 1.
@@ -50,7 +50,7 @@ public:
     ///@details For more information, see the TMDB API documentation: @link https://developers.themoviedb.org/3/accounts/get-account-details @endlink
     QJsonObject account_favoriteMovies(int32_t account_id, std::string language = "en-US", int32_t page = 1);
 
-    ///@brief Gets the favorite TV Shows of an account.
+    ///@brief Get a users list of favourite TV shows.
     ///@param account_id The ID of the account.
     ///@param language The language to use for the results, default is "en-US".
     ///@param page The page number to retrieve, default is 1.
@@ -58,7 +58,7 @@ public:
     ///@details For more information, see the TMDB API documentation: @link https://developers.themoviedb.org/3/accounts/get-account-details @endlink
     QJsonObject account_favoriteTV(int32_t account_id, std::string language = "en-US", int32_t page = 1);
 
-    ///@brief Gets the lists created by an account.
+    ///@brief Get a users list of custom lists.
     ///@param account_id The ID of the account.
     ///@param page The page number to retrieve, default is 1.
     ///@return A QJsonObject containing the account's created lists.
@@ -89,7 +89,7 @@ public:
     ///@details For more information, see the TMDB API documentation: @link https://developers.themoviedb.org/3/accounts/get-account-details @endlink
     QJsonObject account_ratedTVEpisodes(int32_t account_id, std::string language = "en-US", int32_t page = 1);
 
-    ///@brief Gets the movies from the account's watchlist.
+    ///@brief Get a list of movies added to a users watchlist.
     ///@param account_id The ID of the account.
     ///@param language The language to use for the results, default is "en-US".
     ///@param page The page number to retrieve, default is 1.
@@ -97,7 +97,7 @@ public:
     ///@details For more information, see the TMDB API documentation: @link https://developers.themoviedb.org/3/accounts/get-account-details @endlink
     QJsonObject account_watchlistMovies(int32_t account_id, std::string language = "en-US", int32_t page = 1);
 
-    ///@brief Gets the TV shows from the account's watchlist.
+    ///@brief Get a list of TV shows added to a users watchlist.
     ///@param account_id The ID of the account.
     ///@param language The language to use for the results, default is "en-US".
     ///@param page The page number to retrieve, default is 1.
@@ -107,10 +107,11 @@ public:
     //|-----------------------------------------------------------------------------------------------------|
 
     //|-------------------------------------    Certifications    -------------------------------------------------|
-    ///@brief Gets the certifications for movies for all countries.
+    ///@brief Get an up to date list of the officially supported movie certifications on TMDB.
     ///@return A QJsonObject containing the certifications for all countries for movies.
     ///@details For more information, see the TMDB API documentation: @link https://developers.themoviedb.org/3/accounts/get-account-details @endlink
     QJsonObject certifications_movie();
+
     ///@brief Gets the certifications for TV Shows for all countries.
     ///@return A QJsonObject containing the certifications for all countries for TV shows.
     ///@details For more information, see the TMDB API documentation: @link https://developers.themoviedb.org/3/accounts/get-account-details @endlink
@@ -118,6 +119,12 @@ public:
     //|-----------------------------------------------------------------------------------------------------|
 
     //|-------------------------------------    Changes    -------------------------------------------------|
+    ///@brief Gets the changes that have been made to the database for movies.
+    ///@param account_id The ID of the account.
+    ///@param language The language to use for the results, default is "en-US".
+    ///@param page The page number to retrieve, default is 1.
+    ///@return A QJsonObject containing the TV shows from the account's watchlist.
+    ///@details For more information, see the TMDB API documentation: @link https://developers.themoviedb.org/3/accounts/get-account-details @endlink
     QJsonObject changes_movie(QDate end_date = QDate(2023, 10, 22), QDate start_date = QDate(2023, 10, 22),
                               int32_t page = 1);
     QJsonObject changes_people(QDate end_date = QDate(2023, 10, 22), QDate start_date = QDate(2023, 10, 22),
@@ -290,7 +297,8 @@ public:
     QJsonObject watchProviders_regions(std::string language = "en-US");
     QJsonObject watchProviders_movie(std::string language = "en-US");
     QJsonObject watchProviders_tv(std::string language = "en-US");
-
+    //|-----------------------------------------------------------------------------------------------------|
+    //|-----------------------------------------------------------------------------------------------------|
 private:
     const std::string _m_baseUrl = "https://api.themoviedb.org/3/";
     QJsonObject _runGetRequest(std::string i_request, std::map<std::string, std::string> i_params = {});
