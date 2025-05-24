@@ -46,3 +46,6 @@ set_target_properties(TMDBLib PROPERTIES
 include_directories(include ${CMAKE_CURRENT_SOURCE_DIR}/external/TMDBLib/include)
 target_link_libraries(MediaCenter PRIVATE TMDBLib)
 ```
+
+> [!CITE]
+> Special Thanks to JustWatch for access to data for the TMDB API
