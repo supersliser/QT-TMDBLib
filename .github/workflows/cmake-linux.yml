@@ -41,10 +41,7 @@ jobs:
 #          -DBUILD_TESTING=OFF
 
       - name: Build
-        run: cmake --build build --config Release --verbose --target QTDecisionMaker
-
-      - name: List build directory
-        run: find build -type f -name "QTDecisionMaker*" | sort
+        run: cmake --build build --config Release --verbose
 
       - name: Run Tests
         run: |
