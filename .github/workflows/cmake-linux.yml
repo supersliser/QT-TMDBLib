@@ -7,6 +7,8 @@ on:
 jobs:
   build-linux:
     runs-on: ubuntu-latest
+    env:
+      QT_QPA_PLATFORM: offscreen
     steps:
       - name: Checkout code
         uses: actions/checkout@v4
@@ -35,10 +37,10 @@ jobs:
 
       - name: Configure CMake
         run: |
+          export QT_QPA_PLATFORM=offscreen
           cmake -B build \
           -DCMAKE_BUILD_TYPE=Release \
-          -DCMAKE_PREFIX_PATH=${{ env.Qt6_DIR }} \
-#          -DBUILD_TESTING=OFF
+          -DCMAKE_PREFIX_PATH=${{ env.Qt6_DIR }}
 
       - name: Build
         run: cmake --build build --config Release --verbose
