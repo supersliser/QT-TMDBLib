@@ -80,14 +80,6 @@ TEST(Qtmdb_JSON_People_Test, tvCredits)
     EXPECT_EQ(response.value("cast").toArray()[0].toObject().value("name").toString(), "Family Ties");
 }
 
-TEST(Qtmdb_JSON_People_Test, taggedImages)
-{
-    Qtmdb qtmdb("eyJhbGciOiJIUzI1NiJ9.eyJhdWQiOiJmZWZjMDcwYTExNTZlZDExM2JjN2RhZDA1ZWM5OWMyOCIsIm5iZiI6MTc0Nzc2ODM5Mi44MDgsInN1YiI6IjY4MmNkNDQ4ODA2OTJiYWI1NTY0OTRiYyIsInNjb3BlcyI6WyJhcGlfcmVhZCJdLCJ2ZXJzaW9uIjoxfQ.4wbjpPC366q5YFsHnuo9g4bIQ2xgMB5hIHx84SejLMg");
-    QJsonObject response = qtmdb.people_images(31);
-    EXPECT_FALSE(response.isEmpty());
-    EXPECT_EQ(response.value("profiles").toArray()[0].toObject().value("width").toInt(), 800);
-}
-
 TEST(Qtmdb_JSON_People_Test, translations)
 {
     Qtmdb qtmdb("eyJhbGciOiJIUzI1NiJ9.eyJhdWQiOiJmZWZjMDcwYTExNTZlZDExM2JjN2RhZDA1ZWM5OWMyOCIsIm5iZiI6MTc0Nzc2ODM5Mi44MDgsInN1YiI6IjY4MmNkNDQ4ODA2OTJiYWI1NTY0OTRiYyIsInNjb3BlcyI6WyJhcGlfcmVhZCJdLCJ2ZXJzaW9uIjoxfQ.4wbjpPC366q5YFsHnuo9g4bIQ2xgMB5hIHx84SejLMg");

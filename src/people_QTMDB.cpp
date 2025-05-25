@@ -80,15 +80,6 @@ QJsonObject Qtmdb::people_tvCredits(int32_t person_id, std::string language)
     return _runGetRequest(request, params);
 }
 
-QJsonObject Qtmdb::people_taggedImages(int32_t person_id, int32_t page)
-{
-    std::string request = fmt::format("{}{}{}","person/", std::to_string(person_id), "/tagged_images");
-    std::map<std::string, std::string> params = {
-        {"page", std::to_string(page)}
-    };
-    return _runGetRequest(request, params);
-}
-
 QJsonObject Qtmdb::people_translations(int32_t person_id)
 {
     std::string request = fmt::format("{}{}{}","person/", std::to_string(person_id), "/translations");
