@@ -45,10 +45,6 @@ jobs:
 
       - name: Run Tests
         run: |
-          if [ -d "build/Tests" ]; then
             echo "Running tests..."
             export QT_QPA_PLATFORM=offscreen
-            ctest --test-dir build/Tests --output-on-failure
-          else
-            echo "No tests found."
-          fi
+            ctest --test-dir build --output-on-failure
