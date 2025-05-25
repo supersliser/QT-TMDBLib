@@ -2,6 +2,7 @@
 
 #include "timeWindow.h"
 #include <QDate>
+#include <QJsonDocument>
 #include <fmt/format.h>
 #include <QJsonArray>
 
