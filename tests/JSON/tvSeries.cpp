@@ -45,7 +45,7 @@ TEST(Qtmdb_JSON_TV_Series_Test, details)
     Qtmdb qtmdb("eyJhbGciOiJIUzI1NiJ9.eyJhdWQiOiJmZWZjMDcwYTExNTZlZDExM2JjN2RhZDA1ZWM5OWMyOCIsIm5iZiI6MTc0Nzc2ODM5Mi44MDgsInN1YiI6IjY4MmNkNDQ4ODA2OTJiYWI1NTY0OTRiYyIsInNjb3BlcyI6WyJhcGlfcmVhZCJdLCJ2ZXJzaW9uIjoxfQ.4wbjpPC366q5YFsHnuo9g4bIQ2xgMB5hIHx84SejLMg");
     QJsonObject response = qtmdb.tv_series_details(1399);
     EXPECT_FALSE(response.isEmpty());
-    EXPECT_EQ(response.value("name").toString(), "Game of Thrones");
+    EXPECT_STREQ(response.value("name").toString().toStdString().c_str(), "Game of Thrones");
 }
 
 TEST(Qtmdb_JSON_TV_Series_Test, aggregateCredits)
@@ -61,7 +61,7 @@ TEST(Qtmdb_JSON_TV_Series_Test, alternativeTitles)
     Qtmdb qtmdb("eyJhbGciOiJIUzI1NiJ9.eyJhdWQiOiJmZWZjMDcwYTExNTZlZDExM2JjN2RhZDA1ZWM5OWMyOCIsIm5iZiI6MTc0Nzc2ODM5Mi44MDgsInN1YiI6IjY4MmNkNDQ4ODA2OTJiYWI1NTY0OTRiYyIsInNjb3BlcyI6WyJhcGlfcmVhZCJdLCJ2ZXJzaW9uIjoxfQ.4wbjpPC366q5YFsHnuo9g4bIQ2xgMB5hIHx84SejLMg");
     QJsonObject response = qtmdb.tv_series_alternativeTitles(1399);
     EXPECT_FALSE(response.isEmpty());
-    EXPECT_EQ(response.value("results").toArray()[0].toObject().value("iso_3166_1").toString(), "AL");
+    EXPECT_STREQ(response.value("results").toArray()[0].toObject().value("iso_3166_1").toString().toStdString().c_str(), "AL");
 }
 
 TEST(Qtmdb_JSON_TV_Series_Test, changes)
@@ -77,7 +77,7 @@ TEST(Qtmdb_JSON_TV_Series_Test, contentRatings)
     Qtmdb qtmdb("eyJhbGciOiJIUzI1NiJ9.eyJhdWQiOiJmZWZjMDcwYTExNTZlZDExM2JjN2RhZDA1ZWM5OWMyOCIsIm5iZiI6MTc0Nzc2ODM5Mi44MDgsInN1YiI6IjY4MmNkNDQ4ODA2OTJiYWI1NTY0OTRiYyIsInNjb3BlcyI6WyJhcGlfcmVhZCJdLCJ2ZXJzaW9uIjoxfQ.4wbjpPC366q5YFsHnuo9g4bIQ2xgMB5hIHx84SejLMg");
     QJsonObject response = qtmdb.tv_series_contentRatings(1399);
     EXPECT_FALSE(response.isEmpty());
-    EXPECT_EQ(response.value("results").toArray()[0].toObject().value("iso_3166_1").toString(), "FR");
+    EXPECT_STREQ(response.value("results").toArray()[0].toObject().value("iso_3166_1").toString().toStdString().c_str(), "FR");
 }
 
 TEST(Qtmdb_JSON_TV_Series_Test, credits)
@@ -93,7 +93,7 @@ TEST(Qtmdb_JSON_TV_Series_Test, episodeGroups)
     Qtmdb qtmdb("eyJhbGciOiJIUzI1NiJ9.eyJhdWQiOiJmZWZjMDcwYTExNTZlZDExM2JjN2RhZDA1ZWM5OWMyOCIsIm5iZiI6MTc0Nzc2ODM5Mi44MDgsInN1YiI6IjY4MmNkNDQ4ODA2OTJiYWI1NTY0OTRiYyIsInNjb3BlcyI6WyJhcGlfcmVhZCJdLCJ2ZXJzaW9uIjoxfQ.4wbjpPC366q5YFsHnuo9g4bIQ2xgMB5hIHx84SejLMg");
     QJsonObject response = qtmdb.tv_series_episodeGroups(1399);
     EXPECT_FALSE(response.isEmpty());
-    EXPECT_EQ(response.value("results").toArray()[0].toObject().value("name").toString(), "Aired Order");
+    EXPECT_STREQ(response.value("results").toArray()[0].toObject().value("name").toString().toStdString().c_str(), "Aired Order");
 }
 
 TEST(Qtmdb_JSON_TV_Series_Test, externalIDs)
@@ -101,7 +101,7 @@ TEST(Qtmdb_JSON_TV_Series_Test, externalIDs)
     Qtmdb qtmdb("eyJhbGciOiJIUzI1NiJ9.eyJhdWQiOiJmZWZjMDcwYTExNTZlZDExM2JjN2RhZDA1ZWM5OWMyOCIsIm5iZiI6MTc0Nzc2ODM5Mi44MDgsInN1YiI6IjY4MmNkNDQ4ODA2OTJiYWI1NTY0OTRiYyIsInNjb3BlcyI6WyJhcGlfcmVhZCJdLCJ2ZXJzaW9uIjoxfQ.4wbjpPC366q5YFsHnuo9g4bIQ2xgMB5hIHx84SejLMg");
     QJsonObject response = qtmdb.tv_series_externalIDs(1399);
     EXPECT_FALSE(response.isEmpty());
-    EXPECT_EQ(response.value("facebook_id").toString(), "GameOfThrones");
+    EXPECT_STREQ(response.value("facebook_id").toString().toStdString().c_str(), "GameOfThrones");
 }
 
 TEST(Qtmdb_JSON_TV_Series_Test, images)
@@ -149,7 +149,7 @@ TEST(Qtmdb_JSON_TV_Series_Test, reviews)
     Qtmdb qtmdb("eyJhbGciOiJIUzI1NiJ9.eyJhdWQiOiJmZWZjMDcwYTExNTZlZDExM2JjN2RhZDA1ZWM5OWMyOCIsIm5iZiI6MTc0Nzc2ODM5Mi44MDgsInN1YiI6IjY4MmNkNDQ4ODA2OTJiYWI1NTY0OTRiYyIsInNjb3BlcyI6WyJhcGlfcmVhZCJdLCJ2ZXJzaW9uIjoxfQ.4wbjpPC366q5YFsHnuo9g4bIQ2xgMB5hIHx84SejLMg");
     QJsonObject response = qtmdb.tv_series_reviews(1399);
     EXPECT_FALSE(response.isEmpty());
-    EXPECT_EQ(response.value("results").toArray()[0].toObject().value("author").toString(), "lmao7");
+    EXPECT_STREQ(response.value("results").toArray()[0].toObject().value("author").toString().toStdString().c_str(), "lmao7");
 }
 
 TEST(Qtmdb_JSON_TV_Series_Test, screenedTheatrically)
@@ -181,7 +181,7 @@ TEST(Qtmdb_JSON_TV_Series_Test, videos)
     Qtmdb qtmdb("eyJhbGciOiJIUzI1NiJ9.eyJhdWQiOiJmZWZjMDcwYTExNTZlZDExM2JjN2RhZDA1ZWM5OWMyOCIsIm5iZiI6MTc0Nzc2ODM5Mi44MDgsInN1YiI6IjY4MmNkNDQ4ODA2OTJiYWI1NTY0OTRiYyIsInNjb3BlcyI6WyJhcGlfcmVhZCJdLCJ2ZXJzaW9uIjoxfQ.4wbjpPC366q5YFsHnuo9g4bIQ2xgMB5hIHx84SejLMg");
     QJsonObject response = qtmdb.tv_series_videos(1399);
     EXPECT_FALSE(response.isEmpty());
-    EXPECT_EQ(response.value("results").toArray()[0].toObject().value("type").toString(), "Trailer");
+    EXPECT_STREQ(response.value("results").toArray()[0].toObject().value("type").toString().toStdString().c_str(), "Trailer");
 }
 
 TEST(Qtmdb_JSON_TV_Series_Test, watchProviders)

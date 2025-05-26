@@ -19,6 +19,28 @@ TEST(ConfigTests, SupportedCountries) {
     ASSERT_TRUE(passed);
 }
 
+TEST(ConfigTests, GetCountry) {
+    auto country = tmdb::config::getCountry("GB");
+    ASSERT_STREQ(country.english_name.toStdString().c_str(), "United Kingdom");
+    ASSERT_STREQ(country.country_code.toStdString().c_str(), "GB");
+
+    // Test with an invalid country code
+    auto invalidCountry = tmdb::config::getCountry("XX");
+    ASSERT_TRUE(invalidCountry.english_name.isEmpty());
+    ASSERT_TRUE(invalidCountry.country_code.isEmpty());
+}
+
+TEST(ConfigTests, GetCountryFromJson) {
+    QJsonObject countryJson;
+    countryJson["native_name"] = "United Kingdom";
+    countryJson["english_name"] = "United Kingdom";
+    countryJson["iso_3166_1"] = "GB";
+
+    auto country = tmdb::config::getCountry(countryJson);
+    ASSERT_STREQ(country.english_name.toStdString().c_str(), "United Kingdom");
+    ASSERT_STREQ(country.country_code.toStdString().c_str(), "GB");
+}
+
 TEST(ConfigTests, SupportedJobs) {
     auto jobs = tmdb::config::getSupportedJobs();
     ASSERT_FALSE(jobs.empty());
@@ -43,6 +65,18 @@ TEST(ConfigTests, SupportedLanguages) {
         }
     }
     ASSERT_TRUE(passed);
+}
+
+TEST(ConfigTests, getLanguage)
+{
+    auto language = tmdb::config::getLanguage("en");
+    ASSERT_STREQ(language.english_name.toStdString().c_str(), "English");
+    ASSERT_STREQ(language.iso_639_1.toStdString().c_str(), "en");
+
+    // Test with an invalid language code
+    auto invalidLanguage = tmdb::config::getLanguage("xx");
+    ASSERT_STREQ(invalidLanguage.english_name.toStdString().c_str(), "No Language");
+    ASSERT_STREQ(invalidLanguage.iso_639_1.toStdString().c_str(), "xx");
 }
 
 TEST(ConfigTests, SupportedTranslations) {

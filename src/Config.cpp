@@ -25,6 +25,26 @@ std::vector<tmdb::config::country> tmdb::config::getSupportedCountries()
     return countries;
 }
 
+tmdb::config::country tmdb::config::getCountry(const QString& country_code)
+{
+    auto countries = getSupportedCountries();
+    for (const auto& country : countries) {
+        if (country.country_code == country_code) {
+            return country;
+        }
+    }
+    return tmdb::config::country(); // Return an empty country if not found
+}
+
+tmdb::config::country tmdb::config::getCountry(const QJsonObject& i_json)
+{
+    country country;
+    country.native_name = i_json.value("native_name").toString();
+    country.english_name = i_json.value("english_name").toString();
+    country.country_code = i_json.value("iso_3166_1").toString();
+    return country;
+}
+
 std::vector<tmdb::config::jobDept> tmdb::config::getSupportedJobs()
 {
     Qtmdb q("eyJhbGciOiJIUzI1NiJ9.eyJhdWQiOiJmZWZjMDcwYTExNTZlZDExM2JjN2RhZDA1ZWM5OWMyOCIsIm5iZiI6MTc0Nzc2ODM5Mi44MDgsInN1YiI6IjY4MmNkNDQ4ODA2OTJiYWI1NTY0OTRiYyIsInNjb3BlcyI6WyJhcGlfcmVhZCJdLCJ2ZXJzaW9uIjoxfQ.4wbjpPC366q5YFsHnuo9g4bIQ2xgMB5hIHx84SejLMg");
@@ -59,6 +79,16 @@ std::vector<tmdb::config::language> tmdb::config::getSupportedLanguages()
     return languages;
 }
 
+tmdb::config::language tmdb::config::getLanguage(const QString& i_iso_639_1)
+{
+    auto languages = getSupportedLanguages();
+    for (const auto& lang : languages) {
+        if (lang.iso_639_1 == i_iso_639_1) {
+            return lang;
+        }
+    }
+    return tmdb::config::language(); // Return an empty language if not found
+}
 std::vector<QString> tmdb::config::getSupportedTranslations()
 {
     Qtmdb q("eyJhbGciOiJIUzI1NiJ9.eyJhdWQiOiJmZWZjMDcwYTExNTZlZDExM2JjN2RhZDA1ZWM5OWMyOCIsIm5iZiI6MTc0Nzc2ODM5Mi44MDgsInN1YiI6IjY4MmNkNDQ4ODA2OTJiYWI1NTY0OTRiYyIsInNjb3BlcyI6WyJhcGlfcmVhZCJdLCJ2ZXJzaW9uIjoxfQ.4wbjpPC366q5YFsHnuo9g4bIQ2xgMB5hIHx84SejLMg");

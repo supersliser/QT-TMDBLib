@@ -293,7 +293,7 @@ public:
     ///@param movie_id The ID of the movie.
     ///@param country The country to use for the results, default is "US".
     ///@details For more information, see the TMDB API documentation: @link https://developers.themoviedb.org/3/accounts/get-account-details @endlink
-    QJsonObject movie_alternativeTitles(int32_t movie_id, std::string country = "US");
+    QJsonObject movie_alternativeTitles(int32_t movie_id, std::string country = "");
 
     ///@brief Get the recent changes for a movie.
     ///@return A QJsonObject containing the recent changes for a movie.

@@ -13,7 +13,7 @@ TEST(Qtmdb_JSON_WatchProviders_Test, regions)
     Qtmdb qtmdb("eyJhbGciOiJIUzI1NiJ9.eyJhdWQiOiJmZWZjMDcwYTExNTZlZDExM2JjN2RhZDA1ZWM5OWMyOCIsIm5iZiI6MTc0Nzc2ODM5Mi44MDgsInN1YiI6IjY4MmNkNDQ4ODA2OTJiYWI1NTY0OTRiYyIsInNjb3BlcyI6WyJhcGlfcmVhZCJdLCJ2ZXJzaW9uIjoxfQ.4wbjpPC366q5YFsHnuo9g4bIQ2xgMB5hIHx84SejLMg");
     QJsonObject response = qtmdb.watchProviders_regions();
     EXPECT_FALSE(response.isEmpty());
-    EXPECT_EQ(response.value("results").toArray()[0].toObject().value("english_name").toString(), "Andorra");
+    EXPECT_STREQ(response.value("results").toArray()[0].toObject().value("english_name").toString().toStdString().c_str(), "Andorra");
 }
 
 TEST(Qtmdb_JSON_WatchProviders_Test, movie)

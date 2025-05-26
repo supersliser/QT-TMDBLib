@@ -13,27 +13,28 @@ namespace tmdb
     {
     public:
         void setDescription(const QString &i_description);
-        QString description() const;
+        [[nodiscard]] QString description() const;
         void setHeadquarters(const QString &i_headquarters);
-        QString headquarters() const;
+        [[nodiscard]] QString headquarters() const;
         void setHomepage(const QString &i_homepage);
-        QString homepage() const;
+        [[nodiscard]] QString homepage() const;
         void setName(const QString &i_name);
-        QString name() const;
+        [[nodiscard]] QString name() const;
         void setOriginCountry(const QString &i_originCountry);
-        QString originCountry() const;
+        [[nodiscard]] QString originCountry() const;
         void setParentCompany(const QString &i_parentCompany);
-        QString parentCompany() const;
+        [[nodiscard]] QString parentCompany() const;
         void setLogoPath(const QString &i_logoPath);
-        QString logoPath() const;
+        [[nodiscard]] QString logoPath() const;
         void setID(int32_t i_id);
-        int32_t id() const;
+        [[nodiscard]] int32_t id() const;
 
         Company() = default;
         Company(const QString &i_description, const QString &i_headquarters, const QString &i_homepage,
                 const QString &i_name, const QString &i_originCountry, const QString &i_parentCompany,
                 const QString &i_logoPath, int32_t i_id);
         Company(const QString& i_access_token, int32_t i_companyID);
+        ~Company() = default;
         explicit Company(const QJsonObject &i_json);
 
         static Company getCompany(const QString& i_access_token, int32_t i_companyID);

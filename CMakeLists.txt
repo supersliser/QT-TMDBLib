@@ -45,6 +45,10 @@ set(PROJECT_SOURCES
         src/Company.cpp
         include/Config.h
         src/Config.cpp
+        include/Genre.h
+        src/Genre.cpp
+        include/Movie.h
+        src/Movie.cpp
 )
 
 set(QT_MODULES_NEEDED
@@ -101,6 +105,8 @@ add_executable(TMDBTests
         tests/Account_Tests.cpp
         tests/Company_Tests.cpp
         tests/Config_Tests.cpp
+        tests/Genre_Tests.cpp
+        tests/Movie_Tests.cpp
 )
 target_sources(TMDBTests PRIVATE)
 target_link_libraries(TMDBTests PRIVATE GTest::gtest GTest::gtest_main)

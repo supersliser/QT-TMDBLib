@@ -45,11 +45,17 @@ QJsonObject Qtmdb::get_movie(std::string query, bool include_adult, std::string 
     {"query", query},
     {"include_adult", std::to_string(include_adult)},
     {"language", language},
-    {"primary_release_year", primary_release_year},
     {"page", std::to_string(page)},
-    {"region", region},
-    {"year", year}
   };
+  if (!primary_release_year.empty()) {
+    params["primary_release_year"] = primary_release_year;
+  }
+  if (!year.empty()) {
+    params["year"] = year;
+  }
+  if (region.empty()) {
+    params.erase("region");
+  }
   return _runGetRequest(request, params);
 }
 

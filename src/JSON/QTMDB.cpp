@@ -25,7 +25,7 @@ QJsonObject Qtmdb::_runGetRequest(std::string i_request, std::map<std::string, s
     QUrl url((fmt::format("{}{}", _m_baseUrl, i_request).data()));
         for (const auto& param : i_params)
         {
-            url.setQuery(fmt::format("{}{}{}{}",url.query().toStdString(), QUrl::toPercentEncoding(param.first.data()).toStdString(), "=", QUrl::toPercentEncoding(param.second.data()).toStdString()).c_str());
+            url.setQuery(fmt::format("{}{}{}{}{}",url.query().toStdString(), "&", QUrl::toPercentEncoding(param.first.data()).toStdString(), "=", QUrl::toPercentEncoding(param.second.data()).toStdString()).c_str());
         }
     QNetworkAccessManager manager;
     QNetworkRequest request(url);

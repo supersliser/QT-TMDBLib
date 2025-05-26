@@ -5,6 +5,7 @@
 #ifndef CONFIG_H
 #define CONFIG_H
 #include <map>
+#include <QJsonObject>
 #include <QString>
 #include <vector>
 
@@ -18,6 +19,8 @@ namespace tmdb::config
         QString country_code;
     };
     std::vector<country> getSupportedCountries();
+    country getCountry(const QString& country_code);
+    country getCountry(const QJsonObject& i_json);
     struct jobDept
     {
         QString dept_name;
@@ -31,6 +34,7 @@ namespace tmdb::config
         QString native_name;
     };
     std::vector<language> getSupportedLanguages();
+    language getLanguage(const QString& i_iso_639_1);
     std::vector<QString> getSupportedTranslations();
     std::vector<QString> getSupportedTimezones();
 }
