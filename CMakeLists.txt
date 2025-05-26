@@ -43,6 +43,8 @@ set(PROJECT_SOURCES
         src/Avatar.cpp
         include/Company.h
         src/Company.cpp
+        include/Config.h
+        src/Config.cpp
 )
 
 set(QT_MODULES_NEEDED
@@ -98,6 +100,7 @@ add_executable(TMDBTests
         tests/JSON/watchProviders.cpp
         tests/Account_Tests.cpp
         tests/Company_Tests.cpp
+        tests/Config_Tests.cpp
 )
 target_sources(TMDBTests PRIVATE)
 target_link_libraries(TMDBTests PRIVATE GTest::gtest GTest::gtest_main)

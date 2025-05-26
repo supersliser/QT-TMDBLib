@@ -5,27 +5,27 @@
 #include "Avatar.h"
 #include <utility>
 
-Gravatar::Gravatar(QString i_hash)
+tmdb::Gravatar::Gravatar(QString i_hash)
 {
     m_hash = std::move(i_hash);
 }
 
-Gravatar::Gravatar(const std::string& i_hash)
+tmdb::Gravatar::Gravatar(const std::string& i_hash)
 {
     m_hash = QString::fromStdString(i_hash);
 }
 
-void Gravatar::setHash(QString i_hash)
+void tmdb::Gravatar::setHash(QString i_hash)
 {
     m_hash = std::move(i_hash);
 }
 
-void Gravatar::setHash(const std::string& i_hash)
+void tmdb::Gravatar::setHash(const std::string& i_hash)
 {
     m_hash = QString::fromStdString(i_hash);
 }
 
-QString Gravatar::hash() const
+QString tmdb::Gravatar::hash() const
 {
     return m_hash;
 }

@@ -564,7 +564,7 @@ public:
     /// @param time_window The time window to use for the results, default is "day".
     /// @param language The language to use for the results, default is "en-US".
     ///@details For more information, see the TMDB API documentation: @link https://developers.themoviedb.org/3/accounts/get-account-details @endlink
-    QJsonObject trending_movies(timeWindow::timeWindow time_window = timeWindow::timeWindow::day,
+    QJsonObject trending_movies(tmdb::timeWindow::timeWindow time_window = tmdb::timeWindow::timeWindow::day,
                                 std::string language = "en-US");
 
     ///@brief Get the trending people on TMDB.
@@ -572,7 +572,7 @@ public:
     /// @param time_window The time window to use for the results, default is "day".
     /// @param language The language to use for the results, default is "en-US".
     ///@details For more information, see the TMDB API documentation: @link https://developers.themoviedb.org/3/accounts/get-account-details @endlink
-    QJsonObject trending_people(timeWindow::timeWindow time_window = timeWindow::timeWindow::day,
+    QJsonObject trending_people(tmdb::timeWindow::timeWindow time_window = tmdb::timeWindow::timeWindow::day,
                                 std::string language = "en-US");
 
     ///@brief Get the trending TV shows on TMDB.
@@ -580,7 +580,7 @@ public:
     /// @param time_window The time window to use for the results, default is "day".
     /// @param language The language to use for the results, default is "en-US".
     ///@details For more information, see the TMDB API documentation: @link https://developers.themoviedb.org/3/accounts/get-account-details @endlink
-    QJsonObject trending_tv(timeWindow::timeWindow time_window, std::string language = "en-US");
+    QJsonObject trending_tv(tmdb::timeWindow::timeWindow time_window, std::string language = "en-US");
     //|-----------------------------------------------------------------------------------------------------|
 
     //|-------------------------------------    TV Series    -------------------------------------------------|

@@ -9,7 +9,7 @@
 
 TEST(CompanyTests, DefaultConstructor)
 {
-    Company company;
+    tmdb::Company company;
     EXPECT_TRUE(company.description().isEmpty());
     EXPECT_TRUE(company.headquarters().isEmpty());
     EXPECT_TRUE(company.homepage().isEmpty());
@@ -22,7 +22,7 @@ TEST(CompanyTests, DefaultConstructor)
 
 TEST(CompanyTests, ParameterizedConstructor)
 {
-    Company company("Test Description", "Test Headquarters", "http://example.com",
+    tmdb::Company company("Test Description", "Test Headquarters", "http://example.com",
                     "Test Company", "US", "Parent Company", "/logo.png", 12345);
     EXPECT_EQ(company.description(), "Test Description");
     EXPECT_EQ(company.headquarters(), "Test Headquarters");
@@ -36,7 +36,7 @@ TEST(CompanyTests, ParameterizedConstructor)
 
 TEST(CompanyTests, APIConstructor)
 {
-    Company company("eyJhbGciOiJIUzI1NiJ9.eyJhdWQiOiJmZWZjMDcwYTExNTZlZDExM2JjN2RhZDA1ZWM5OWMyOCIsIm5iZiI6MTc0Nzc2ODM5Mi44MDgsInN1YiI6IjY4MmNkNDQ4ODA2OTJiYWI1NTY0OTRiYyIsInNjb3BlcyI6WyJhcGlfcmVhZCJdLCJ2ZXJzaW9uIjoxfQ.4wbjpPC366q5YFsHnuo9g4bIQ2xgMB5hIHx84SejLMg", 1);
+    tmdb::Company company("eyJhbGciOiJIUzI1NiJ9.eyJhdWQiOiJmZWZjMDcwYTExNTZlZDExM2JjN2RhZDA1ZWM5OWMyOCIsIm5iZiI6MTc0Nzc2ODM5Mi44MDgsInN1YiI6IjY4MmNkNDQ4ODA2OTJiYWI1NTY0OTRiYyIsInNjb3BlcyI6WyJhcGlfcmVhZCJdLCJ2ZXJzaW9uIjoxfQ.4wbjpPC366q5YFsHnuo9g4bIQ2xgMB5hIHx84SejLMg", 1);
     EXPECT_EQ(company.id(), 1);
     EXPECT_EQ(company.description(), "");
     EXPECT_EQ(company.headquarters(), "San Francisco, California");
@@ -52,7 +52,7 @@ TEST(CompanyTests, APIJSON)
     Qtmdb q("eyJhbGciOiJIUzI1NiJ9.eyJhdWQiOiJmZWZjMDcwYTExNTZlZDExM2JjN2RhZDA1ZWM5OWMyOCIsIm5iZiI6MTc0Nzc2ODM5Mi44MDgsInN1YiI6IjY4MmNkNDQ4ODA2OTJiYWI1NTY0OTRiYyIsInNjb3BlcyI6WyJhcGlfcmVhZCJdLCJ2ZXJzaW9uIjoxfQ.4wbjpPC366q5YFsHnuo9g4bIQ2xgMB5hIHx84SejLMg");
     QJsonObject response = q.company_details(1);
     EXPECT_FALSE(response.isEmpty());
-    Company company(response);
+    tmdb::Company company(response);
     EXPECT_EQ(company.id(), 1);
     EXPECT_EQ(company.description(), "");
     EXPECT_EQ(company.headquarters(), "San Francisco, California");
@@ -65,7 +65,7 @@ TEST(CompanyTests, APIJSON)
 
 TEST(CompanyTests, StaticConstructor)
 {
-    Company company = Company::getCompany("eyJhbGciOiJIUzI1NiJ9.eyJhdWQiOiJmZWZjMDcwYTExNTZlZDExM2JjN2RhZDA1ZWM5OWMyOCIsIm5iZiI6MTc0Nzc2ODM5Mi44MDgsInN1YiI6IjY4MmNkNDQ4ODA2OTJiYWI1NTY0OTRiYyIsInNjb3BlcyI6WyJhcGlfcmVhZCJdLCJ2ZXJzaW9uIjoxfQ.4wbjpPC366q5YFsHnuo9g4bIQ2xgMB5hIHx84SejLMg", 1);
+    tmdb::Company company = tmdb::Company::getCompany("eyJhbGciOiJIUzI1NiJ9.eyJhdWQiOiJmZWZjMDcwYTExNTZlZDExM2JjN2RhZDA1ZWM5OWMyOCIsIm5iZiI6MTc0Nzc2ODM5Mi44MDgsInN1YiI6IjY4MmNkNDQ4ODA2OTJiYWI1NTY0OTRiYyIsInNjb3BlcyI6WyJhcGlfcmVhZCJdLCJ2ZXJzaW9uIjoxfQ.4wbjpPC366q5YFsHnuo9g4bIQ2xgMB5hIHx84SejLMg", 1);
     EXPECT_EQ(company.id(), 1);
     EXPECT_EQ(company.description(), "");
     EXPECT_EQ(company.headquarters(), "San Francisco, California");
@@ -78,7 +78,7 @@ TEST(CompanyTests, StaticConstructor)
 
 TEST(CompanyTests, setGetters)
 {
-    Company c;
+    tmdb::Company c;
     c.setDescription("Test Description");
     c.setHeadquarters("Test Headquarters");
     c.setHomepage("http://example.com");

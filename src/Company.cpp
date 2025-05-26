@@ -6,94 +6,94 @@
 
 #include "QTMDB.h"
 
-void Company::setDescription(const QString& i_description)
+void tmdb::Company::setDescription(const QString& i_description)
 {
     m_description = i_description;
 }
 
-QString Company::description() const
+QString tmdb::Company::description() const
 {
     return m_description;
 }
 
-void Company::setHeadquarters(const QString& i_headquarters)
+void tmdb::Company::setHeadquarters(const QString& i_headquarters)
 {
     m_headquarters = i_headquarters;
 }
 
-QString Company::headquarters() const
+QString tmdb::Company::headquarters() const
 {
     return m_headquarters;
 }
 
-void Company::setHomepage(const QString& i_homepage)
+void tmdb::Company::setHomepage(const QString& i_homepage)
 {
     m_homepage = i_homepage;
 }
 
-QString Company::homepage() const
+QString tmdb::Company::homepage() const
 {
     return m_homepage;
 }
 
-void Company::setName(const QString& i_name)
+void tmdb::Company::setName(const QString& i_name)
 {
     m_name = i_name;
 }
 
-QString Company::name() const
+QString tmdb::Company::name() const
 {
     return m_name;
 }
 
-void Company::setOriginCountry(const QString& i_originCountry)
+void tmdb::Company::setOriginCountry(const QString& i_originCountry)
 {
     m_originCountry = i_originCountry;
 }
 
-QString Company::originCountry() const
+QString tmdb::Company::originCountry() const
 {
     return m_originCountry;
 }
 
-void Company::setParentCompany(const QString& i_parentCompany)
+void tmdb::Company::setParentCompany(const QString& i_parentCompany)
 {
     m_parentCompany = i_parentCompany;
 }
 
-QString Company::parentCompany() const
+QString tmdb::Company::parentCompany() const
 {
     return m_parentCompany;
 }
 
-void Company::setLogoPath(const QString& i_logoPath)
+void tmdb::Company::setLogoPath(const QString& i_logoPath)
 {
     m_logoPath = i_logoPath;
 }
 
-QString Company::logoPath() const
+QString tmdb::Company::logoPath() const
 {
     return m_logoPath;
 }
 
-void Company::setID(int32_t i_id)
+void tmdb::Company::setID(int32_t i_id)
 {
     m_id = i_id;
 }
 
-int32_t Company::id() const
+int32_t tmdb::Company::id() const
 {
     return m_id;
 }
 
-Company::Company(const QString& i_description, const QString& i_headquarters, const QString& i_homepage,
+tmdb::Company::Company(const QString& i_description, const QString& i_headquarters, const QString& i_homepage,
                  const QString& i_name, const QString& i_originCountry, const QString& i_parentCompany,
                  const QString& i_logoPath, int32_t i_id)
     : m_description(i_description), m_headquarters(i_headquarters), m_homepage(i_homepage),
       m_name(i_name), m_originCountry(i_originCountry), m_parentCompany(i_parentCompany),
       m_logoPath(i_logoPath), m_id(i_id) {}
 
-Company::Company(const QString& i_access_token, int32_t i_companyID)
+tmdb::Company::Company(const QString& i_access_token, int32_t i_companyID)
 {
     Qtmdb q(i_access_token.toStdString());
     QJsonObject response = q.company_details(i_companyID);
@@ -109,7 +109,7 @@ Company::Company(const QString& i_access_token, int32_t i_companyID)
     }
 }
 
-Company::Company(const QJsonObject& i_json)
+tmdb::Company::Company(const QJsonObject& i_json)
     : m_description(i_json.value("description").toString()),
       m_headquarters(i_json.value("headquarters").toString()),
       m_homepage(i_json.value("homepage").toString()),
@@ -119,7 +119,7 @@ Company::Company(const QJsonObject& i_json)
       m_logoPath(i_json.value("logo_path").toString()),
       m_id(i_json.value("id").toInt()) {}
 
-Company Company::getCompany(const QString& i_access_token, int32_t i_companyID)
+tmdb::Company tmdb::Company::getCompany(const QString& i_access_token, int32_t i_companyID)
 {
     Qtmdb q(i_access_token.toStdString());
     QJsonObject response = q.company_details(i_companyID);

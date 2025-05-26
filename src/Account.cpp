@@ -9,84 +9,84 @@
 
 #include "QTMDB.h"
 
-void Account::setAvatar(const Avatar* i_avatar)
+void tmdb::Account::setAvatar(const Avatar* i_avatar)
 {
     m_avatar = *i_avatar;
 }
 
-Avatar* Account::avatar() const
+tmdb::Avatar* tmdb::Account::avatar() const
 {
     return const_cast<Avatar*>(&m_avatar);
 }
 
-void Account::setID(const int i_id)
+void tmdb::Account::setID(const int i_id)
 {
     m_id = i_id;
 }
 
-int Account::id() const
+int tmdb::Account::id() const
 {
     return m_id;
 }
 
-void Account::setISO6391(const QString& i_iso_639_1)
+void tmdb::Account::setISO6391(const QString& i_iso_639_1)
 {
     m_iso_639_1 = i_iso_639_1;
 }
 
-QString Account::iso6391() const
+QString tmdb::Account::iso6391() const
 {
     return m_iso_639_1;
 }
 
-void Account::setISO31661(const QString& i_iso_3166_1)
+void tmdb::Account::setISO31661(const QString& i_iso_3166_1)
 {
     m_iso_3166_1 = i_iso_3166_1;
 }
 
-QString Account::iso31661() const
+QString tmdb::Account::iso31661() const
 {
     return m_iso_3166_1;
 }
 
-void Account::setName(const QString& i_name)
+void tmdb::Account::setName(const QString& i_name)
 {
     m_name = i_name;
 }
 
-QString Account::name() const
+QString tmdb::Account::name() const
 {
     return m_name;
 }
 
-void Account::setUsername(const QString& i_username)
+void tmdb::Account::setUsername(const QString& i_username)
 {
     m_username = i_username;
 }
 
-QString Account::username() const
+QString tmdb::Account::username() const
 {
     return m_username;
 }
 
-void Account::setIncludeAdult(const bool i_include_adult)
+void tmdb::Account::setIncludeAdult(const bool i_include_adult)
 {
     m_include_adult = i_include_adult;
 }
 
-bool Account::includeAdult() const
+bool tmdb::Account::includeAdult() const
 {
     return m_include_adult;
 }
 
-Account::Account(int i_id, const QString& i_iso_639_1, const QString& i_iso_3166_1, const QString& i_name,
+tmdb::Account::Account(int i_id, const QString& i_iso_639_1, const QString& i_iso_3166_1, const QString& i_name,
                  const QString& i_username, bool i_include_adult)
     : m_id(i_id), m_iso_639_1(i_iso_639_1), m_iso_3166_1(i_iso_3166_1), m_name(i_name), m_username(i_username),
       m_include_adult(i_include_adult)
 {
 }
 
-Account::Account(const QString& i_access_token, int32_t i_accountID)
+tmdb::Account::Account(const QString& i_access_token, int32_t i_accountID)
 {
     Qtmdb tmdb(i_access_token.toStdString());
     QJsonObject response = tmdb.account_details(i_accountID);
@@ -101,7 +101,7 @@ Account::Account(const QString& i_access_token, int32_t i_accountID)
         Tmdb(response.value("avatar").toObject().value("tmdb").toObject().value("path").toString())));
 }
 
-Account::Account(const QJsonObject& i_json)
+tmdb::Account::Account(const QJsonObject& i_json)
 {
     setID(i_json.value("id").toInt());
     setISO6391(i_json.value("iso_639_1").toString());
@@ -114,7 +114,7 @@ Account::Account(const QJsonObject& i_json)
         Tmdb(i_json.value("avatar").toObject().value("tmdb").toObject().value("path").toString())));
 }
 
-Account Account::getAccount(const QString& i_access_token, int32_t i_accountID)
+tmdb::Account tmdb::Account::getAccount(const QString& i_access_token, int32_t i_accountID)
 {
     return Account(i_access_token, i_accountID);
 }
