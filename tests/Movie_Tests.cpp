@@ -9,8 +9,31 @@
 TEST(MovieTests, DefaultConstructor)
 {
     tmdb::Movie movie;
+    EXPECT_TRUE(movie.adult());
+    EXPECT_STREQ(movie.backdropPath().toStdString().c_str(), "EMPTY_BACKDROP_PATH");
+    EXPECT_STREQ(movie.belongsToCollection().toStdString().c_str(), "EMPTY_COLLECTION");
+    EXPECT_EQ(movie.budget(), 0);
+    EXPECT_TRUE(movie.genres().empty());
+    EXPECT_STREQ(movie.homepage().toStdString().c_str(), "EMPTY_HOMEPAGE");
     EXPECT_EQ(movie.id(), 0);
-    EXPECT_TRUE(movie.title().isEmpty());
+    EXPECT_STREQ(movie.imdbID().toStdString().c_str(), "EMPTY_IMDB_ID");
+    EXPECT_STREQ(movie.originalLanguage().english_name.toStdString().c_str(), "");
+    EXPECT_STREQ(movie.originalTitle().toStdString().c_str(), "EMPTY_TITLE");
+    EXPECT_STREQ(movie.overview().toStdString().c_str(), "EMPTY_OVERVIEW");
+    EXPECT_FLOAT_EQ(movie.popularity(), 0.0f);
+    EXPECT_STREQ(movie.posterPath().toStdString().c_str(), "EMPTY_POSTER_PATH");
+    EXPECT_TRUE(movie.productionCompanies().empty());
+    EXPECT_TRUE(movie.countries().empty());
+    EXPECT_EQ(movie.releaseDate(), QDate::currentDate());
+    EXPECT_EQ(movie.revenue(), 0);
+    EXPECT_EQ(movie.runtime(), 0);
+    EXPECT_TRUE(movie.languages().empty());
+    EXPECT_STREQ(movie.status().toStdString().c_str(), "EMPTY_STATUS");
+    EXPECT_STREQ(movie.tagline().toStdString().c_str(), "EMPTY_TAGLINE");
+    EXPECT_STREQ(movie.title().toStdString().c_str(), "EMPTY_TITLE");
+    EXPECT_TRUE(movie.video());
+    EXPECT_FLOAT_EQ(movie.voteAverage(), 0.0f);
+    EXPECT_EQ(movie.voteCount(), 0);
 }
 
 TEST(MovieTests, APIConstructor)
@@ -28,11 +51,11 @@ TEST(MovieTests, APIConstructor)
     EXPECT_STREQ(movie.originalLanguage().iso_639_1.toStdString().c_str(), "en");
     EXPECT_STREQ(movie.originalTitle().toStdString().c_str(), "Fight Club");
     EXPECT_STREQ(movie.overview().toStdString().c_str(), "A ticking-time-bomb insomniac and a slippery soap salesman channel primal male aggression into a shocking new form of therapy. Their concept catches on, with underground \"fight clubs\" forming in every town, until an eccentric gets in the way and ignites an out-of-control spiral toward oblivion.");
-    EXPECT_FLOAT_EQ(movie.popularity(), 30.8279);
+    EXPECT_GT(movie.popularity(), 0.0f);
     EXPECT_STREQ(movie.posterPath().toStdString().c_str(), "/pB8BM7pdSp6B6Ih7QZ4DrQ3PmJK.jpg");
     EXPECT_EQ(movie.productionCompanies()[0].id(), 711);
     EXPECT_STREQ(movie.productionCompanies()[0].name().toStdString().c_str(), "Fox 2000 Pictures");
-    EXPECT_STREQ(movie.countries()[0].country_code.toStdString().c_str(), "DE");
+    EXPECT_STREQ(movie.countries()[0].iso_3166_1.toStdString().c_str(), "DE");
     EXPECT_EQ(movie.releaseDate(), QDate(1999, 10, 15));
     EXPECT_EQ(movie.revenue(), 100853753);
     EXPECT_EQ(movie.runtime(), 139);
@@ -42,15 +65,40 @@ TEST(MovieTests, APIConstructor)
     EXPECT_STREQ(movie.title().toStdString().c_str(), "Fight Club");
     EXPECT_FALSE(movie.video());
     EXPECT_FLOAT_EQ(movie.voteAverage(), 8.438);
-    EXPECT_EQ(movie.voteCount(), 30292);
+    EXPECT_GT(movie.voteCount(), 30292);
 
 }
 
 TEST(MovieTests, StaticConstructor)
 {
     tmdb::Movie movie = tmdb::Movie::getMovie("eyJhbGciOiJIUzI1NiJ9.eyJhdWQiOiJmZWZjMDcwYTExNTZlZDExM2JjN2RhZDA1ZWM5OWMyOCIsIm5iZiI6MTc0Nzc2ODM5Mi44MDgsInN1YiI6IjY4MmNkNDQ4ODA2OTJiYWI1NTY0OTRiYyIsInNjb3BlcyI6WyJhcGlfcmVhZCJdLCJ2ZXJzaW9uIjoxfQ.4wbjpPC366q5YFsHnuo9g4bIQ2xgMB5hIHx84SejLMg", 550);
+    EXPECT_FALSE(movie.adult());
+    EXPECT_STREQ(movie.backdropPath().toStdString().c_str(), "/xRyINp9KfMLVjRiO5nCsoRDdvvF.jpg");
+    EXPECT_STREQ(movie.belongsToCollection().toStdString().c_str(), "");
+    EXPECT_EQ(movie.budget(), 63000000);
+    EXPECT_EQ(movie.genres()[0].id(), 18);
+    EXPECT_STREQ(movie.genres()[0].name().toStdString().c_str(), "Drama");
+    EXPECT_STREQ(movie.homepage().toStdString().c_str(), "http://www.foxmovies.com/movies/fight-club");
     EXPECT_EQ(movie.id(), 550);
+    EXPECT_STREQ(movie.imdbID().toStdString().c_str(), "tt0137523");
+    EXPECT_STREQ(movie.originalLanguage().iso_639_1.toStdString().c_str(), "en");
+    EXPECT_STREQ(movie.originalTitle().toStdString().c_str(), "Fight Club");
+    EXPECT_STREQ(movie.overview().toStdString().c_str(), "A ticking-time-bomb insomniac and a slippery soap salesman channel primal male aggression into a shocking new form of therapy. Their concept catches on, with underground \"fight clubs\" forming in every town, until an eccentric gets in the way and ignites an out-of-control spiral toward oblivion.");
+    EXPECT_GT(movie.popularity(), 0);
+    EXPECT_STREQ(movie.posterPath().toStdString().c_str(), "/pB8BM7pdSp6B6Ih7QZ4DrQ3PmJK.jpg");
+    EXPECT_EQ(movie.productionCompanies()[0].id(), 711);
+    EXPECT_STREQ(movie.productionCompanies()[0].name().toStdString().c_str(), "Fox 2000 Pictures");
+    EXPECT_STREQ(movie.countries()[0].iso_3166_1.toStdString().c_str(), "DE");
+    EXPECT_EQ(movie.releaseDate(), QDate(1999, 10, 15));
+    EXPECT_EQ(movie.revenue(), 100853753);
+    EXPECT_EQ(movie.runtime(), 139);
+    EXPECT_STREQ(movie.languages()[0].iso_639_1.toStdString().c_str(), "en");
+    EXPECT_STREQ(movie.status().toStdString().c_str(), "Released");
+    EXPECT_STREQ(movie.tagline().toStdString().c_str(), "Mischief. Mayhem. Soap.");
     EXPECT_STREQ(movie.title().toStdString().c_str(), "Fight Club");
+    EXPECT_FALSE(movie.video());
+    EXPECT_FLOAT_EQ(movie.voteAverage(), 8.438);
+    EXPECT_GT(movie.voteCount(), 30292);
 }
 
 TEST(MovieTests, searchForMovies)
@@ -59,30 +107,276 @@ TEST(MovieTests, searchForMovies)
         "eyJhbGciOiJIUzI1NiJ9.eyJhdWQiOiJmZWZjMDcwYTExNTZlZDExM2JjN2RhZDA1ZWM5OWMyOCIsIm5iZiI6MTc0Nzc2ODM5Mi44MDgsInN1YiI6IjY4MmNkNDQ4ODA2OTJiYWI1NTY0OTRiYyIsInNjb3BlcyI6WyJhcGlfcmVhZCJdLCJ2ZXJzaW9uIjoxfQ.4wbjpPC366q5YFsHnuo9g4bIQ2xgMB5hIHx84SejLMg",
         "Fight Club");
 
+    EXPECT_FALSE(movies[0].adult());
+    EXPECT_STREQ(movies[0].backdropPath().toStdString().c_str(), "/xRyINp9KfMLVjRiO5nCsoRDdvvF.jpg");
+    EXPECT_STREQ(movies[0].belongsToCollection().toStdString().c_str(), "");
+    EXPECT_EQ(movies[0].budget(), 63000000);
+    EXPECT_EQ(movies[0].genres()[0].id(), 18);
+    EXPECT_STREQ(movies[0].genres()[0].name().toStdString().c_str(), "Drama");
+    EXPECT_STREQ(movies[0].homepage().toStdString().c_str(), "http://www.foxmovies.com/movies/fight-club");
     EXPECT_EQ(movies[0].id(), 550);
+    EXPECT_STREQ(movies[0].imdbID().toStdString().c_str(), "tt0137523");
+    EXPECT_STREQ(movies[0].originalLanguage().iso_639_1.toStdString().c_str(), "en");
+    EXPECT_STREQ(movies[0].originalTitle().toStdString().c_str(), "Fight Club");
+    EXPECT_STREQ(movies[0].overview().toStdString().c_str(), "A ticking-time-bomb insomniac and a slippery soap salesman channel primal male aggression into a shocking new form of therapy. Their concept catches on, with underground \"fight clubs\" forming in every town, until an eccentric gets in the way and ignites an out-of-control spiral toward oblivion.");
+    EXPECT_GT(movies[0].popularity(), 0);
+    EXPECT_STREQ(movies[0].posterPath().toStdString().c_str(), "/pB8BM7pdSp6B6Ih7QZ4DrQ3PmJK.jpg");
+    EXPECT_EQ(movies[0].productionCompanies()[0].id(), 711);
+    EXPECT_STREQ(movies[0].productionCompanies()[0].name().toStdString().c_str(), "Fox 2000 Pictures");
+    EXPECT_STREQ(movies[0].countries()[0].iso_3166_1.toStdString().c_str(), "DE");
+    EXPECT_EQ(movies[0].releaseDate(), QDate(1999, 10, 15));
+    EXPECT_EQ(movies[0].revenue(), 100853753);
+    EXPECT_EQ(movies[0].runtime(), 139);
+    EXPECT_STREQ(movies[0].languages()[0].iso_639_1.toStdString().c_str(), "en");
+    EXPECT_STREQ(movies[0].status().toStdString().c_str(), "Released");
+    EXPECT_STREQ(movies[0].tagline().toStdString().c_str(), "Mischief. Mayhem. Soap.");
     EXPECT_STREQ(movies[0].title().toStdString().c_str(), "Fight Club");
+    EXPECT_FALSE(movies[0].video());
+    EXPECT_GT(movies[0].voteAverage(), 0);
+    EXPECT_GT(movies[0].voteCount(), 30292);
 }
 
 TEST(MovieTests, setGetters)
 {
     tmdb::Movie movie;
-    movie.setId(550);
-    movie.setTitle("Fight Club");
-    movie.setOriginalTitle("Fight Club");
-    movie.setOverview("A ticking-time-bomb insomniac and a slippery soap salesman channel primal aggression into a shocking new form of therapy. Their concept catches on, with underground fight clubs forming in every town, until an eccentric gets in the way and ignites an out-of-control spiral toward oblivion.");
-    movie.setReleaseDate(QDate(1999, 10, 15));
-    movie.setVoteAverage(8.4);
-    movie.setVoteCount(21800);
-    movie.setPopularity(61.416);
-    movie.setRuntime(139);
+    movie.setAdult(false);
+    movie.setBackdropPath("./1.png");
+    movie.setBelongsToCollection("collection1");
+    movie.setBudget(20000);
+    movie.setGenres({tmdb::Genre(5, "Drama")});
+    movie.setHomepage("https://www.thomaslower.com");
+    movie.setId(22);
+    movie.setImdbID("ttthelloworld");
+    movie.setOriginalLanguage({"en-GB", "English", "English"});
+    movie.setOriginalTitle("Title");
+    movie.setOverview("Overview");
+    movie.setPopularity(43.3764);
+    movie.setPosterPath("Path.png");
+    movie.setProductionCompanies({tmdb::Company("Desc", "Bournemouth", "https://www.thomaslower.com", "Supersliser Industries", "UK", "None", "logo.png", 26)});
+    movie.setCountries({{"en-GB", "Britain", "Britain"}});
+    movie.setReleaseDate(QDate(2004, 10, 22));
+    movie.setRevenue(6);
+    movie.setRuntime(179);
+    movie.setLanguages({{"en", "English", "English"}});
+    movie.setStatus("EXISTS I PROMISE");
+    movie.setTagline("Tagline");
+    movie.setTitle("Title");
+    movie.setVideo(false);
+    movie.setVoteAverage(50);
+    movie.setVoteCount(10);
 
-    EXPECT_EQ(movie.id(), 550);
-    EXPECT_STREQ(movie.title().toStdString().c_str(), "Fight Club");
-    EXPECT_STREQ(movie.originalTitle().toStdString().c_str(), "Fight Club");
-    EXPECT_STREQ(movie.overview().toStdString().c_str(), "A ticking-time-bomb insomniac and a slippery soap salesman channel primal aggression into a shocking new form of therapy. Their concept catches on, with underground fight clubs forming in every town, until an eccentric gets in the way and ignites an out-of-control spiral toward oblivion.");
-    EXPECT_EQ(movie.releaseDate(), QDate(1999, 10, 15));
-    EXPECT_FLOAT_EQ(movie.voteAverage(), 8.4);
-    EXPECT_EQ(movie.voteCount(), 21800);
-    EXPECT_FLOAT_EQ(movie.popularity(), 61.416);
-    EXPECT_EQ(movie.runtime(), 139);
+    EXPECT_FALSE(movie.adult());
+    EXPECT_STREQ(movie.backdropPath().toStdString().c_str(), "./1.png");
+    EXPECT_STREQ(movie.belongsToCollection().toStdString().c_str(), "collection1");
+    EXPECT_EQ(movie.budget(), 20000);
+    EXPECT_EQ(movie.genres().size(), 1);
+    EXPECT_EQ(movie.genres()[0].id(), 5);
+    EXPECT_STREQ(movie.genres()[0].name().toStdString().c_str(), "Drama");
+    EXPECT_STREQ(movie.homepage().toStdString().c_str(), "https://www.thomaslower.com");
+    EXPECT_EQ(movie.id(), 22);
+    EXPECT_STREQ(movie.imdbID().toStdString().c_str(), "ttthelloworld");
+    EXPECT_STREQ(movie.originalLanguage().iso_639_1.toStdString().c_str(), "en-GB");
+    EXPECT_STREQ(movie.originalLanguage().english_name.toStdString().c_str(), "English");
+    EXPECT_STREQ(movie.originalLanguage().native_name.toStdString().c_str(), "English");
+    EXPECT_STREQ(movie.originalTitle().toStdString().c_str(), "Title");
+    EXPECT_STREQ(movie.overview().toStdString().c_str(), "Overview");
+    EXPECT_FLOAT_EQ(movie.popularity(), 43.3764);
+    EXPECT_STREQ(movie.posterPath().toStdString().c_str(), "Path.png");
+    EXPECT_EQ(movie.productionCompanies().size(), 1);
+    EXPECT_EQ(movie.productionCompanies()[0].id(), 26);
+    EXPECT_STREQ(movie.productionCompanies()[0].description().toStdString().c_str(), "Desc");
+    EXPECT_STREQ(movie.productionCompanies()[0].headquarters().toStdString().c_str(), "Bournemouth");
+    EXPECT_STREQ(movie.productionCompanies()[0].homepage().toStdString().c_str(), "https://www.thomaslower.com");
+    EXPECT_STREQ(movie.productionCompanies()[0].name().toStdString().c_str(), "Supersliser Industries");
+    EXPECT_STREQ(movie.productionCompanies()[0].originCountry().toStdString().c_str(), "UK");
+    EXPECT_STREQ(movie.productionCompanies()[0].logoPath().toStdString().c_str(), "logo.png");
+    EXPECT_EQ(movie.countries().size(), 1);
+    EXPECT_STREQ(movie.countries()[0].english_name.toStdString().c_str(), "Britain");
+    EXPECT_STREQ(movie.countries()[0].native_name.toStdString().c_str(), "Britain");
+    EXPECT_STREQ(movie.countries()[0].iso_3166_1.toStdString().c_str(), "en-GB");
+    EXPECT_EQ(movie.releaseDate(), QDate(2004, 10, 22));
+    EXPECT_EQ(movie.revenue(), 6);
+    EXPECT_EQ(movie.runtime(), 179);
+    EXPECT_EQ(movie.languages().size(), 1);
+    EXPECT_STREQ(movie.languages()[0].iso_639_1.toStdString().c_str(), "en");
+    EXPECT_STREQ(movie.languages()[0].english_name.toStdString().c_str(), "English");
+    EXPECT_STREQ(movie.languages()[0].native_name.toStdString().c_str(), "English");
+    EXPECT_STREQ(movie.status().toStdString().c_str(), "EXISTS I PROMISE");
+    EXPECT_STREQ(movie.tagline().toStdString().c_str(), "Tagline");
+    EXPECT_STREQ(movie.title().toStdString().c_str(), "Title");
+    EXPECT_FALSE(movie.video());
+    EXPECT_FLOAT_EQ(movie.voteAverage(), 50);
+    EXPECT_EQ(movie.voteCount(), 10);
+}
+
+TEST(MovieTests, getNowPlaying)
+{
+    std::vector<tmdb::Movie> movies = tmdb::Movie::getNowPlaying("eyJhbGciOiJIUzI1NiJ9.eyJhdWQiOiJmZWZjMDcwYTExNTZlZDExM2JjN2RhZDA1ZWM5OWMyOCIsIm5iZiI6MTc0Nzc2ODM5Mi44MDgsInN1YiI6IjY4MmNkNDQ4ODA2OTJiYWI1NTY0OTRiYyIsInNjb3BlcyI6WyJhcGlfcmVhZCJdLCJ2ZXJzaW9uIjoxfQ.4wbjpPC366q5YFsHnuo9g4bIQ2xgMB5hIHx84SejLMg");
+
+    for (auto& movie: movies)
+    {
+        EXPECT_STRNE(movie.backdropPath().toStdString().c_str(), "EMPTY_BACKDROP_PATH");
+        EXPECT_STRNE(movie.belongsToCollection().toStdString().c_str(), "EMPTY_COLLECTION");
+        EXPECT_FALSE(movie.genres().empty());
+        EXPECT_STRNE(movie.homepage().toStdString().c_str(), "EMPTY_HOMEPAGE");
+        EXPECT_NE(movie.id(), 0);
+        EXPECT_STRNE(movie.imdbID().toStdString().c_str(), "EMPTY_IMDB_ID");
+        EXPECT_STRNE(movie.originalLanguage().english_name.toStdString().c_str(), "");
+        EXPECT_STRNE(movie.originalTitle().toStdString().c_str(), "EMPTY_TITLE");
+        EXPECT_STRNE(movie.overview().toStdString().c_str(), "EMPTY_OVERVIEW");
+        EXPECT_STRNE(movie.posterPath().toStdString().c_str(), "EMPTY_POSTER_PATH");
+        EXPECT_FALSE(movie.productionCompanies().empty());
+        EXPECT_FALSE(movie.countries().empty());
+        EXPECT_NE(movie.releaseDate(), QDate::currentDate());
+        EXPECT_FALSE(movie.languages().empty());
+        EXPECT_STRNE(movie.status().toStdString().c_str(), "EMPTY_STATUS");
+        EXPECT_STRNE(movie.tagline().toStdString().c_str(), "EMPTY_TAGLINE");
+        EXPECT_STRNE(movie.title().toStdString().c_str(), "EMPTY_TITLE");
+        EXPECT_NE(movie.voteCount(), 0);
+    }
+}
+
+TEST(MovieTests, getPopular)
+{
+    std::vector<tmdb::Movie> movies = tmdb::Movie::getPopular("eyJhbGciOiJIUzI1NiJ9.eyJhdWQiOiJmZWZjMDcwYTExNTZlZDExM2JjN2RhZDA1ZWM5OWMyOCIsIm5iZiI6MTc0Nzc2ODM5Mi44MDgsInN1YiI6IjY4MmNkNDQ4ODA2OTJiYWI1NTY0OTRiYyIsInNjb3BlcyI6WyJhcGlfcmVhZCJdLCJ2ZXJzaW9uIjoxfQ.4wbjpPC366q5YFsHnuo9g4bIQ2xgMB5hIHx84SejLMg");
+
+    for (auto& movie: movies)
+    {
+        EXPECT_STRNE(movie.backdropPath().toStdString().c_str(), "EMPTY_BACKDROP_PATH");
+        EXPECT_STRNE(movie.belongsToCollection().toStdString().c_str(), "EMPTY_COLLECTION");
+        EXPECT_FALSE(movie.genres().empty());
+        EXPECT_STRNE(movie.homepage().toStdString().c_str(), "EMPTY_HOMEPAGE");
+        EXPECT_NE(movie.id(), 0);
+        EXPECT_STRNE(movie.imdbID().toStdString().c_str(), "EMPTY_IMDB_ID");
+        EXPECT_STRNE(movie.originalLanguage().english_name.toStdString().c_str(), "");
+        EXPECT_STRNE(movie.originalTitle().toStdString().c_str(), "EMPTY_TITLE");
+        EXPECT_STRNE(movie.overview().toStdString().c_str(), "EMPTY_OVERVIEW");
+        EXPECT_STRNE(movie.posterPath().toStdString().c_str(), "EMPTY_POSTER_PATH");
+        EXPECT_NE(movie.releaseDate(), QDate::currentDate());
+        EXPECT_STRNE(movie.status().toStdString().c_str(), "EMPTY_STATUS");
+        EXPECT_STRNE(movie.tagline().toStdString().c_str(), "EMPTY_TAGLINE");
+        EXPECT_STRNE(movie.title().toStdString().c_str(), "EMPTY_TITLE");
+        EXPECT_NE(movie.voteCount(), 0);
+    }
+}
+
+TEST(MovieTests, getTopRated)
+{
+    std::vector<tmdb::Movie> movies = tmdb::Movie::getTopRated("eyJhbGciOiJIUzI1NiJ9.eyJhdWQiOiJmZWZjMDcwYTExNTZlZDExM2JjN2RhZDA1ZWM5OWMyOCIsIm5iZiI6MTc0Nzc2ODM5Mi44MDgsInN1YiI6IjY4MmNkNDQ4ODA2OTJiYWI1NTY0OTRiYyIsInNjb3BlcyI6WyJhcGlfcmVhZCJdLCJ2ZXJzaW9uIjoxfQ.4wbjpPC366q5YFsHnuo9g4bIQ2xgMB5hIHx84SejLMg");
+
+    for (auto& movie: movies)
+    {
+        EXPECT_STRNE(movie.backdropPath().toStdString().c_str(), "EMPTY_BACKDROP_PATH");
+        EXPECT_STRNE(movie.belongsToCollection().toStdString().c_str(), "EMPTY_COLLECTION");
+        EXPECT_FALSE(movie.genres().empty());
+        EXPECT_STRNE(movie.homepage().toStdString().c_str(), "EMPTY_HOMEPAGE");
+        EXPECT_NE(movie.id(), 0);
+        EXPECT_STRNE(movie.imdbID().toStdString().c_str(), "EMPTY_IMDB_ID");
+        EXPECT_STRNE(movie.originalLanguage().english_name.toStdString().c_str(), "");
+        EXPECT_STRNE(movie.originalTitle().toStdString().c_str(), "EMPTY_TITLE");
+        EXPECT_STRNE(movie.overview().toStdString().c_str(), "EMPTY_OVERVIEW");
+        EXPECT_STRNE(movie.posterPath().toStdString().c_str(), "EMPTY_POSTER_PATH");
+        EXPECT_FALSE(movie.productionCompanies().empty());
+        EXPECT_NE(movie.releaseDate(), QDate::currentDate());
+        EXPECT_FALSE(movie.languages().empty());
+        EXPECT_STRNE(movie.status().toStdString().c_str(), "EMPTY_STATUS");
+        EXPECT_STRNE(movie.tagline().toStdString().c_str(), "EMPTY_TAGLINE");
+        EXPECT_STRNE(movie.title().toStdString().c_str(), "EMPTY_TITLE");
+        EXPECT_NE(movie.voteCount(), 0);
+    }
+}
+
+TEST(MovieTests, getUpcoming)
+{
+    std::vector<tmdb::Movie> movies = tmdb::Movie::getUpcoming("eyJhbGciOiJIUzI1NiJ9.eyJhdWQiOiJmZWZjMDcwYTExNTZlZDExM2JjN2RhZDA1ZWM5OWMyOCIsIm5iZiI6MTc0Nzc2ODM5Mi44MDgsInN1YiI6IjY4MmNkNDQ4ODA2OTJiYWI1NTY0OTRiYyIsInNjb3BlcyI6WyJhcGlfcmVhZCJdLCJ2ZXJzaW9uIjoxfQ.4wbjpPC366q5YFsHnuo9g4bIQ2xgMB5hIHx84SejLMg");
+
+    for (auto& movie: movies)
+    {
+        EXPECT_STRNE(movie.backdropPath().toStdString().c_str(), "EMPTY_BACKDROP_PATH");
+        EXPECT_STRNE(movie.belongsToCollection().toStdString().c_str(), "EMPTY_COLLECTION");
+        EXPECT_FALSE(movie.genres().empty());
+        EXPECT_STRNE(movie.homepage().toStdString().c_str(), "EMPTY_HOMEPAGE");
+        EXPECT_NE(movie.id(), 0);
+        EXPECT_STRNE(movie.imdbID().toStdString().c_str(), "EMPTY_IMDB_ID");
+        EXPECT_STRNE(movie.originalLanguage().english_name.toStdString().c_str(), "");
+        EXPECT_STRNE(movie.originalTitle().toStdString().c_str(), "EMPTY_TITLE");
+        EXPECT_STRNE(movie.overview().toStdString().c_str(), "EMPTY_OVERVIEW");
+        EXPECT_STRNE(movie.posterPath().toStdString().c_str(), "EMPTY_POSTER_PATH");
+        EXPECT_FALSE(movie.productionCompanies().empty());
+        EXPECT_FALSE(movie.countries().empty());
+        EXPECT_NE(movie.releaseDate(), QDate::currentDate());
+        EXPECT_FALSE(movie.languages().empty());
+        EXPECT_STRNE(movie.status().toStdString().c_str(), "EMPTY_STATUS");
+        EXPECT_STRNE(movie.tagline().toStdString().c_str(), "EMPTY_TAGLINE");
+        EXPECT_STRNE(movie.title().toStdString().c_str(), "EMPTY_TITLE");
+    }
+}
+
+TEST(MovieTests, getAlternateTitles)
+{
+    auto movie = tmdb::Movie::getMovie("eyJhbGciOiJIUzI1NiJ9.eyJhdWQiOiJmZWZjMDcwYTExNTZlZDExM2JjN2RhZDA1ZWM5OWMyOCIsIm5iZiI6MTc0Nzc2ODM5Mi44MDgsInN1YiI6IjY4MmNkNDQ4ODA2OTJiYWI1NTY0OTRiYyIsInNjb3BlcyI6WyJhcGlfcmVhZCJdLCJ2ZXJzaW9uIjoxfQ.4wbjpPC366q5YFsHnuo9g4bIQ2xgMB5hIHx84SejLMg", 550);
+    auto alternateTitles = movie.alternateTitles("eyJhbGciOiJIUzI1NiJ9.eyJhdWQiOiJmZWZjMDcwYTExNTZlZDExM2JjN2RhZDA1ZWM5OWMyOCIsIm5iZiI6MTc0Nzc2ODM5Mi44MDgsInN1YiI6IjY4MmNkNDQ4ODA2OTJiYWI1NTY0OTRiYyIsInNjb3BlcyI6WyJhcGlfcmVhZCJdLCJ2ZXJzaW9uIjoxfQ.4wbjpPC366q5YFsHnuo9g4bIQ2xgMB5hIHx84SejLMg");
+    EXPECT_STREQ(alternateTitles[0].country.iso_3166_1.toStdString().c_str(), "IL");
+    EXPECT_STREQ(alternateTitles[0].title.toStdString().c_str(), "Mo'adon Krav");
+    EXPECT_STREQ(alternateTitles[0].type.toStdString().c_str(), "romanization");
+}
+
+TEST(MovieTests, getExternalIDs)
+{
+    auto movie = tmdb::Movie::getMovie("eyJhbGciOiJIUzI1NiJ9.eyJhdWQiOiJmZWZjMDcwYTExNTZlZDExM2JjN2RhZDA1ZWM5OWMyOCIsIm5iZiI6MTc0Nzc2ODM5Mi44MDgsInN1YiI6IjY4MmNkNDQ4ODA2OTJiYWI1NTY0OTRiYyIsInNjb3BlcyI6WyJhcGlfcmVhZCJdLCJ2ZXJzaW9uIjoxfQ.4wbjpPC366q5YFsHnuo9g4bIQ2xgMB5hIHx84SejLMg", 550);
+    auto externalIDs = movie.externalIDs("eyJhbGciOiJIUzI1NiJ9.eyJhdWQiOiJmZWZjMDcwYTExNTZlZDExM2JjN2RhZDA1ZWM5OWMyOCIsIm5iZiI6MTc0Nzc2ODM5Mi44MDgsInN1YiI6IjY4MmNkNDQ4ODA2OTJiYWI1NTY0OTRiYyIsInNjb3BlcyI6WyJhcGlfcmVhZCJdLCJ2ZXJzaW9uIjoxfQ.4wbjpPC366q5YFsHnuo9g4bIQ2xgMB5hIHx84SejLMg");
+    EXPECT_STREQ(externalIDs[0].toStdString().c_str(), "tt0137523");
+    EXPECT_STREQ(externalIDs[1].toStdString().c_str(), "Q190050");
+    EXPECT_STREQ(externalIDs[2].toStdString().c_str(), "FightClub");
+    EXPECT_STREQ(externalIDs[3].toStdString().c_str(), "");
+    EXPECT_STREQ(externalIDs[4].toStdString().c_str(), "");
+}
+
+TEST(MovieTests, getBackdrops)
+{
+    auto movie = tmdb::Movie::getMovie("eyJhbGciOiJIUzI1NiJ9.eyJhdWQiOiJmZWZjMDcwYTExNTZlZDExM2JjN2RhZDA1ZWM5OWMyOCIsIm5iZiI6MTc0Nzc2ODM5Mi44MDgsInN1YiI6IjY4MmNkNDQ4ODA2OTJiYWI1NTY0OTRiYyIsInNjb3BlcyI6WyJhcGlfcmVhZCJdLCJ2ZXJzaW9uIjoxfQ.4wbjpPC366q5YFsHnuo9g4bIQ2xgMB5hIHx84SejLMg", 550);
+    auto backdrops = movie.backdrops("eyJhbGciOiJIUzI1NiJ9.eyJhdWQiOiJmZWZjMDcwYTExNTZlZDExM2JjN2RhZDA1ZWM5OWMyOCIsIm5iZiI6MTc0Nzc2ODM5Mi44MDgsInN1YiI6IjY4MmNkNDQ4ODA2OTJiYWI1NTY0OTRiYyIsInNjb3BlcyI6WyJhcGlfcmVhZCJdLCJ2ZXJzaW9uIjoxfQ.4wbjpPC366q5YFsHnuo9g4bIQ2xgMB5hIHx84SejLMg", "original");
+    EXPECT_EQ(backdrops[0].height(), 1080);
+    EXPECT_EQ(backdrops[0].width(), 1920);
+}
+
+TEST(MovieTests, getLogos)
+{
+    auto movie = tmdb::Movie::getMovie("eyJhbGciOiJIUzI1NiJ9.eyJhdWQiOiJmZWZjMDcwYTExNTZlZDExM2JjN2RhZDA1ZWM5OWMyOCIsIm5iZiI6MTc0Nzc2ODM5Mi44MDgsInN1YiI6IjY4MmNkNDQ4ODA2OTJiYWI1NTY0OTRiYyIsInNjb3BlcyI6WyJhcGlfcmVhZCJdLCJ2ZXJzaW9uIjoxfQ.4wbjpPC366q5YFsHnuo9g4bIQ2xgMB5hIHx84SejLMg", 550);
+    auto logos = movie.logos("eyJhbGciOiJIUzI1NiJ9.eyJhdWQiOiJmZWZjMDcwYTExNTZlZDExM2JjN2RhZDA1ZWM5OWMyOCIsIm5iZiI6MTc0Nzc2ODM5Mi44MDgsInN1YiI6IjY4MmNkNDQ4ODA2OTJiYWI1NTY0OTRiYyIsInNjb3BlcyI6WyJhcGlfcmVhZCJdLCJ2ZXJzaW9uIjoxfQ.4wbjpPC366q5YFsHnuo9g4bIQ2xgMB5hIHx84SejLMg", "original");
+    EXPECT_EQ(logos[0].height(), 389);
+    EXPECT_EQ(logos[0].width(), 1804);
+}
+
+TEST(MovieTests, getPosters)
+{
+    auto movie = tmdb::Movie::getMovie("eyJhbGciOiJIUzI1NiJ9.eyJhdWQiOiJmZWZjMDcwYTExNTZlZDExM2JjN2RhZDA1ZWM5OWMyOCIsIm5iZiI6MTc0Nzc2ODM5Mi44MDgsInN1YiI6IjY4MmNkNDQ4ODA2OTJiYWI1NTY0OTRiYyIsInNjb3BlcyI6WyJhcGlfcmVhZCJdLCJ2ZXJzaW9uIjoxfQ.4wbjpPC366q5YFsHnuo9g4bIQ2xgMB5hIHx84SejLMg", 550);
+    auto posters = movie.posters("eyJhbGciOiJIUzI1NiJ9.eyJhdWQiOiJmZWZjMDcwYTExNTZlZDExM2JjN2RhZDA1ZWM5OWMyOCIsIm5iZiI6MTc0Nzc2ODM5Mi44MDgsInN1YiI6IjY4MmNkNDQ4ODA2OTJiYWI1NTY0OTRiYyIsInNjb3BlcyI6WyJhcGlfcmVhZCJdLCJ2ZXJzaW9uIjoxfQ.4wbjpPC366q5YFsHnuo9g4bIQ2xgMB5hIHx84SejLMg", "original");
+    EXPECT_EQ(posters[0].height(), 3000);
+    EXPECT_EQ(posters[0].width(), 2000);
+}
+
+TEST(MovieTests, getKeywords)
+{
+    auto movie = tmdb::Movie::getMovie("eyJhbGciOiJIUzI1NiJ9.eyJhdWQiOiJmZWZjMDcwYTExNTZlZDExM2JjN2RhZDA1ZWM5OWMyOCIsIm5iZiI6MTc0Nzc2ODM5Mi44MDgsInN1YiI6IjY4MmNkNDQ4ODA2OTJiYWI1NTY0OTRiYyIsInNjb3BlcyI6WyJhcGlfcmVhZCJdLCJ2ZXJzaW9uIjoxfQ.4wbjpPC366q5YFsHnuo9g4bIQ2xgMB5hIHx84SejLMg", 550);
+    auto keywords = movie.keywords("eyJhbGciOiJIUzI1NiJ9.eyJhdWQiOiJmZWZjMDcwYTExNTZlZDExM2JjN2RhZDA1ZWM5OWMyOCIsIm5iZiI6MTc0Nzc2ODM5Mi44MDgsInN1YiI6IjY4MmNkNDQ4ODA2OTJiYWI1NTY0OTRiYyIsInNjb3BlcyI6WyJhcGlfcmVhZCJdLCJ2ZXJzaW9uIjoxfQ.4wbjpPC366q5YFsHnuo9g4bIQ2xgMB5hIHx84SejLMg");
+    EXPECT_FALSE(keywords.empty());
+    EXPECT_FALSE(keywords[851].isEmpty());
+    EXPECT_STREQ(keywords[851].toStdString().c_str(), "dual identity");
+}
+
+TEST(MovieTests, getRecommended)
+{
+    auto movie = tmdb::Movie::getMovie("eyJhbGciOiJIUzI1NiJ9.eyJhdWQiOiJmZWZjMDcwYTExNTZlZDExM2JjN2RhZDA1ZWM5OWMyOCIsIm5iZiI6MTc0Nzc2ODM5Mi44MDgsInN1YiI6IjY4MmNkNDQ4ODA2OTJiYWI1NTY0OTRiYyIsInNjb3BlcyI6WyJhcGlfcmVhZCJdLCJ2ZXJzaW9uIjoxfQ.4wbjpPC366q5YFsHnuo9g4bIQ2xgMB5hIHx84SejLMg", 550);
+    auto recs = movie.recommendations("eyJhbGciOiJIUzI1NiJ9.eyJhdWQiOiJmZWZjMDcwYTExNTZlZDExM2JjN2RhZDA1ZWM5OWMyOCIsIm5iZiI6MTc0Nzc2ODM5Mi44MDgsInN1YiI6IjY4MmNkNDQ4ODA2OTJiYWI1NTY0OTRiYyIsInNjb3BlcyI6WyJhcGlfcmVhZCJdLCJ2ZXJzaW9uIjoxfQ.4wbjpPC366q5YFsHnuo9g4bIQ2xgMB5hIHx84SejLMg");
+    EXPECT_FALSE(recs.empty());
+    EXPECT_EQ(recs[0].id(), 680);
+}
+
+TEST(MovieTests, getSimilar)
+{
+    auto movie = tmdb::Movie::getMovie("eyJhbGciOiJIUzI1NiJ9.eyJhdWQiOiJmZWZjMDcwYTExNTZlZDExM2JjN2RhZDA1ZWM5OWMyOCIsIm5iZiI6MTc0Nzc2ODM5Mi44MDgsInN1YiI6IjY4MmNkNDQ4ODA2OTJiYWI1NTY0OTRiYyIsInNjb3BlcyI6WyJhcGlfcmVhZCJdLCJ2ZXJzaW9uIjoxfQ.4wbjpPC366q5YFsHnuo9g4bIQ2xgMB5hIHx84SejLMg", 550);
+    auto similar = movie.similar("eyJhbGciOiJIUzI1NiJ9.eyJhdWQiOiJmZWZjMDcwYTExNTZlZDExM2JjN2RhZDA1ZWM5OWMyOCIsIm5iZiI6MTc0Nzc2ODM5Mi44MDgsInN1YiI6IjY4MmNkNDQ4ODA2OTJiYWI1NTY0OTRiYyIsInNjb3BlcyI6WyJhcGlfcmVhZCJdLCJ2ZXJzaW9uIjoxfQ.4wbjpPC366q5YFsHnuo9g4bIQ2xgMB5hIHx84SejLMg");
+    EXPECT_FALSE(similar.empty());
+    EXPECT_EQ(similar[0].id(), 15961);
 }

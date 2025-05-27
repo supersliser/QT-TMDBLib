@@ -4,6 +4,8 @@
 
 #ifndef CONFIG_H
 #define CONFIG_H
+
+
 #include <map>
 #include <QJsonObject>
 #include <QString>
@@ -12,11 +14,14 @@
 
 namespace tmdb::config
 {
+    std::vector<QString> extractLinksFromUrl(const QUrl& url);
+
+
     struct country
     {
+        QString iso_3166_1;
         QString native_name;
         QString english_name;
-        QString country_code;
     };
     std::vector<country> getSupportedCountries();
     country getCountry(const QString& country_code);
@@ -37,6 +42,8 @@ namespace tmdb::config
     language getLanguage(const QString& i_iso_639_1);
     std::vector<QString> getSupportedTranslations();
     std::vector<QString> getSupportedTimezones();
+
+    QPixmap getPixmapFromUrl(const QUrl& url);
 }
 
 

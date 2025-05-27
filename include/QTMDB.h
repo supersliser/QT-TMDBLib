@@ -33,6 +33,8 @@ public:
     /// @brief Set the access token for the TMDB API.
     /// @param i_accessToken The access token for the TMDB API.
     void setAccessToken(std::string i_accessToken);
+
+    static std::string getImageURL(std::string i_path, std::string i_size = "original");
     //|-----------------------------------------------------------------------------------------------------|
 
     //|------------------------------------- API ENDPOINTS -------------------------------------------------|

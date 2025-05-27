@@ -8,6 +8,13 @@
 #include <QJsonObject>
 
 #include "QTMDB.h"
+#include <QPixmap>
+#include <QNetworkAccessManager>
+#include <QNetworkReply>
+#include <QRegularExpression>
+#include <QEventLoop>
+#include <QStringList>
+#include <QUrl>
 
 std::vector<tmdb::config::country> tmdb::config::getSupportedCountries()
 {
@@ -19,7 +26,7 @@ std::vector<tmdb::config::country> tmdb::config::getSupportedCountries()
         country country;
         country.native_name = countryObj.value("native_name").toString();
         country.english_name = countryObj.value("english_name").toString();
-        country.country_code = countryObj.value("iso_3166_1").toString();
+        country.iso_3166_1 = countryObj.value("iso_3166_1").toString();
         countries.push_back(country);
     }
     return countries;
@@ -29,7 +36,7 @@ tmdb::config::country tmdb::config::getCountry(const QString& country_code)
 {
     auto countries = getSupportedCountries();
     for (const auto& country : countries) {
-        if (country.country_code == country_code) {
+        if (country.iso_3166_1 == country_code) {
             return country;
         }
     }
@@ -41,7 +48,7 @@ tmdb::config::country tmdb::config::getCountry(const QJsonObject& i_json)
     country country;
     country.native_name = i_json.value("native_name").toString();
     country.english_name = i_json.value("english_name").toString();
-    country.country_code = i_json.value("iso_3166_1").toString();
+    country.iso_3166_1 = i_json.value("iso_3166_1").toString();
     return country;
 }
 
@@ -121,4 +128,40 @@ std::vector<QString> tmdb::config::getSupportedTimezones()
         }
     }
     return timezones;
+}
+
+QPixmap tmdb::config::getPixmapFromUrl(const QUrl& url) {
+    QNetworkAccessManager manager;
+    QNetworkReply* reply = manager.get(QNetworkRequest(url));
+    QEventLoop loop;
+    QObject::connect(reply, &QNetworkReply::finished, &loop, &QEventLoop::quit);
+    loop.exec();
+
+    QPixmap pixmap;
+    if (reply->error() == QNetworkReply::NoError) {
+        QByteArray data = reply->readAll();
+        pixmap.loadFromData(data);
+    }
+    reply->deleteLater();
+    return pixmap;
+}
+
+std::vector<QString> tmdb::config::extractLinksFromUrl(const QUrl& url) {
+    QNetworkAccessManager manager;
+    QEventLoop loop;
+    QNetworkReply* reply = manager.get(QNetworkRequest(url));
+    QObject::connect(reply, &QNetworkReply::finished, &loop, &QEventLoop::quit);
+    loop.exec();
+
+    QString html = reply->readAll();
+    reply->deleteLater();
+
+    std::vector<QString> links;
+    QRegularExpression re("<a\\s+[^>]*href=[\"']([^\"']+)[\"']", QRegularExpression::CaseInsensitiveOption);
+    QRegularExpressionMatchIterator i = re.globalMatch(html);
+    while (i.hasNext()) {
+        auto match = i.next();
+        links.push_back(match.captured(1));
+    }
+    return links;
 }

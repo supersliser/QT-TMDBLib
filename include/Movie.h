@@ -8,8 +8,17 @@
 #include "Company.h"
 #include "Config.h"
 #include "Genre.h"
+#include <QPixmap>
+
 namespace tmdb
 {
+    struct AlternateTitle
+    {
+        config::country country;
+        QString title;
+        QString type;
+    };
+
     class Movie
     {
     public:
@@ -25,80 +34,101 @@ namespace tmdb
                                                   const QString& i_language = "en-US");
         Movie(const QJsonObject& i_json, const QString& i_access_token);
 
+        static std::vector<Movie> getNowPlaying(const QString& i_access_token, const config::language& i_language = config::getLanguage("en-US"),
+                                                int32_t i_page = 1, const config::country& i_region = config::country());
+        static std::vector<Movie> getPopular(const QString& i_access_token, const config::language& i_language = config::getLanguage("en-US"),
+                                                int32_t i_page = 1, const config::country& i_region = config::country());
+        static std::vector<Movie> getTopRated(const QString& i_access_token, const config::language& i_language = config::getLanguage("en-US"),
+                                                int32_t i_page = 1, const config::country& i_region = config::country());
+        static std::vector<Movie> getUpcoming(const QString& i_access_token, const config::language& i_language = config::getLanguage("en-US"),
+                                                int32_t i_page = 1, const config::country& i_region = config::country());
+
+        [[nodiscard]] std::vector<Movie> recommendations(const QString& i_access_token, int32_t i_page = 1) const;
+        [[nodiscard]] std::vector<Movie> similar(const QString& i_access_token, int32_t i_page = 1) const;
+
         void setAdult(bool i_adult);
-        bool adult() const;
+        [[nodiscard]] bool adult() const;
         void setBackdropPath(const QString& i_backdropPath);
-        QString backdropPath() const;
+        [[nodiscard]] QString backdropPath() const;
         void setBelongsToCollection(const QString& i_belongsToCollection);
-        QString belongsToCollection() const;
+        [[nodiscard]] QString belongsToCollection() const;
         void setBudget(int i_budget);
-        int budget() const;
+        [[nodiscard]] int budget() const;
         void setGenres(const std::vector<Genre>& i_genres);
-        std::vector<Genre> genres() const;
+        [[nodiscard]] std::vector<Genre> genres() const;
         void setHomepage(const QString& i_homepage);
-        QString homepage() const;
+        [[nodiscard]] QString homepage() const;
         void setId(int i_id);
-        int id() const;
+        [[nodiscard]] int id() const;
         void setImdbID(const QString& i_imdbID);
-        QString imdbID() const;
+        [[nodiscard]] QString imdbID() const;
         void setOriginalLanguage(const tmdb::config::language& i_originalLanguage);
-        tmdb::config::language originalLanguage() const;
+        [[nodiscard]] config::language originalLanguage() const;
         void setOriginalTitle(const QString& i_originalTitle);
-        QString originalTitle() const;
+        [[nodiscard]] QString originalTitle() const;
         void setOverview(const QString& i_overview);
-        QString overview() const;
+        [[nodiscard]] QString overview() const;
         void setPopularity(float i_popularity);
-        float popularity() const;
+        [[nodiscard]] float popularity() const;
         void setPosterPath(const QString& i_posterPath);
-        QString posterPath() const;
+        [[nodiscard]] QString posterPath() const;
         void setProductionCompanies(const std::vector<Company>& i_productionCompanies);
-        std::vector<Company> productionCompanies() const;
+        [[nodiscard]] std::vector<Company> productionCompanies() const;
         void setCountries(const std::vector<config::country>& i_countries);
-        std::vector<config::country> countries() const;
+        [[nodiscard]] std::vector<config::country> countries() const;
         void setReleaseDate(const QDate& i_releaseDate);
-        QDate releaseDate() const;
+        [[nodiscard]] QDate releaseDate() const;
         void setRevenue(int i_revenue);
-        int revenue() const;
+        [[nodiscard]] int revenue() const;
         void setRuntime(int i_runtime);
-        int runtime() const;
+        [[nodiscard]] int runtime() const;
         void setLanguages(const std::vector<config::language>& i_languages);
-        std::vector<config::language> languages() const;
+        [[nodiscard]] std::vector<config::language> languages() const;
         void setStatus(const QString& i_status);
-        QString status() const;
+        [[nodiscard]] QString status() const;
         void setTagline(const QString& i_tagline);
-        QString tagline() const;
+        [[nodiscard]] QString tagline() const;
         void setTitle(const QString& i_title);
-        QString title() const;
+        [[nodiscard]] QString title() const;
         void setVideo(bool i_video);
-        bool video() const;
+        [[nodiscard]] bool video() const;
         void setVoteAverage(float i_voteAverage);
-        float voteAverage() const;
+        [[nodiscard]] float voteAverage() const;
         void setVoteCount(int i_voteCount);
-        int voteCount() const;
+        [[nodiscard]] int voteCount() const;
+
+        [[nodiscard]] std::vector<AlternateTitle> alternateTitles(const QString& i_access_token) const;
+        [[nodiscard]] std::array<QString, 5> externalIDs(const QString& i_access_token) const;
+
+        [[nodiscard]] std::vector<QPixmap> backdrops(const QString& i_access_token, const QString& i_size = "original") const;
+        [[nodiscard]] std::vector<QPixmap> posters(const QString& i_access_token, const QString& i_size = "original") const;
+        [[nodiscard]] std::vector<QPixmap> logos(const QString& i_access_token, const QString& i_size = "original") const;
+
+        [[nodiscard]] std::map<int, QString> keywords(const QString& i_access_token) const;
 
     protected:
         bool m_adult = true;
-        QString m_backdropPath;
-        QString m_belongsToCollection;
+        QString m_backdropPath = "EMPTY_BACKDROP_PATH";
+        QString m_belongsToCollection = "EMPTY_COLLECTION";
         int m_budget = 0;
-        std::vector<Genre> m_genres;
-        QString m_homepage;
+        std::vector<Genre> m_genres = {};
+        QString m_homepage = "EMPTY_HOMEPAGE";
         int m_id = 0;
-        QString m_imdbID;
-        tmdb::config::language m_originalLanguage;
-        QString m_originalTitle;
-        QString m_overview;
+        QString m_imdbID = "EMPTY_IMDB_ID";
+        config::language m_originalLanguage = config::language();
+        QString m_originalTitle = "EMPTY_TITLE";
+        QString m_overview = "EMPTY_OVERVIEW";
         float m_popularity = 0.0f;
-        QString m_posterPath;
-        std::vector<Company> m_productionCompanies;
-        std::vector<config::country> m_countries;
-        QDate m_releaseDate;
+        QString m_posterPath = "EMPTY_POSTER_PATH";
+        std::vector<Company> m_productionCompanies = {};
+        std::vector<config::country> m_countries = {};
+        QDate m_releaseDate = QDate::currentDate();
         int m_revenue = 0;
         int m_runtime = 0;
-        std::vector<config::language> m_languages;
-        QString m_status;
-        QString m_tagline;
-        QString m_title;
+        std::vector<config::language> m_languages = {};
+        QString m_status = "EMPTY_STATUS";
+        QString m_tagline = "EMPTY_TAGLINE";
+        QString m_title = "EMPTY_TITLE";
         bool m_video = true;
         float m_voteAverage = 0.0f;
         int m_voteCount = 0;

@@ -16,9 +16,11 @@ QJsonObject Qtmdb::movie_details(int32_t movie_id, std::string language)
 
 QJsonObject Qtmdb::movie_alternativeTitles(int32_t movie_id, std::string country)
 {
-    std::map<std::string, std::string> params = {
-        {"country", country},
-    };
+    std::map<std::string, std::string> params;
+    if (!country.empty())
+    {
+        params["country"] = country;
+    }
     std::string request = fmt::format("{}{}{}","movie/", std::to_string(movie_id), "/alternative_titles");
     return _runGetRequest(request, params);
 }

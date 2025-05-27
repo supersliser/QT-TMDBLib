@@ -3,6 +3,12 @@
 //
 
 #include "Movie.h"
+
+#include <filesystem>
+#include <qimage.h>
+
+#include "Account.h"
+#include "Account.h"
 #include "QTMDB.h"
 
 tmdb::Movie::Movie(const QString& i_access_token, int32_t i_movieID)
@@ -178,12 +184,13 @@ std::vector<tmdb::Movie> tmdb::Movie::searchForMovies(const QString& i_access_to
 {
     Qtmdb q(i_access_token.toStdString());
     auto response = q.get_movie(i_query.toStdString(), i_includeAdult, i_language.toStdString(),
-                                i_primaryReleaseYear == 0 ? "" : std::to_string(i_primaryReleaseYear), i_page, i_country.toStdString(),
+                                i_primaryReleaseYear == 0 ? "" : std::to_string(i_primaryReleaseYear), i_page,
+                                i_country.toStdString(),
                                 i_year == 0 ? "" : std::to_string(i_year));
     std::vector<Movie> movies;
     for (const auto& item : response["results"].toArray())
     {
-        movies.emplace_back(item.toObject(), i_access_token);
+        movies.emplace_back(q.movie_details(item.toObject()["id"].toInt()), i_access_token);
     }
     return movies;
 }
@@ -194,7 +201,11 @@ bool tmdb::Movie::adult() const { return m_adult; }
 void tmdb::Movie::setBackdropPath(const QString& i_backdropPath) { m_backdropPath = i_backdropPath; }
 QString tmdb::Movie::backdropPath() const { return m_backdropPath; }
 
-void tmdb::Movie::setBelongsToCollection(const QString& i_belongsToCollection) { m_belongsToCollection = i_belongsToCollection; }
+void tmdb::Movie::setBelongsToCollection(const QString& i_belongsToCollection)
+{
+    m_belongsToCollection = i_belongsToCollection;
+}
+
 QString tmdb::Movie::belongsToCollection() const { return m_belongsToCollection; }
 
 void tmdb::Movie::setBudget(int i_budget) { m_budget = i_budget; }
@@ -212,7 +223,11 @@ int tmdb::Movie::id() const { return m_id; }
 void tmdb::Movie::setImdbID(const QString& i_imdbID) { m_imdbID = i_imdbID; }
 QString tmdb::Movie::imdbID() const { return m_imdbID; }
 
-void tmdb::Movie::setOriginalLanguage(const tmdb::config::language& i_originalLanguage) { m_originalLanguage = i_originalLanguage; }
+void tmdb::Movie::setOriginalLanguage(const tmdb::config::language& i_originalLanguage)
+{
+    m_originalLanguage = i_originalLanguage;
+}
+
 tmdb::config::language tmdb::Movie::originalLanguage() const { return m_originalLanguage; }
 
 void tmdb::Movie::setOriginalTitle(const QString& i_originalTitle) { m_originalTitle = i_originalTitle; }
@@ -227,7 +242,11 @@ float tmdb::Movie::popularity() const { return m_popularity; }
 void tmdb::Movie::setPosterPath(const QString& i_posterPath) { m_posterPath = i_posterPath; }
 QString tmdb::Movie::posterPath() const { return m_posterPath; }
 
-void tmdb::Movie::setProductionCompanies(const std::vector<Company>& i_productionCompanies) { m_productionCompanies = i_productionCompanies; }
+void tmdb::Movie::setProductionCompanies(const std::vector<Company>& i_productionCompanies)
+{
+    m_productionCompanies = i_productionCompanies;
+}
+
 std::vector<tmdb::Company> tmdb::Movie::productionCompanies() const { return m_productionCompanies; }
 
 void tmdb::Movie::setCountries(const std::vector<config::country>& i_countries) { m_countries = i_countries; }
@@ -262,3 +281,170 @@ float tmdb::Movie::voteAverage() const { return m_voteAverage; }
 
 void tmdb::Movie::setVoteCount(int i_voteCount) { m_voteCount = i_voteCount; }
 int tmdb::Movie::voteCount() const { return m_voteCount; }
+
+std::vector<tmdb::Movie> tmdb::Movie::getNowPlaying(const QString& i_access_token,
+                                                    const config::language& i_language,
+                                                    int32_t i_page, const config::country& i_region)
+{
+    std::vector<tmdb::Movie> movies;
+    Qtmdb q(i_access_token.toStdString());
+    auto response = q.movieList_nowPlaying(i_region.iso_3166_1.toStdString(), i_language.iso_639_1.toStdString(),
+                                           i_page);
+    for (const auto& movie : response["results"].toArray())
+    {
+        movies.emplace_back(q.movie_details(movie.toObject()["id"].toInt()), i_access_token);
+    }
+    return movies;
+}
+
+std::vector<tmdb::Movie> tmdb::Movie::getPopular(const QString& i_access_token,
+                                                 const tmdb::config::language& i_language,
+                                                 int32_t i_page, const tmdb::config::country& i_region)
+{
+    std::vector<tmdb::Movie> movies;
+    Qtmdb q(i_access_token.toStdString());
+    auto response = q.movieList_popular(i_region.iso_3166_1.toStdString(), i_language.iso_639_1.toStdString(),
+                                        i_page);
+    for (const auto& movie : response["results"].toArray())
+    {
+        movies.emplace_back(q.movie_details(movie.toObject()["id"].toInt()), i_access_token);
+    }
+    return movies;
+}
+
+std::vector<tmdb::Movie> tmdb::Movie::getTopRated(const QString& i_access_token,
+                                                 const tmdb::config::language& i_language,
+                                                 int32_t i_page, const tmdb::config::country& i_region)
+{
+    std::vector<tmdb::Movie> movies;
+    Qtmdb q(i_access_token.toStdString());
+    auto response = q.movieList_topRated(i_region.iso_3166_1.toStdString(), i_language.iso_639_1.toStdString(),
+                                        i_page);
+    for (const auto& movie : response["results"].toArray())
+    {
+        movies.emplace_back(q.movie_details(movie.toObject()["id"].toInt()), i_access_token);
+    }
+    return movies;
+}
+
+std::vector<tmdb::Movie> tmdb::Movie::getUpcoming(const QString& i_access_token,
+                                                 const tmdb::config::language& i_language,
+                                                 int32_t i_page, const tmdb::config::country& i_region)
+{
+    std::vector<tmdb::Movie> movies;
+    Qtmdb q(i_access_token.toStdString());
+    auto response = q.movieList_upcoming(i_region.iso_3166_1.toStdString(), i_language.iso_639_1.toStdString(),
+                                        i_page);
+    for (const auto& movie : response["results"].toArray())
+    {
+        movies.emplace_back(q.movie_details(movie.toObject()["id"].toInt()), i_access_token);
+    }
+    return movies;
+}
+
+std::vector<tmdb::AlternateTitle> tmdb::Movie::alternateTitles(const QString& i_access_token) const
+{
+    Qtmdb q(i_access_token.toStdString());
+    auto response = q.movie_alternativeTitles(m_id);
+    std::vector<tmdb::AlternateTitle> titles;
+    for (const auto& item : response["titles"].toArray())
+    {
+        QJsonObject titleObj = item.toObject();
+        titles.emplace_back(AlternateTitle{config::getCountry(titleObj["iso_3166_1"].toString()), titleObj["title"].toString(), titleObj["type"].toString()});
+    }
+    return titles;
+}
+
+std::array<QString, 5> tmdb::Movie::externalIDs(const QString& i_access_token) const
+{
+    Qtmdb q(i_access_token.toStdString());
+    auto response = q.movie_externalIDs(m_id);
+    std::array<QString, 5> externalIDs = {
+        response["imdb_id"].toString(),
+        response["wikidata_id"].toString(),
+        response["facebook_id"].toString(),
+        response["instagram_id"].toString(),
+        response["twitter_id"].toString(),
+    };
+    return externalIDs;
+}
+
+std::vector<QPixmap> tmdb::Movie::backdrops(const QString& i_access_token, const QString& i_size) const
+{
+    Qtmdb q(i_access_token.toStdString());
+    auto response = q.movie_images(m_id, "en");
+    std::vector<QPixmap> backdrops;
+    for (const auto& item : response["backdrops"].toArray())
+    {
+        QJsonObject backdropObj = item.toObject();
+        QString filePath = backdropObj["file_path"].toString();
+        backdrops.emplace_back(config::getPixmapFromUrl(QUrl(q.getImageURL(filePath.toStdString(), i_size.toStdString()).c_str())));
+    }
+    return backdrops;
+}
+
+
+std::vector<QPixmap> tmdb::Movie::posters(const QString& i_access_token, const QString& i_size) const
+{
+    Qtmdb q(i_access_token.toStdString());
+    auto response = q.movie_images(m_id, "en");
+    std::vector<QPixmap> posters;
+    for (const auto& item : response["posters"].toArray())
+    {
+        QJsonObject backdropObj = item.toObject();
+        QString filePath = backdropObj["file_path"].toString();
+        posters.emplace_back(config::getPixmapFromUrl(QUrl(q.getImageURL(filePath.toStdString(), i_size.toStdString()).c_str())));
+    }
+    return posters;
+}
+
+std::vector<QPixmap> tmdb::Movie::logos(const QString& i_access_token, const QString& i_size) const
+{
+    Qtmdb q(i_access_token.toStdString());
+    auto response = q.movie_images(m_id, "en");
+    std::vector<QPixmap> logos;
+    for (const auto& item : response["logos"].toArray())
+    {
+        QJsonObject backdropObj = item.toObject();
+        QString filePath = backdropObj["file_path"].toString();
+        logos.emplace_back(config::getPixmapFromUrl(QUrl(q.getImageURL(filePath.toStdString(), i_size.toStdString()).c_str())));
+    }
+    return logos;
+}
+
+std::map<int, QString> tmdb::Movie::keywords(const QString& i_access_token) const
+{
+    Qtmdb q(i_access_token.toStdString());
+    auto response = q.movie_keywords(m_id);
+    std::map<int, QString> keywords;
+    for (const auto& item : response["keywords"].toArray())
+    {
+        QJsonObject keywordObj = item.toObject();
+        keywords[keywordObj["id"].toInt()] = keywordObj["name"].toString();
+    }
+    return keywords;
+}
+
+std::vector<tmdb::Movie> tmdb::Movie::similar(const QString& i_access_token, int32_t i_page) const
+{
+    Qtmdb q(i_access_token.toStdString());
+    auto response = q.movie_similar(m_id, "en-US", i_page);
+    std::vector<Movie> movies;
+    for (const auto& item : response["results"].toArray())
+    {
+        movies.emplace_back(q.movie_details(item.toObject()["id"].toInt()), i_access_token);
+    }
+    return movies;
+}
+
+std::vector<tmdb::Movie> tmdb::Movie::recommendations(const QString& i_access_token, int32_t i_page) const
+{
+    Qtmdb q(i_access_token.toStdString());
+    auto response = q.movie_recommendations(m_id, "en-US", i_page);
+    std::vector<Movie> movies;
+    for (const auto& item : response["results"].toArray())
+    {
+        movies.emplace_back(q.movie_details(item.toObject()["id"].toInt()), i_access_token);
+    }
+    return movies;
+}

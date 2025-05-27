@@ -49,6 +49,8 @@ set(PROJECT_SOURCES
         src/Genre.cpp
         include/Movie.h
         src/Movie.cpp
+        include/WatchProvider.h
+        src/WatchProvider.cpp
 )
 
 set(QT_MODULES_NEEDED

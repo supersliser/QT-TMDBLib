@@ -11,7 +11,7 @@ TEST(ConfigTests, SupportedCountries) {
     ASSERT_FALSE(countries.empty());
     bool passed = false;
     for (const auto& country : countries) {
-        if (country.english_name == "United Kingdom" && country.country_code == "GB") {
+        if (country.english_name == "United Kingdom" && country.iso_3166_1 == "GB") {
             passed = true;
             break;
         }
@@ -22,12 +22,12 @@ TEST(ConfigTests, SupportedCountries) {
 TEST(ConfigTests, GetCountry) {
     auto country = tmdb::config::getCountry("GB");
     ASSERT_STREQ(country.english_name.toStdString().c_str(), "United Kingdom");
-    ASSERT_STREQ(country.country_code.toStdString().c_str(), "GB");
+    ASSERT_STREQ(country.iso_3166_1.toStdString().c_str(), "GB");
 
     // Test with an invalid country code
     auto invalidCountry = tmdb::config::getCountry("XX");
     ASSERT_TRUE(invalidCountry.english_name.isEmpty());
-    ASSERT_TRUE(invalidCountry.country_code.isEmpty());
+    ASSERT_TRUE(invalidCountry.iso_3166_1.isEmpty());
 }
 
 TEST(ConfigTests, GetCountryFromJson) {
@@ -38,7 +38,7 @@ TEST(ConfigTests, GetCountryFromJson) {
 
     auto country = tmdb::config::getCountry(countryJson);
     ASSERT_STREQ(country.english_name.toStdString().c_str(), "United Kingdom");
-    ASSERT_STREQ(country.country_code.toStdString().c_str(), "GB");
+    ASSERT_STREQ(country.iso_3166_1.toStdString().c_str(), "GB");
 }
 
 TEST(ConfigTests, SupportedJobs) {

@@ -93,3 +93,8 @@ QJsonArray Qtmdb::_runGetRequestArray(std::string i_request, std::map<std::strin
     }
     return jsonObj;
 }
+
+std::string Qtmdb::getImageURL(std::string i_path, std::string i_size)
+{
+    return fmt::format("https://image.tmdb.org/t/p/{}{}", i_size, i_path);
+}
