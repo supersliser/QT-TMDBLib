@@ -109,6 +109,7 @@ add_executable(TMDBTests
         tests/Config_Tests.cpp
         tests/Genre_Tests.cpp
         tests/Movie_Tests.cpp
+        tests/WatchProvider_Tests.cpp
 )
 target_sources(TMDBTests PRIVATE)
 target_link_libraries(TMDBTests PRIVATE GTest::gtest GTest::gtest_main)

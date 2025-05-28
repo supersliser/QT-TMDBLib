@@ -41,27 +41,21 @@ namespace tmdb
 
         static WatchProvider getWatchProvider(const QString& i_access_token, int i_providerID);
         static std::vector<WatchProvider> getAllWatchProviders(const QString& i_access_token,
-                                                               ProviderType i_type = flatrate,
+                                                               ProviderType i_type = unset,
                                                                config::language i_language = config::getLanguage(
                                                                    "en-US"));
         static std::vector<WatchProvider> getAllMovieProviders(const QString& i_access_token,
                                                                config::language i_language = config::getLanguage(
                                                                    "en-US"));
         static std::vector<WatchProvider> getAllTVProviders(const QString& i_access_token,
-                                                            config::language = config::getLanguage("en-US"));
+                                                            const config::language& = config::getLanguage("en-US"));
         static std::vector<WatchProvider> getWatchProvidersForMovie(const QString& i_access_token,
-                                                                    config::language i_language = config::getLanguage(
-                                                                        "en-US"), int i_movieID = 0);
-        static std::vector<WatchProvider> getWatchProvidersForTV(const QString& i_access_token,
-                                                                 config::language i_language = config::getLanguage(
-                                                                     "en-US"), int i_seriesID = 0);
-
-        [[nodiscard]] QString toString() const;
-
-        [[nodiscard]] QJsonObject toJson() const;
+                                                                    const QString& i_language, int i_movieID);
+        // static std::vector<WatchProvider> getWatchProvidersForTV(const QString& i_access_token,
+        //                                                          QString i_language, int i_seriesID);
 
     protected:
-        ProviderType m_type;
+        ProviderType m_type = unset;
         QString m_logoPath;
         int m_providerID = 0;
         QString m_providerName;

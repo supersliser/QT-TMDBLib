@@ -12,9 +12,14 @@
 #include <vector>
 
 
+
 namespace tmdb::config
 {
-    std::vector<QString> extractLinksFromUrl(const QUrl& url);
+    struct LinkInfo {
+        QString href;
+        QString title;
+    };
+    std::vector<LinkInfo> extractLinksFromUrl(const QUrl& url);
 
 
     struct country

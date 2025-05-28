@@ -15,6 +15,12 @@
 #include <QEventLoop>
 #include <QStringList>
 #include <QUrl>
+#include <QXmlStreamReader>
+#include <QTextDocument>
+#include <QTextBlock>
+#include <QTextFragment>
+#include <QTextCursor>
+
 
 std::vector<tmdb::config::country> tmdb::config::getSupportedCountries()
 {
@@ -90,7 +96,7 @@ tmdb::config::language tmdb::config::getLanguage(const QString& i_iso_639_1)
 {
     auto languages = getSupportedLanguages();
     for (const auto& lang : languages) {
-        if (lang.iso_639_1 == i_iso_639_1) {
+        if (lang.iso_639_1 == i_iso_639_1.toLower()) {
             return lang;
         }
     }
@@ -146,22 +152,58 @@ QPixmap tmdb::config::getPixmapFromUrl(const QUrl& url) {
     return pixmap;
 }
 
-std::vector<QString> tmdb::config::extractLinksFromUrl(const QUrl& url) {
+std::vector<tmdb::config::LinkInfo> tmdb::config::extractLinksFromUrl(const QUrl& url) {
     QNetworkAccessManager manager;
     QEventLoop loop;
     QNetworkReply* reply = manager.get(QNetworkRequest(url));
     QObject::connect(reply, &QNetworkReply::finished, &loop, &QEventLoop::quit);
     loop.exec();
 
-    QString html = reply->readAll();
-    reply->deleteLater();
-
-    std::vector<QString> links;
-    QRegularExpression re("<a\\s+[^>]*href=[\"']([^\"']+)[\"']", QRegularExpression::CaseInsensitiveOption);
-    QRegularExpressionMatchIterator i = re.globalMatch(html);
-    while (i.hasNext()) {
-        auto match = i.next();
-        links.push_back(match.captured(1));
+    std::vector<LinkInfo> links;
+    if (reply->error() == QNetworkReply::NoError) {
+        QString html = reply->readAll();
+        QRegularExpression re(R"(<a\s+[^>]*href\s*=\s*['"]([^'"]+)['"][^>]*title\s*=\s*['"]([^'"]*)['"][^>]*>)", QRegularExpression::CaseInsensitiveOption);
+        QRegularExpressionMatchIterator i = re.globalMatch(html);
+        while (i.hasNext()) {
+            QRegularExpressionMatch match = i.next();
+            QString href = match.captured(1);
+            QString title = match.captured(2);
+            links.push_back({href, title});
+        }
     }
+    reply->deleteLater();
     return links;
 }
+
+// std::vector<tmdb::config::LinkInfo> tmdb::config::extractLinksFromUrl(const QUrl& url) {
+//     QNetworkAccessManager manager;
+//     QEventLoop loop;
+//     QNetworkReply* reply = manager.get(QNetworkRequest(url));
+//     QObject::connect(reply, &QNetworkReply::finished, &loop, &QEventLoop::quit);
+//     loop.exec();
+//
+//     std::vector<LinkInfo> links;
+//     if (reply->error() == QNetworkReply::NoError) {
+//         QString html = reply->readAll();
+//         QTextDocument doc;
+//         doc.setHtml(html);
+//
+//         QTextBlock block = doc.begin();
+//         while (block.isValid()) {
+//             for (QTextBlock::iterator it = block.begin(); !(it.atEnd()); ++it) {
+//                 QTextFragment fragment = it.fragment();
+//                 if (fragment.isValid()) {
+//                     QTextCharFormat format = fragment.charFormat();
+//                     if (format.isAnchor()) {
+//                         QString href = format.anchorHref();
+//                         QString title = format.property(QTextFormat::ToolTip).toString();
+//                         links.push_back({href, title});
+//                     }
+//                 }
+//             }
+//             block = block.next();
+//         }
+//     }
+//     reply->deleteLater();
+//     return links;
+// }
