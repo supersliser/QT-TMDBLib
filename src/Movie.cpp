@@ -448,3 +448,8 @@ std::vector<tmdb::Movie> tmdb::Movie::recommendations(const QString& i_access_to
     }
     return movies;
 }
+
+std::vector<tmdb::WatchProvider> tmdb::Movie::watchProviders(const QString& i_access_token, const config::country& i_region) const
+{
+    return WatchProvider::getWatchProvidersForMovie(i_access_token, i_region.iso_3166_1, m_id);
+}

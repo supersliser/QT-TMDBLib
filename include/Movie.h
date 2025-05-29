@@ -10,6 +10,8 @@
 #include "Genre.h"
 #include <QPixmap>
 
+#include "WatchProvider.h"
+
 namespace tmdb
 {
     struct AlternateTitle
@@ -103,6 +105,8 @@ namespace tmdb
         [[nodiscard]] std::vector<QPixmap> backdrops(const QString& i_access_token, const QString& i_size = "original") const;
         [[nodiscard]] std::vector<QPixmap> posters(const QString& i_access_token, const QString& i_size = "original") const;
         [[nodiscard]] std::vector<QPixmap> logos(const QString& i_access_token, const QString& i_size = "original") const;
+
+        [[nodiscard]] std::vector<WatchProvider> watchProviders(const QString& i_access_token, const config::country& i_region = config::country()) const;
 
         [[nodiscard]] std::map<int, QString> keywords(const QString& i_access_token) const;
 
