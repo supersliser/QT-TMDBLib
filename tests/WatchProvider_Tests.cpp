@@ -29,7 +29,7 @@ TEST(WatchProviderTests, ParameterizedConstructor)
 TEST(WatchProviderTests, APIConstructor)
 {
     tmdb::WatchProvider provider(
-        "eyJhbGciOiJIUzI1NiJ9.eyJhdWQiOiJmZWZjMDcwYTExNTZlZDExM2JjN2RhZDA1ZWM5OWMyOCIsIm5iZiI6MTc0Nzc2ODM5Mi44MDgsInN1YiI6IjY4MmNkNDQ4ODA2OTJiYWI1NTY0OTRiYyIsInNjb3BlcyI6WyJhcGlfcmVhZCJdLCJ2ZXJzaW9uIjoxfQ.4wbjpPC366q5YFsHnuo9g4bIQ2xgMB5hIHx84SejLMg",
+        std::getenv("API_KEY"),
         8);
     EXPECT_EQ(provider.type(), tmdb::unset);
     EXPECT_STREQ(provider.logoPath().toStdString().c_str(), "/pbpMk2JmcoNnQwx5JGpXngfoWtp.jpg");
@@ -41,7 +41,7 @@ TEST(WatchProviderTests, APIConstructor)
 TEST(WatchProviderTests, StaticConstructor)
 {
     tmdb::WatchProvider provider = tmdb::WatchProvider::getWatchProvider(
-        "eyJhbGciOiJIUzI1NiJ9.eyJhdWQiOiJmZWZjMDcwYTExNTZlZDExM2JjN2RhZDA1ZWM5OWMyOCIsIm5iZiI6MTc0Nzc2ODM5Mi44MDgsInN1YiI6IjY4MmNkNDQ4ODA2OTJiYWI1NTY0OTRiYyIsInNjb3BlcyI6WyJhcGlfcmVhZCJdLCJ2ZXJzaW9uIjoxfQ.4wbjpPC366q5YFsHnuo9g4bIQ2xgMB5hIHx84SejLMg",
+        std::getenv("API_KEY"),
         8);
     EXPECT_EQ(provider.type(), tmdb::unset);
     EXPECT_STREQ(provider.logoPath().toStdString().c_str(), "/pbpMk2JmcoNnQwx5JGpXngfoWtp.jpg");
@@ -53,7 +53,7 @@ TEST(WatchProviderTests, StaticConstructor)
 TEST(WatchProviderTests, GetAllWatchProviders)
 {
     auto providers = tmdb::WatchProvider::getAllWatchProviders(
-        "eyJhbGciOiJIUzI1NiJ9.eyJhdWQiOiJmZWZjMDcwYTExNTZlZDExM2JjN2RhZDA1ZWM5OWMyOCIsIm5iZiI6MTc0Nzc2ODM5Mi44MDgsInN1YiI6IjY4MmNkNDQ4ODA2OTJiYWI1NTY0OTRiYyIsInNjb3BlcyI6WyJhcGlfcmVhZCJdLCJ2ZXJzaW9uIjoxfQ.4wbjpPC366q5YFsHnuo9g4bIQ2xgMB5hIHx84SejLMg",
+        std::getenv("API_KEY"),
         tmdb::flatrate, tmdb::config::getLanguage("GB"));
     EXPECT_FALSE(providers.empty());
     EXPECT_EQ(providers[0].type(), tmdb::unset);
@@ -66,7 +66,7 @@ TEST(WatchProviderTests, GetAllWatchProviders)
 TEST(WatchProviderTests, GetWatchProvidersForMovieTest)
 {
     std::vector<tmdb::WatchProvider> providers = tmdb::WatchProvider::getWatchProvidersForMovie(
-        "eyJhbGciOiJIUzI1NiJ9.eyJhdWQiOiJmZWZjMDcwYTExNTZlZDExM2JjN2RhZDA1ZWM5OWMyOCIsIm5iZiI6MTc0Nzc2ODM5Mi44MDgsInN1YiI6IjY4MmNkNDQ4ODA2OTJiYWI1NTY0OTRiYyIsInNjb3BlcyI6WyJhcGlfcmVhZCJdLCJ2ZXJzaW9uIjoxfQ.4wbjpPC366q5YFsHnuo9g4bIQ2xgMB5hIHx84SejLMg",
+        std::getenv("API_KEY"),
         "GB", 550);
 
     EXPECT_FALSE(providers.empty());

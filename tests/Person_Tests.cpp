@@ -49,7 +49,7 @@ TEST(PersonTests, ParmeterizedConstructor)
 
 TEST(PersonTests, APIConstructor)
 {
-    tmdb::Person person("eyJhbGciOiJIUzI1NiJ9.eyJhdWQiOiJmZWZjMDcwYTExNTZlZDExM2JjN2RhZDA1ZWM5OWMyOCIsIm5iZiI6MTc0Nzc2ODM5Mi44MDgsInN1YiI6IjY4MmNkNDQ4ODA2OTJiYWI1NTY0OTRiYyIsInNjb3BlcyI6WyJhcGlfcmVhZCJdLCJ2ZXJzaW9uIjoxfQ.4wbjpPC366q5YFsHnuo9g4bIQ2xgMB5hIHx84SejLMg", 31);
+    tmdb::Person person(std::getenv("API_KEY"), 31);
     EXPECT_EQ(person.id(), 31);
     EXPECT_STREQ(person.name().toStdString().c_str(), "Tom Hanks");
     EXPECT_GT(person.alsoKnownAs().size(), 1);
@@ -67,7 +67,7 @@ TEST(PersonTests, APIConstructor)
 
 TEST(PersonTests, APIJSON)
 {
-    Qtmdb q("eyJhbGciOiJIUzI1NiJ9.eyJhdWQiOiJmZWZjMDcwYTExNTZlZDExM2JjN2RhZDA1ZWM5OWMyOCIsIm5iZiI6MTc0Nzc2ODM5Mi44MDgsInN1YiI6IjY4MmNkNDQ4ODA2OTJiYWI1NTY0OTRiYyIsInNjb3BlcyI6WyJhcGlfcmVhZCJdLCJ2ZXJzaW9uIjoxfQ.4wbjpPC366q5YFsHnuo9g4bIQ2xgMB5hIHx84SejLMg");
+    Qtmdb q(std::getenv("API_KEY"));
     QJsonObject response = q.people_details(31);
     EXPECT_FALSE(response.isEmpty());
     tmdb::Person person(response);
@@ -88,7 +88,7 @@ TEST(PersonTests, APIJSON)
 
 TEST(PersonTests, StaticConstructor)
 {
-    tmdb::Person person = tmdb::Person::getPerson("eyJhbGciOiJIUzI1NiJ9.eyJhdWQiOiJmZWZjMDcwYTExNTZlZDExM2JjN2RhZDA1ZWM5OWMyOCIsIm5iZiI6MTc0Nzc2ODM5Mi44MDgsInN1YiI6IjY4MmNkNDQ4ODA2OTJiYWI1NTY0OTRiYyIsInNjb3BlcyI6WyJhcGlfcmVhZCJdLCJ2ZXJzaW9uIjoxfQ.4wbjpPC366q5YFsHnuo9g4bIQ2xgMB5hIHx84SejLMg", 31);
+    tmdb::Person person = tmdb::Person::getPerson(std::getenv("API_KEY"), 31);
        EXPECT_EQ(person.id(), 31);
     EXPECT_STREQ(person.name().toStdString().c_str(), "Tom Hanks");
     EXPECT_GT(person.alsoKnownAs().size(), 1);

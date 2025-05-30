@@ -38,7 +38,7 @@ TEST(MovieTests, DefaultConstructor)
 
 TEST(MovieTests, APIConstructor)
 {
-    tmdb::Movie movie("eyJhbGciOiJIUzI1NiJ9.eyJhdWQiOiJmZWZjMDcwYTExNTZlZDExM2JjN2RhZDA1ZWM5OWMyOCIsIm5iZiI6MTc0Nzc2ODM5Mi44MDgsInN1YiI6IjY4MmNkNDQ4ODA2OTJiYWI1NTY0OTRiYyIsInNjb3BlcyI6WyJhcGlfcmVhZCJdLCJ2ZXJzaW9uIjoxfQ.4wbjpPC366q5YFsHnuo9g4bIQ2xgMB5hIHx84SejLMg", 550);
+    tmdb::Movie movie(std::getenv("API_KEY"), 550);
     EXPECT_FALSE(movie.adult());
     EXPECT_STREQ(movie.backdropPath().toStdString().c_str(), "/xRyINp9KfMLVjRiO5nCsoRDdvvF.jpg");
     EXPECT_STREQ(movie.belongsToCollection().toStdString().c_str(), "");
@@ -71,7 +71,7 @@ TEST(MovieTests, APIConstructor)
 
 TEST(MovieTests, StaticConstructor)
 {
-    tmdb::Movie movie = tmdb::Movie::getMovie("eyJhbGciOiJIUzI1NiJ9.eyJhdWQiOiJmZWZjMDcwYTExNTZlZDExM2JjN2RhZDA1ZWM5OWMyOCIsIm5iZiI6MTc0Nzc2ODM5Mi44MDgsInN1YiI6IjY4MmNkNDQ4ODA2OTJiYWI1NTY0OTRiYyIsInNjb3BlcyI6WyJhcGlfcmVhZCJdLCJ2ZXJzaW9uIjoxfQ.4wbjpPC366q5YFsHnuo9g4bIQ2xgMB5hIHx84SejLMg", 550);
+    tmdb::Movie movie = tmdb::Movie::getMovie(std::getenv("API_KEY"), 550);
     EXPECT_FALSE(movie.adult());
     EXPECT_STREQ(movie.backdropPath().toStdString().c_str(), "/xRyINp9KfMLVjRiO5nCsoRDdvvF.jpg");
     EXPECT_STREQ(movie.belongsToCollection().toStdString().c_str(), "");
@@ -104,7 +104,7 @@ TEST(MovieTests, StaticConstructor)
 TEST(MovieTests, searchForMovies)
 {
     std::vector<tmdb::Movie> movies = tmdb::Movie::searchForMovies(
-        "eyJhbGciOiJIUzI1NiJ9.eyJhdWQiOiJmZWZjMDcwYTExNTZlZDExM2JjN2RhZDA1ZWM5OWMyOCIsIm5iZiI6MTc0Nzc2ODM5Mi44MDgsInN1YiI6IjY4MmNkNDQ4ODA2OTJiYWI1NTY0OTRiYyIsInNjb3BlcyI6WyJhcGlfcmVhZCJdLCJ2ZXJzaW9uIjoxfQ.4wbjpPC366q5YFsHnuo9g4bIQ2xgMB5hIHx84SejLMg",
+        std::getenv("API_KEY"),
         "Fight Club");
 
     EXPECT_FALSE(movies[0].adult());
@@ -211,7 +211,7 @@ TEST(MovieTests, setGetters)
 
 TEST(MovieTests, getNowPlaying)
 {
-    std::vector<tmdb::Movie> movies = tmdb::Movie::getNowPlaying("eyJhbGciOiJIUzI1NiJ9.eyJhdWQiOiJmZWZjMDcwYTExNTZlZDExM2JjN2RhZDA1ZWM5OWMyOCIsIm5iZiI6MTc0Nzc2ODM5Mi44MDgsInN1YiI6IjY4MmNkNDQ4ODA2OTJiYWI1NTY0OTRiYyIsInNjb3BlcyI6WyJhcGlfcmVhZCJdLCJ2ZXJzaW9uIjoxfQ.4wbjpPC366q5YFsHnuo9g4bIQ2xgMB5hIHx84SejLMg");
+    std::vector<tmdb::Movie> movies = tmdb::Movie::getNowPlaying(std::getenv("API_KEY"));
 
     for (auto& movie: movies)
     {
@@ -238,7 +238,7 @@ TEST(MovieTests, getNowPlaying)
 
 TEST(MovieTests, getPopular)
 {
-    std::vector<tmdb::Movie> movies = tmdb::Movie::getPopular("eyJhbGciOiJIUzI1NiJ9.eyJhdWQiOiJmZWZjMDcwYTExNTZlZDExM2JjN2RhZDA1ZWM5OWMyOCIsIm5iZiI6MTc0Nzc2ODM5Mi44MDgsInN1YiI6IjY4MmNkNDQ4ODA2OTJiYWI1NTY0OTRiYyIsInNjb3BlcyI6WyJhcGlfcmVhZCJdLCJ2ZXJzaW9uIjoxfQ.4wbjpPC366q5YFsHnuo9g4bIQ2xgMB5hIHx84SejLMg");
+    std::vector<tmdb::Movie> movies = tmdb::Movie::getPopular(std::getenv("API_KEY"));
 
     for (auto& movie: movies)
     {
@@ -262,7 +262,7 @@ TEST(MovieTests, getPopular)
 
 TEST(MovieTests, getTopRated)
 {
-    std::vector<tmdb::Movie> movies = tmdb::Movie::getTopRated("eyJhbGciOiJIUzI1NiJ9.eyJhdWQiOiJmZWZjMDcwYTExNTZlZDExM2JjN2RhZDA1ZWM5OWMyOCIsIm5iZiI6MTc0Nzc2ODM5Mi44MDgsInN1YiI6IjY4MmNkNDQ4ODA2OTJiYWI1NTY0OTRiYyIsInNjb3BlcyI6WyJhcGlfcmVhZCJdLCJ2ZXJzaW9uIjoxfQ.4wbjpPC366q5YFsHnuo9g4bIQ2xgMB5hIHx84SejLMg");
+    std::vector<tmdb::Movie> movies = tmdb::Movie::getTopRated(std::getenv("API_KEY"));
 
     for (auto& movie: movies)
     {
@@ -288,7 +288,7 @@ TEST(MovieTests, getTopRated)
 
 TEST(MovieTests, getUpcoming)
 {
-    std::vector<tmdb::Movie> movies = tmdb::Movie::getUpcoming("eyJhbGciOiJIUzI1NiJ9.eyJhdWQiOiJmZWZjMDcwYTExNTZlZDExM2JjN2RhZDA1ZWM5OWMyOCIsIm5iZiI6MTc0Nzc2ODM5Mi44MDgsInN1YiI6IjY4MmNkNDQ4ODA2OTJiYWI1NTY0OTRiYyIsInNjb3BlcyI6WyJhcGlfcmVhZCJdLCJ2ZXJzaW9uIjoxfQ.4wbjpPC366q5YFsHnuo9g4bIQ2xgMB5hIHx84SejLMg");
+    std::vector<tmdb::Movie> movies = tmdb::Movie::getUpcoming(std::getenv("API_KEY"));
 
     for (auto& movie: movies)
     {
@@ -314,8 +314,8 @@ TEST(MovieTests, getUpcoming)
 
 TEST(MovieTests, getAlternateTitles)
 {
-    auto movie = tmdb::Movie::getMovie("eyJhbGciOiJIUzI1NiJ9.eyJhdWQiOiJmZWZjMDcwYTExNTZlZDExM2JjN2RhZDA1ZWM5OWMyOCIsIm5iZiI6MTc0Nzc2ODM5Mi44MDgsInN1YiI6IjY4MmNkNDQ4ODA2OTJiYWI1NTY0OTRiYyIsInNjb3BlcyI6WyJhcGlfcmVhZCJdLCJ2ZXJzaW9uIjoxfQ.4wbjpPC366q5YFsHnuo9g4bIQ2xgMB5hIHx84SejLMg", 550);
-    auto alternateTitles = movie.alternateTitles("eyJhbGciOiJIUzI1NiJ9.eyJhdWQiOiJmZWZjMDcwYTExNTZlZDExM2JjN2RhZDA1ZWM5OWMyOCIsIm5iZiI6MTc0Nzc2ODM5Mi44MDgsInN1YiI6IjY4MmNkNDQ4ODA2OTJiYWI1NTY0OTRiYyIsInNjb3BlcyI6WyJhcGlfcmVhZCJdLCJ2ZXJzaW9uIjoxfQ.4wbjpPC366q5YFsHnuo9g4bIQ2xgMB5hIHx84SejLMg");
+    auto movie = tmdb::Movie::getMovie(std::getenv("API_KEY"), 550);
+    auto alternateTitles = movie.alternateTitles(std::getenv("API_KEY"));
     EXPECT_STREQ(alternateTitles[0].country.iso_3166_1.toStdString().c_str(), "IL");
     EXPECT_STREQ(alternateTitles[0].title.toStdString().c_str(), "Mo'adon Krav");
     EXPECT_STREQ(alternateTitles[0].type.toStdString().c_str(), "romanization");
@@ -323,8 +323,8 @@ TEST(MovieTests, getAlternateTitles)
 
 TEST(MovieTests, getExternalIDs)
 {
-    auto movie = tmdb::Movie::getMovie("eyJhbGciOiJIUzI1NiJ9.eyJhdWQiOiJmZWZjMDcwYTExNTZlZDExM2JjN2RhZDA1ZWM5OWMyOCIsIm5iZiI6MTc0Nzc2ODM5Mi44MDgsInN1YiI6IjY4MmNkNDQ4ODA2OTJiYWI1NTY0OTRiYyIsInNjb3BlcyI6WyJhcGlfcmVhZCJdLCJ2ZXJzaW9uIjoxfQ.4wbjpPC366q5YFsHnuo9g4bIQ2xgMB5hIHx84SejLMg", 550);
-    auto externalIDs = movie.externalIDs("eyJhbGciOiJIUzI1NiJ9.eyJhdWQiOiJmZWZjMDcwYTExNTZlZDExM2JjN2RhZDA1ZWM5OWMyOCIsIm5iZiI6MTc0Nzc2ODM5Mi44MDgsInN1YiI6IjY4MmNkNDQ4ODA2OTJiYWI1NTY0OTRiYyIsInNjb3BlcyI6WyJhcGlfcmVhZCJdLCJ2ZXJzaW9uIjoxfQ.4wbjpPC366q5YFsHnuo9g4bIQ2xgMB5hIHx84SejLMg");
+    auto movie = tmdb::Movie::getMovie(std::getenv("API_KEY"), 550);
+    auto externalIDs = movie.externalIDs(std::getenv("API_KEY"));
     EXPECT_STREQ(externalIDs[0].toStdString().c_str(), "tt0137523");
     EXPECT_STREQ(externalIDs[1].toStdString().c_str(), "Q190050");
     EXPECT_STREQ(externalIDs[2].toStdString().c_str(), "FightClub");
@@ -334,32 +334,32 @@ TEST(MovieTests, getExternalIDs)
 
 TEST(MovieTests, getBackdrops)
 {
-    auto movie = tmdb::Movie::getMovie("eyJhbGciOiJIUzI1NiJ9.eyJhdWQiOiJmZWZjMDcwYTExNTZlZDExM2JjN2RhZDA1ZWM5OWMyOCIsIm5iZiI6MTc0Nzc2ODM5Mi44MDgsInN1YiI6IjY4MmNkNDQ4ODA2OTJiYWI1NTY0OTRiYyIsInNjb3BlcyI6WyJhcGlfcmVhZCJdLCJ2ZXJzaW9uIjoxfQ.4wbjpPC366q5YFsHnuo9g4bIQ2xgMB5hIHx84SejLMg", 550);
-    auto backdrops = movie.backdrops("eyJhbGciOiJIUzI1NiJ9.eyJhdWQiOiJmZWZjMDcwYTExNTZlZDExM2JjN2RhZDA1ZWM5OWMyOCIsIm5iZiI6MTc0Nzc2ODM5Mi44MDgsInN1YiI6IjY4MmNkNDQ4ODA2OTJiYWI1NTY0OTRiYyIsInNjb3BlcyI6WyJhcGlfcmVhZCJdLCJ2ZXJzaW9uIjoxfQ.4wbjpPC366q5YFsHnuo9g4bIQ2xgMB5hIHx84SejLMg", "original");
+    auto movie = tmdb::Movie::getMovie(std::getenv("API_KEY"), 550);
+    auto backdrops = movie.backdrops(std::getenv("API_KEY"), "original");
     EXPECT_EQ(backdrops[0].height(), 1080);
     EXPECT_EQ(backdrops[0].width(), 1920);
 }
 
 TEST(MovieTests, getLogos)
 {
-    auto movie = tmdb::Movie::getMovie("eyJhbGciOiJIUzI1NiJ9.eyJhdWQiOiJmZWZjMDcwYTExNTZlZDExM2JjN2RhZDA1ZWM5OWMyOCIsIm5iZiI6MTc0Nzc2ODM5Mi44MDgsInN1YiI6IjY4MmNkNDQ4ODA2OTJiYWI1NTY0OTRiYyIsInNjb3BlcyI6WyJhcGlfcmVhZCJdLCJ2ZXJzaW9uIjoxfQ.4wbjpPC366q5YFsHnuo9g4bIQ2xgMB5hIHx84SejLMg", 550);
-    auto logos = movie.logos("eyJhbGciOiJIUzI1NiJ9.eyJhdWQiOiJmZWZjMDcwYTExNTZlZDExM2JjN2RhZDA1ZWM5OWMyOCIsIm5iZiI6MTc0Nzc2ODM5Mi44MDgsInN1YiI6IjY4MmNkNDQ4ODA2OTJiYWI1NTY0OTRiYyIsInNjb3BlcyI6WyJhcGlfcmVhZCJdLCJ2ZXJzaW9uIjoxfQ.4wbjpPC366q5YFsHnuo9g4bIQ2xgMB5hIHx84SejLMg", "original");
+    auto movie = tmdb::Movie::getMovie(std::getenv("API_KEY"), 550);
+    auto logos = movie.logos(std::getenv("API_KEY"), "original");
     EXPECT_EQ(logos[0].height(), 389);
     EXPECT_EQ(logos[0].width(), 1804);
 }
 
 TEST(MovieTests, getPosters)
 {
-    auto movie = tmdb::Movie::getMovie("eyJhbGciOiJIUzI1NiJ9.eyJhdWQiOiJmZWZjMDcwYTExNTZlZDExM2JjN2RhZDA1ZWM5OWMyOCIsIm5iZiI6MTc0Nzc2ODM5Mi44MDgsInN1YiI6IjY4MmNkNDQ4ODA2OTJiYWI1NTY0OTRiYyIsInNjb3BlcyI6WyJhcGlfcmVhZCJdLCJ2ZXJzaW9uIjoxfQ.4wbjpPC366q5YFsHnuo9g4bIQ2xgMB5hIHx84SejLMg", 550);
-    auto posters = movie.posters("eyJhbGciOiJIUzI1NiJ9.eyJhdWQiOiJmZWZjMDcwYTExNTZlZDExM2JjN2RhZDA1ZWM5OWMyOCIsIm5iZiI6MTc0Nzc2ODM5Mi44MDgsInN1YiI6IjY4MmNkNDQ4ODA2OTJiYWI1NTY0OTRiYyIsInNjb3BlcyI6WyJhcGlfcmVhZCJdLCJ2ZXJzaW9uIjoxfQ.4wbjpPC366q5YFsHnuo9g4bIQ2xgMB5hIHx84SejLMg", "original");
+    auto movie = tmdb::Movie::getMovie(std::getenv("API_KEY"), 550);
+    auto posters = movie.posters(std::getenv("API_KEY"), "original");
     EXPECT_EQ(posters[0].height(), 3000);
     EXPECT_EQ(posters[0].width(), 2000);
 }
 
 TEST(MovieTests, getKeywords)
 {
-    auto movie = tmdb::Movie::getMovie("eyJhbGciOiJIUzI1NiJ9.eyJhdWQiOiJmZWZjMDcwYTExNTZlZDExM2JjN2RhZDA1ZWM5OWMyOCIsIm5iZiI6MTc0Nzc2ODM5Mi44MDgsInN1YiI6IjY4MmNkNDQ4ODA2OTJiYWI1NTY0OTRiYyIsInNjb3BlcyI6WyJhcGlfcmVhZCJdLCJ2ZXJzaW9uIjoxfQ.4wbjpPC366q5YFsHnuo9g4bIQ2xgMB5hIHx84SejLMg", 550);
-    auto keywords = movie.keywords("eyJhbGciOiJIUzI1NiJ9.eyJhdWQiOiJmZWZjMDcwYTExNTZlZDExM2JjN2RhZDA1ZWM5OWMyOCIsIm5iZiI6MTc0Nzc2ODM5Mi44MDgsInN1YiI6IjY4MmNkNDQ4ODA2OTJiYWI1NTY0OTRiYyIsInNjb3BlcyI6WyJhcGlfcmVhZCJdLCJ2ZXJzaW9uIjoxfQ.4wbjpPC366q5YFsHnuo9g4bIQ2xgMB5hIHx84SejLMg");
+    auto movie = tmdb::Movie::getMovie(std::getenv("API_KEY"), 550);
+    auto keywords = movie.keywords(std::getenv("API_KEY"));
     EXPECT_FALSE(keywords.empty());
     EXPECT_FALSE(keywords[851].isEmpty());
     EXPECT_STREQ(keywords[851].toStdString().c_str(), "dual identity");
@@ -367,24 +367,24 @@ TEST(MovieTests, getKeywords)
 
 TEST(MovieTests, getRecommended)
 {
-    auto movie = tmdb::Movie::getMovie("eyJhbGciOiJIUzI1NiJ9.eyJhdWQiOiJmZWZjMDcwYTExNTZlZDExM2JjN2RhZDA1ZWM5OWMyOCIsIm5iZiI6MTc0Nzc2ODM5Mi44MDgsInN1YiI6IjY4MmNkNDQ4ODA2OTJiYWI1NTY0OTRiYyIsInNjb3BlcyI6WyJhcGlfcmVhZCJdLCJ2ZXJzaW9uIjoxfQ.4wbjpPC366q5YFsHnuo9g4bIQ2xgMB5hIHx84SejLMg", 550);
-    auto recs = movie.recommendations("eyJhbGciOiJIUzI1NiJ9.eyJhdWQiOiJmZWZjMDcwYTExNTZlZDExM2JjN2RhZDA1ZWM5OWMyOCIsIm5iZiI6MTc0Nzc2ODM5Mi44MDgsInN1YiI6IjY4MmNkNDQ4ODA2OTJiYWI1NTY0OTRiYyIsInNjb3BlcyI6WyJhcGlfcmVhZCJdLCJ2ZXJzaW9uIjoxfQ.4wbjpPC366q5YFsHnuo9g4bIQ2xgMB5hIHx84SejLMg");
+    auto movie = tmdb::Movie::getMovie(std::getenv("API_KEY"), 550);
+    auto recs = movie.recommendations(std::getenv("API_KEY"));
     EXPECT_FALSE(recs.empty());
     EXPECT_EQ(recs[0].id(), 680);
 }
 
 TEST(MovieTests, getSimilar)
 {
-    auto movie = tmdb::Movie::getMovie("eyJhbGciOiJIUzI1NiJ9.eyJhdWQiOiJmZWZjMDcwYTExNTZlZDExM2JjN2RhZDA1ZWM5OWMyOCIsIm5iZiI6MTc0Nzc2ODM5Mi44MDgsInN1YiI6IjY4MmNkNDQ4ODA2OTJiYWI1NTY0OTRiYyIsInNjb3BlcyI6WyJhcGlfcmVhZCJdLCJ2ZXJzaW9uIjoxfQ.4wbjpPC366q5YFsHnuo9g4bIQ2xgMB5hIHx84SejLMg", 550);
-    auto similar = movie.similar("eyJhbGciOiJIUzI1NiJ9.eyJhdWQiOiJmZWZjMDcwYTExNTZlZDExM2JjN2RhZDA1ZWM5OWMyOCIsIm5iZiI6MTc0Nzc2ODM5Mi44MDgsInN1YiI6IjY4MmNkNDQ4ODA2OTJiYWI1NTY0OTRiYyIsInNjb3BlcyI6WyJhcGlfcmVhZCJdLCJ2ZXJzaW9uIjoxfQ.4wbjpPC366q5YFsHnuo9g4bIQ2xgMB5hIHx84SejLMg");
+    auto movie = tmdb::Movie::getMovie(std::getenv("API_KEY"), 550);
+    auto similar = movie.similar(std::getenv("API_KEY"));
     EXPECT_FALSE(similar.empty());
     EXPECT_TRUE(similar[0].id());
 }
 
 TEST(MovieTests, getWatchProviders)
 {
-    auto movie = tmdb::Movie::getMovie("eyJhbGciOiJIUzI1NiJ9.eyJhdWQiOiJmZWZjMDcwYTExNTZlZDExM2JjN2RhZDA1ZWM5OWMyOCIsIm5iZiI6MTc0Nzc2ODM5Mi44MDgsInN1YiI6IjY4MmNkNDQ4ODA2OTJiYWI1NTY0OTRiYyIsInNjb3BlcyI6WyJhcGlfcmVhZCJdLCJ2ZXJzaW9uIjoxfQ.4wbjpPC366q5YFsHnuo9g4bIQ2xgMB5hIHx84SejLMg", 550);
-    auto providers = movie.watchProviders("eyJhbGciOiJIUzI1NiJ9.eyJhdWQiOiJmZWZjMDcwYTExNTZlZDExM2JjN2RhZDA1ZWM5OWMyOCIsIm5iZiI6MTc0Nzc2ODM5Mi44MDgsInN1YiI6IjY4MmNkNDQ4ODA2OTJiYWI1NTY0OTRiYyIsInNjb3BlcyI6WyJhcGlfcmVhZCJdLCJ2ZXJzaW9uIjoxfQ.4wbjpPC366q5YFsHnuo9g4bIQ2xgMB5hIHx84SejLMg", tmdb::config::getCountry("GB"));
+    auto movie = tmdb::Movie::getMovie(std::getenv("API_KEY"), 550);
+    auto providers = movie.watchProviders(std::getenv("API_KEY"), tmdb::config::getCountry("GB"));
     EXPECT_FALSE(providers.empty());
     EXPECT_EQ(providers[0].type(), tmdb::flatrate);
     EXPECT_EQ(providers[0].providerID(), 337);
@@ -396,8 +396,8 @@ TEST(MovieTests, getWatchProviders)
 
 TEST(MovieTests, getCredits)
 {
-    auto movie = tmdb::Movie::getMovie("eyJhbGciOiJIUzI1NiJ9.eyJhdWQiOiJmZWZjMDcwYTExNTZlZDExM2JjN2RhZDA1ZWM5OWMyOCIsIm5iZiI6MTc0Nzc2ODM5Mi44MDgsInN1YiI6IjY4MmNkNDQ4ODA2OTJiYWI1NTY0OTRiYyIsInNjb3BlcyI6WyJhcGlfcmVhZCJdLCJ2ZXJzaW9uIjoxfQ.4wbjpPC366q5YFsHnuo9g4bIQ2xgMB5hIHx84SejLMg", 550);
-    auto credits = movie.credits("eyJhbGciOiJIUzI1NiJ9.eyJhdWQiOiJmZWZjMDcwYTExNTZlZDExM2JjN2RhZDA1ZWM5OWMyOCIsIm5iZiI6MTc0Nzc2ODM5Mi44MDgsInN1YiI6IjY4MmNkNDQ4ODA2OTJiYWI1NTY0OTRiYyIsInNjb3BlcyI6WyJhcGlfcmVhZCJdLCJ2ZXJzaW9uIjoxfQ.4wbjpPC366q5YFsHnuo9g4bIQ2xgMB5hIHx84SejLMg");
+    auto movie = tmdb::Movie::getMovie(std::getenv("API_KEY"), 550);
+    auto credits = movie.credits(std::getenv("API_KEY"));
     EXPECT_EQ(credits[0].id(), 31);
     EXPECT_STREQ(credits[0].name().toStdString().c_str(), "Tom Hanks");
     EXPECT_GT(credits[0].alsoKnownAs().size(), 1);

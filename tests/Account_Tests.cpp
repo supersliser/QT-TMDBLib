@@ -31,7 +31,7 @@ TEST(AccountTests, ParameterizedConstructor) {
 
 TEST(AccountTests, APIGetter)
 {
-    tmdb::Account a("eyJhbGciOiJIUzI1NiJ9.eyJhdWQiOiJmZWZjMDcwYTExNTZlZDExM2JjN2RhZDA1ZWM5OWMyOCIsIm5iZiI6MTc0Nzc2ODM5Mi44MDgsInN1YiI6IjY4MmNkNDQ4ODA2OTJiYWI1NTY0OTRiYyIsInNjb3BlcyI6WyJhcGlfcmVhZCJdLCJ2ZXJzaW9uIjoxfQ.4wbjpPC366q5YFsHnuo9g4bIQ2xgMB5hIHx84SejLMg", 22023427);
+    tmdb::Account a(std::getenv("API_KEY"), 22023427);
     EXPECT_EQ(a.id(), 22023427);
     EXPECT_STREQ(a.iso6391().toStdString().c_str(), "en");
     EXPECT_STREQ(a.iso31661().toStdString().c_str(), "GB");
@@ -43,7 +43,7 @@ TEST(AccountTests, APIGetter)
 
 TEST(AccountTests, APIJSON)
 {
-    Qtmdb q("eyJhbGciOiJIUzI1NiJ9.eyJhdWQiOiJmZWZjMDcwYTExNTZlZDExM2JjN2RhZDA1ZWM5OWMyOCIsIm5iZiI6MTc0Nzc2ODM5Mi44MDgsInN1YiI6IjY4MmNkNDQ4ODA2OTJiYWI1NTY0OTRiYyIsInNjb3BlcyI6WyJhcGlfcmVhZCJdLCJ2ZXJzaW9uIjoxfQ.4wbjpPC366q5YFsHnuo9g4bIQ2xgMB5hIHx84SejLMg");
+    Qtmdb q(std::getenv("API_KEY"));
     QJsonObject response = q.account_details(22023427);
     EXPECT_FALSE(response.isEmpty());
     tmdb::Account a(response);
@@ -58,7 +58,7 @@ TEST(AccountTests, APIJSON)
 
 TEST(AccountTests, StaticConstructor)
 {
-    tmdb::Account account = tmdb::Account::getAccount("eyJhbGciOiJIUzI1NiJ9.eyJhdWQiOiJmZWZjMDcwYTExNTZlZDExM2JjN2RhZDA1ZWM5OWMyOCIsIm5iZiI6MTc0Nzc2ODM5Mi44MDgsInN1YiI6IjY4MmNkNDQ4ODA2OTJiYWI1NTY0OTRiYyIsInNjb3BlcyI6WyJhcGlfcmVhZCJdLCJ2ZXJzaW9uIjoxfQ.4wbjpPC366q5YFsHnuo9g4bIQ2xgMB5hIHx84SejLMg", 22023427);
+    tmdb::Account account = tmdb::Account::getAccount(std::getenv("API_KEY"), 22023427);
     EXPECT_EQ(account.id(), 22023427);
     EXPECT_STREQ(account.iso6391().toStdString().c_str(), "en");
     EXPECT_STREQ(account.iso31661().toStdString().c_str(), "GB");

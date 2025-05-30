@@ -10,7 +10,7 @@
 
 TEST(Qtmdb_JSON_Get_Test, collection)
 {
-    Qtmdb qtmdb("eyJhbGciOiJIUzI1NiJ9.eyJhdWQiOiJmZWZjMDcwYTExNTZlZDExM2JjN2RhZDA1ZWM5OWMyOCIsIm5iZiI6MTc0Nzc2ODM5Mi44MDgsInN1YiI6IjY4MmNkNDQ4ODA2OTJiYWI1NTY0OTRiYyIsInNjb3BlcyI6WyJhcGlfcmVhZCJdLCJ2ZXJzaW9uIjoxfQ.4wbjpPC366q5YFsHnuo9g4bIQ2xgMB5hIHx84SejLMg");
+    Qtmdb qtmdb(std::getenv("API_KEY"));
     QJsonObject response = qtmdb.get_collection("Avengers");
     EXPECT_FALSE(response.isEmpty());
     EXPECT_EQ(response.value("results").toArray()[0].toObject()["id"].toInt(), 482721);
@@ -18,7 +18,7 @@ TEST(Qtmdb_JSON_Get_Test, collection)
 
 TEST(Qtmdb_JSON_Get_Test, company)
 {
-    Qtmdb qtmdb("eyJhbGciOiJIUzI1NiJ9.eyJhdWQiOiJmZWZjMDcwYTExNTZlZDExM2JjN2RhZDA1ZWM5OWMyOCIsIm5iZiI6MTc0Nzc2ODM5Mi44MDgsInN1YiI6IjY4MmNkNDQ4ODA2OTJiYWI1NTY0OTRiYyIsInNjb3BlcyI6WyJhcGlfcmVhZCJdLCJ2ZXJzaW9uIjoxfQ.4wbjpPC366q5YFsHnuo9g4bIQ2xgMB5hIHx84SejLMg");
+    Qtmdb qtmdb(std::getenv("API_KEY"));
     QJsonObject response = qtmdb.get_company("HBO");
     EXPECT_FALSE(response.isEmpty());
     EXPECT_EQ(response.value("results").toArray()[0].toObject()["id"].toInt(), 3268);
@@ -26,7 +26,7 @@ TEST(Qtmdb_JSON_Get_Test, company)
 
 TEST(Qtmdb_JSON_Get_Test, keyword)
 {
-    Qtmdb qtmdb("eyJhbGciOiJIUzI1NiJ9.eyJhdWQiOiJmZWZjMDcwYTExNTZlZDExM2JjN2RhZDA1ZWM5OWMyOCIsIm5iZiI6MTc0Nzc2ODM5Mi44MDgsInN1YiI6IjY4MmNkNDQ4ODA2OTJiYWI1NTY0OTRiYyIsInNjb3BlcyI6WyJhcGlfcmVhZCJdLCJ2ZXJzaW9uIjoxfQ.4wbjpPC366q5YFsHnuo9g4bIQ2xgMB5hIHx84SejLMg");
+    Qtmdb qtmdb(std::getenv("API_KEY"));
     QJsonObject response = qtmdb.get_keyword("lost");
     EXPECT_FALSE(response.isEmpty());
     EXPECT_EQ(response.value("results").toArray()[0].toObject()["id"].toInt(), 262419);
@@ -34,7 +34,7 @@ TEST(Qtmdb_JSON_Get_Test, keyword)
 
 TEST(Qtmdb_JSON_Get_Test, movie)
 {
-    Qtmdb qtmdb("eyJhbGciOiJIUzI1NiJ9.eyJhdWQiOiJmZWZjMDcwYTExNTZlZDExM2JjN2RhZDA1ZWM5OWMyOCIsIm5iZiI6MTc0Nzc2ODM5Mi44MDgsInN1YiI6IjY4MmNkNDQ4ODA2OTJiYWI1NTY0OTRiYyIsInNjb3BlcyI6WyJhcGlfcmVhZCJdLCJ2ZXJzaW9uIjoxfQ.4wbjpPC366q5YFsHnuo9g4bIQ2xgMB5hIHx84SejLMg");
+    Qtmdb qtmdb(std::getenv("API_KEY"));
     QJsonObject response = qtmdb.get_movie("Fight Club");
     EXPECT_FALSE(response.isEmpty());
     EXPECT_EQ(response.value("results").toArray()[0].toObject()["id"].toInt(), 550);
@@ -42,7 +42,7 @@ TEST(Qtmdb_JSON_Get_Test, movie)
 
 TEST(Qtmdb_JSON_Get_Test, person)
 {
-    Qtmdb qtmdb("eyJhbGciOiJIUzI1NiJ9.eyJhdWQiOiJmZWZjMDcwYTExNTZlZDExM2JjN2RhZDA1ZWM5OWMyOCIsIm5iZiI6MTc0Nzc2ODM5Mi44MDgsInN1YiI6IjY4MmNkNDQ4ODA2OTJiYWI1NTY0OTRiYyIsInNjb3BlcyI6WyJhcGlfcmVhZCJdLCJ2ZXJzaW9uIjoxfQ.4wbjpPC366q5YFsHnuo9g4bIQ2xgMB5hIHx84SejLMg");
+    Qtmdb qtmdb(std::getenv("API_KEY"));
     QJsonObject response = qtmdb.get_person("Tom Hanks");
     EXPECT_FALSE(response.isEmpty());
     EXPECT_EQ(response.value("results").toArray()[0].toObject()["id"].toInt(), 31);
@@ -50,7 +50,7 @@ TEST(Qtmdb_JSON_Get_Test, person)
 
 TEST(Qtmdb_JSON_Get_Test, tv)
 {
-    Qtmdb qtmdb("eyJhbGciOiJIUzI1NiJ9.eyJhdWQiOiJmZWZjMDcwYTExNTZlZDExM2JjN2RhZDA1ZWM5OWMyOCIsIm5iZiI6MTc0Nzc2ODM5Mi44MDgsInN1YiI6IjY4MmNkNDQ4ODA2OTJiYWI1NTY0OTRiYyIsInNjb3BlcyI6WyJhcGlfcmVhZCJdLCJ2ZXJzaW9uIjoxfQ.4wbjpPC366q5YFsHnuo9g4bIQ2xgMB5hIHx84SejLMg");
+    Qtmdb qtmdb(std::getenv("API_KEY"));
     QJsonObject response = qtmdb.get_tv("Breaking Bad");
     EXPECT_FALSE(response.isEmpty());
     EXPECT_EQ(response.value("results").toArray()[0].toObject()["id"].toInt(), 1396);

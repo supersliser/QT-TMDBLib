@@ -24,7 +24,7 @@
 
 std::vector<tmdb::config::country> tmdb::config::getSupportedCountries()
 {
-    Qtmdb q("eyJhbGciOiJIUzI1NiJ9.eyJhdWQiOiJmZWZjMDcwYTExNTZlZDExM2JjN2RhZDA1ZWM5OWMyOCIsIm5iZiI6MTc0Nzc2ODM5Mi44MDgsInN1YiI6IjY4MmNkNDQ4ODA2OTJiYWI1NTY0OTRiYyIsInNjb3BlcyI6WyJhcGlfcmVhZCJdLCJ2ZXJzaW9uIjoxfQ.4wbjpPC366q5YFsHnuo9g4bIQ2xgMB5hIHx84SejLMg");
+    Qtmdb q(std::getenv("API_KEY"));
     QJsonArray response = q.config_countries();
     std::vector<country> countries;
     for (const auto& item : response) {
@@ -60,7 +60,7 @@ tmdb::config::country tmdb::config::getCountry(const QJsonObject& i_json)
 
 std::vector<tmdb::config::jobDept> tmdb::config::getSupportedJobs()
 {
-    Qtmdb q("eyJhbGciOiJIUzI1NiJ9.eyJhdWQiOiJmZWZjMDcwYTExNTZlZDExM2JjN2RhZDA1ZWM5OWMyOCIsIm5iZiI6MTc0Nzc2ODM5Mi44MDgsInN1YiI6IjY4MmNkNDQ4ODA2OTJiYWI1NTY0OTRiYyIsInNjb3BlcyI6WyJhcGlfcmVhZCJdLCJ2ZXJzaW9uIjoxfQ.4wbjpPC366q5YFsHnuo9g4bIQ2xgMB5hIHx84SejLMg");
+    Qtmdb q(std::getenv("API_KEY"));
     QJsonArray response = q.config_jobs();
     std::vector<tmdb::config::jobDept> jobs;
     for (const auto& item : response) {
@@ -89,7 +89,7 @@ tmdb::config::jobDept tmdb::config::getDept(const QString& dept_title)
 
 std::vector<tmdb::config::language> tmdb::config::getSupportedLanguages()
 {
-    Qtmdb q("eyJhbGciOiJIUzI1NiJ9.eyJhdWQiOiJmZWZjMDcwYTExNTZlZDExM2JjN2RhZDA1ZWM5OWMyOCIsIm5iZiI6MTc0Nzc2ODM5Mi44MDgsInN1YiI6IjY4MmNkNDQ4ODA2OTJiYWI1NTY0OTRiYyIsInNjb3BlcyI6WyJhcGlfcmVhZCJdLCJ2ZXJzaW9uIjoxfQ.4wbjpPC366q5YFsHnuo9g4bIQ2xgMB5hIHx84SejLMg");
+    Qtmdb q(std::getenv("API_KEY"));
     QJsonArray response = q.config_languages();
     std::vector<language> languages;
     for (const auto& item : response) {
@@ -115,7 +115,7 @@ tmdb::config::language tmdb::config::getLanguage(const QString& i_iso_639_1)
 }
 std::vector<QString> tmdb::config::getSupportedTranslations()
 {
-    Qtmdb q("eyJhbGciOiJIUzI1NiJ9.eyJhdWQiOiJmZWZjMDcwYTExNTZlZDExM2JjN2RhZDA1ZWM5OWMyOCIsIm5iZiI6MTc0Nzc2ODM5Mi44MDgsInN1YiI6IjY4MmNkNDQ4ODA2OTJiYWI1NTY0OTRiYyIsInNjb3BlcyI6WyJhcGlfcmVhZCJdLCJ2ZXJzaW9uIjoxfQ.4wbjpPC366q5YFsHnuo9g4bIQ2xgMB5hIHx84SejLMg");
+    Qtmdb q(std::getenv("API_KEY"));
     QJsonArray response = q.config_primaryTranslations();
     std::vector<QString> translations;
     for (const auto& item : response) {
@@ -126,7 +126,7 @@ std::vector<QString> tmdb::config::getSupportedTranslations()
 
 std::vector<QString> tmdb::config::getSupportedTimezones()
 {
-    Qtmdb q("eyJhbGciOiJIUzI1NiJ9.eyJhdWQiOiJmZWZjMDcwYTExNTZlZDExM2JjN2RhZDA1ZWM5OWMyOCIsIm5iZiI6MTc0Nzc2ODM5Mi44MDgsInN1YiI6IjY4MmNkNDQ4ODA2OTJiYWI1NTY0OTRiYyIsInNjb3BlcyI6WyJhcGlfcmVhZCJdLCJ2ZXJzaW9uIjoxfQ.4wbjpPC366q5YFsHnuo9g4bIQ2xgMB5hIHx84SejLMg");
+    Qtmdb q(std::getenv("API_KEY"));
     QJsonArray response = q.config_timezones();
     std::vector<QString> timezones;
     for (const auto& item : response) {

@@ -36,7 +36,7 @@ TEST(CompanyTests, ParameterizedConstructor)
 
 TEST(CompanyTests, APIConstructor)
 {
-    tmdb::Company company("eyJhbGciOiJIUzI1NiJ9.eyJhdWQiOiJmZWZjMDcwYTExNTZlZDExM2JjN2RhZDA1ZWM5OWMyOCIsIm5iZiI6MTc0Nzc2ODM5Mi44MDgsInN1YiI6IjY4MmNkNDQ4ODA2OTJiYWI1NTY0OTRiYyIsInNjb3BlcyI6WyJhcGlfcmVhZCJdLCJ2ZXJzaW9uIjoxfQ.4wbjpPC366q5YFsHnuo9g4bIQ2xgMB5hIHx84SejLMg", 1);
+    tmdb::Company company(std::getenv("API_KEY"), 1);
     EXPECT_EQ(company.id(), 1);
     EXPECT_STREQ(company.description().toStdString().c_str(), "");
     EXPECT_STREQ(company.headquarters().toStdString().c_str(), "San Francisco, California");
@@ -49,7 +49,7 @@ TEST(CompanyTests, APIConstructor)
 
 TEST(CompanyTests, APIJSON)
 {
-    Qtmdb q("eyJhbGciOiJIUzI1NiJ9.eyJhdWQiOiJmZWZjMDcwYTExNTZlZDExM2JjN2RhZDA1ZWM5OWMyOCIsIm5iZiI6MTc0Nzc2ODM5Mi44MDgsInN1YiI6IjY4MmNkNDQ4ODA2OTJiYWI1NTY0OTRiYyIsInNjb3BlcyI6WyJhcGlfcmVhZCJdLCJ2ZXJzaW9uIjoxfQ.4wbjpPC366q5YFsHnuo9g4bIQ2xgMB5hIHx84SejLMg");
+    Qtmdb q(std::getenv("API_KEY"));
     QJsonObject response = q.company_details(1);
     EXPECT_FALSE(response.isEmpty());
     tmdb::Company company(response);
@@ -65,7 +65,7 @@ TEST(CompanyTests, APIJSON)
 
 TEST(CompanyTests, StaticConstructor)
 {
-    tmdb::Company company = tmdb::Company::getCompany("eyJhbGciOiJIUzI1NiJ9.eyJhdWQiOiJmZWZjMDcwYTExNTZlZDExM2JjN2RhZDA1ZWM5OWMyOCIsIm5iZiI6MTc0Nzc2ODM5Mi44MDgsInN1YiI6IjY4MmNkNDQ4ODA2OTJiYWI1NTY0OTRiYyIsInNjb3BlcyI6WyJhcGlfcmVhZCJdLCJ2ZXJzaW9uIjoxfQ.4wbjpPC366q5YFsHnuo9g4bIQ2xgMB5hIHx84SejLMg", 1);
+    tmdb::Company company = tmdb::Company::getCompany(std::getenv("API_KEY"), 1);
     EXPECT_EQ(company.id(), 1);
     EXPECT_STREQ(company.description().toStdString().c_str(), "");
     EXPECT_STREQ(company.headquarters().toStdString().c_str(), "San Francisco, California");

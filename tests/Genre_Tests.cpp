@@ -22,7 +22,7 @@ TEST(GenreTests, ParameterizedConstructor)
 
 TEST(GenreTests, APIConstructor)
 {
-    tmdb::Genre genre("eyJhbGciOiJIUzI1NiJ9.eyJhdWQiOiJmZWZjMDcwYTExNTZlZDExM2JjN2RhZDA1ZWM5OWMyOCIsIm5iZiI6MTc0Nzc2ODM5Mi44MDgsInN1YiI6IjY4MmNkNDQ4ODA2OTJiYWI1NTY0OTRiYyIsInNjb3BlcyI6WyJhcGlfcmVhZCJdLCJ2ZXJzaW9uIjoxfQ.4wbjpPC366q5YFsHnuo9g4bIQ2xgMB5hIHx84SejLMg", 28);
+    tmdb::Genre genre(std::getenv("API_KEY"), 28);
     EXPECT_EQ(genre.id(), 28);
     EXPECT_STREQ(genre.name().toStdString().c_str(), "Action");
 }
@@ -30,7 +30,7 @@ TEST(GenreTests, APIConstructor)
 
 TEST(GenreTests, APIJSON)
 {
-    Qtmdb q("eyJhbGciOiJIUzI1NiJ9.eyJhdWQiOiJmZWZjMDcwYTExNTZlZDExM2JjN2RhZDA1ZWM5OWMyOCIsIm5iZiI6MTc0Nzc2ODM5Mi44MDgsInN1YiI6IjY4MmNkNDQ4ODA2OTJiYWI1NTY0OTRiYyIsInNjb3BlcyI6WyJhcGlfcmVhZCJdLCJ2ZXJzaW9uIjoxfQ.4wbjpPC366q5YFsHnuo9g4bIQ2xgMB5hIHx84SejLMg");
+    Qtmdb q(std::getenv("API_KEY"));
     QJsonObject response = q.genres_movie();
     EXPECT_FALSE(response.isEmpty());
     tmdb::Genre genre(response.value("genres").toArray()[0].toObject());
@@ -40,14 +40,14 @@ TEST(GenreTests, APIJSON)
 
 TEST(GenreTests, StaticConstructor)
 {
-    tmdb::Genre genre = tmdb::Genre::getGenre("eyJhbGciOiJIUzI1NiJ9.eyJhdWQiOiJmZWZjMDcwYTExNTZlZDExM2JjN2RhZDA1ZWM5OWMyOCIsIm5iZiI6MTc0Nzc2ODM5Mi44MDgsInN1YiI6IjY4MmNkNDQ4ODA2OTJiYWI1NTY0OTRiYyIsInNjb3BlcyI6WyJhcGlfcmVhZCJdLCJ2ZXJzaW9uIjoxfQ.4wbjpPC366q5YFsHnuo9g4bIQ2xgMB5hIHx84SejLMg", 28);
+    tmdb::Genre genre = tmdb::Genre::getGenre(std::getenv("API_KEY"), 28);
     EXPECT_EQ(genre.id(), 28);
     EXPECT_STREQ(genre.name().toStdString().c_str(), "Action");
 }
 
 TEST(GenreTests, GetAllGenres)
 {
-    auto genres = tmdb::Genre::getAllGenres("eyJhbGciOiJIUzI1NiJ9.eyJhdWQiOiJmZWZjMDcwYTExNTZlZDExM2JjN2RhZDA1ZWM5OWMyOCIsIm5iZiI6MTc0Nzc2ODM5Mi44MDgsInN1YiI6IjY4MmNkNDQ4ODA2OTJiYWI1NTY0OTRiYyIsInNjb3BlcyI6WyJhcGlfcmVhZCJdLCJ2ZXJzaW9uIjoxfQ.4wbjpPC366q5YFsHnuo9g4bIQ2xgMB5hIHx84SejLMg");
+    auto genres = tmdb::Genre::getAllGenres(std::getenv("API_KEY"));
     EXPECT_FALSE(genres.empty());
     EXPECT_EQ(genres[0].id(), 28); // Action
     EXPECT_STREQ(genres[0].name().toStdString().c_str(), "Action");
@@ -55,7 +55,7 @@ TEST(GenreTests, GetAllGenres)
 
 TEST(GenreTests, GetMovieGenres)
 {
-    auto genres = tmdb::Genre::getMovieGenres("eyJhbGciOiJIUzI1NiJ9.eyJhdWQiOiJmZWZjMDcwYTExNTZlZDExM2JjN2RhZDA1ZWM5OWMyOCIsIm5iZiI6MTc0Nzc2ODM5Mi44MDgsInN1YiI6IjY4MmNkNDQ4ODA2OTJiYWI1NTY0OTRiYyIsInNjb3BlcyI6WyJhcGlfcmVhZCJdLCJ2ZXJzaW9uIjoxfQ.4wbjpPC366q5YFsHnuo9g4bIQ2xgMB5hIHx84SejLMg");
+    auto genres = tmdb::Genre::getMovieGenres(std::getenv("API_KEY"));
     EXPECT_FALSE(genres.empty());
     EXPECT_EQ(genres[0].id(), 28); // Action
     EXPECT_EQ(genres[0].name(), "Action");
@@ -63,7 +63,7 @@ TEST(GenreTests, GetMovieGenres)
 
 TEST(GenreTests, GetTvGenres)
 {
-    auto genres = tmdb::Genre::getTvGenres("eyJhbGciOiJIUzI1NiJ9.eyJhdWQiOiJmZWZjMDcwYTExNTZlZDExM2JjN2RhZDA1ZWM5OWMyOCIsIm5iZiI6MTc0Nzc2ODM5Mi44MDgsInN1YiI6IjY4MmNkNDQ4ODA2OTJiYWI1NTY0OTRiYyIsInNjb3BlcyI6WyJhcGlfcmVhZCJdLCJ2ZXJzaW9uIjoxfQ.4wbjpPC366q5YFsHnuo9g4bIQ2xgMB5hIHx84SejLMg");
+    auto genres = tmdb::Genre::getTvGenres(std::getenv("API_KEY"));
     EXPECT_FALSE(genres.empty());
     EXPECT_EQ(genres[0].id(), 10759); // Action & Adventure
     EXPECT_STREQ(genres[0].name().toStdString().c_str(), "Action & Adventure");
