@@ -453,3 +453,15 @@ std::vector<tmdb::WatchProvider> tmdb::Movie::watchProviders(const QString& i_ac
 {
     return WatchProvider::getWatchProvidersForMovie(i_access_token, i_region.iso_3166_1, m_id);
 }
+
+std::vector<tmdb::Person> tmdb::Movie::credits(const QString& i_access_token) const
+{
+    Qtmdb q(i_access_token.toStdString());
+    auto response = q.movie_credits(m_id);
+    std::vector<Person> credits;
+    for (const auto& item : response["cast"].toArray())
+    {
+        credits.emplace_back(Person(item.toObject()));
+    }
+    return credits;
+}

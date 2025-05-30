@@ -51,6 +51,8 @@ set(PROJECT_SOURCES
         src/Movie.cpp
         include/WatchProvider.h
         src/WatchProvider.cpp
+        include/Person.h
+        src/Person.cpp
 )
 
 set(QT_MODULES_NEEDED
@@ -110,6 +112,7 @@ add_executable(TMDBTests
         tests/Genre_Tests.cpp
         tests/Movie_Tests.cpp
         tests/WatchProvider_Tests.cpp
+        tests/Person_Tests.cpp
 )
 target_sources(TMDBTests PRIVATE)
 target_link_libraries(TMDBTests PRIVATE GTest::gtest GTest::gtest_main)

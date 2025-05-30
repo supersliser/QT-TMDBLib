@@ -76,6 +76,17 @@ std::vector<tmdb::config::jobDept> tmdb::config::getSupportedJobs()
     return jobs;
 }
 
+tmdb::config::jobDept tmdb::config::getDept(const QString& dept_title)
+{
+    auto jobs = getSupportedJobs();
+    for (const auto& job : jobs) {
+        if (job.dept_name == dept_title) {
+            return job;
+        }
+    }
+    return tmdb::config::jobDept(); // Return an empty jobDept if not found
+}
+
 std::vector<tmdb::config::language> tmdb::config::getSupportedLanguages()
 {
     Qtmdb q("eyJhbGciOiJIUzI1NiJ9.eyJhdWQiOiJmZWZjMDcwYTExNTZlZDExM2JjN2RhZDA1ZWM5OWMyOCIsIm5iZiI6MTc0Nzc2ODM5Mi44MDgsInN1YiI6IjY4MmNkNDQ4ODA2OTJiYWI1NTY0OTRiYyIsInNjb3BlcyI6WyJhcGlfcmVhZCJdLCJ2ZXJzaW9uIjoxfQ.4wbjpPC366q5YFsHnuo9g4bIQ2xgMB5hIHx84SejLMg");
@@ -174,36 +185,3 @@ std::vector<tmdb::config::LinkInfo> tmdb::config::extractLinksFromUrl(const QUrl
     reply->deleteLater();
     return links;
 }
-
-// std::vector<tmdb::config::LinkInfo> tmdb::config::extractLinksFromUrl(const QUrl& url) {
-//     QNetworkAccessManager manager;
-//     QEventLoop loop;
-//     QNetworkReply* reply = manager.get(QNetworkRequest(url));
-//     QObject::connect(reply, &QNetworkReply::finished, &loop, &QEventLoop::quit);
-//     loop.exec();
-//
-//     std::vector<LinkInfo> links;
-//     if (reply->error() == QNetworkReply::NoError) {
-//         QString html = reply->readAll();
-//         QTextDocument doc;
-//         doc.setHtml(html);
-//
-//         QTextBlock block = doc.begin();
-//         while (block.isValid()) {
-//             for (QTextBlock::iterator it = block.begin(); !(it.atEnd()); ++it) {
-//                 QTextFragment fragment = it.fragment();
-//                 if (fragment.isValid()) {
-//                     QTextCharFormat format = fragment.charFormat();
-//                     if (format.isAnchor()) {
-//                         QString href = format.anchorHref();
-//                         QString title = format.property(QTextFormat::ToolTip).toString();
-//                         links.push_back({href, title});
-//                     }
-//                 }
-//             }
-//             block = block.next();
-//         }
-//     }
-//     reply->deleteLater();
-//     return links;
-// }

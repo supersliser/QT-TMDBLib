@@ -37,6 +37,7 @@ namespace tmdb::config
         std::vector<QString> job_titles;
     };
     std::vector<jobDept> getSupportedJobs();
+    jobDept getDept(const QString& dept_title);
     struct language
     {
         QString iso_639_1;
