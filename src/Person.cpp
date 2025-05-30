@@ -150,3 +150,23 @@ tmdb::Person tmdb::Person::getPerson(const QString &i_access_token, int32_t i_pe
     QJsonObject response = q.people_details(i_personID);
     return tmdb::Person(response);
 }
+
+tmdb::Credit::Credit(const QJsonObject& i_json) : Person(i_json)
+{
+setCharacter(i_json["character"].toString());
+    setCreditID(i_json["credit_id"].toString());
+}
+
+void tmdb::Credit::setCharacter(const QString& i_character) {
+    m_character = i_character;
+}
+QString tmdb::Credit::character() const {
+    return m_character;
+}
+
+void tmdb::Credit::setCreditID(const QString& i_creditID) {
+    m_creditID = i_creditID;
+}
+QString tmdb::Credit::creditID() const {
+    return m_creditID;
+}

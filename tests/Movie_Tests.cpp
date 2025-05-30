@@ -398,17 +398,19 @@ TEST(MovieTests, getCredits)
 {
     auto movie = tmdb::Movie::getMovie(std::getenv("API_KEY"), 550);
     auto credits = movie.credits(std::getenv("API_KEY"));
-    EXPECT_EQ(credits[0].id(), 31);
-    EXPECT_STREQ(credits[0].name().toStdString().c_str(), "Tom Hanks");
-    EXPECT_GT(credits[0].alsoKnownAs().size(), 1);
-    EXPECT_STREQ(credits[0].biography().toStdString().c_str(), "Thomas Jeffrey Hanks (born July 9, 1956) is an American actor and filmmaker. Known for both his comedic and dramatic roles, Hanks is one of the most popular and recognizable film stars worldwide, and is widely regarded as an American cultural icon.\n\nHanks made his breakthrough with leading roles in the comedies Splash (1984) and Big (1988). He won two consecutive Academy Awards for Best Actor for starring as a gay lawyer suffering from AIDS in Philadelphia (1993) and a young man with below-average IQ in Forrest Gump (1994). Hanks collaborated with film director Steven Spielberg on five films: Saving Private Ryan (1998), Catch Me If You Can (2002), The Terminal (2004), Bridge of Spies (2015), and The Post (2017), as well as the 2001 miniseries Band of Brothers, which launched him as a director, producer, and screenwriter.\n\nHanks' other notable films include the romantic comedies Sleepless in Seattle (1993) and You've Got Mail (1998); the dramas Apollo 13 (1995), The Green Mile (1999), Cast Away (2000), Road to Perdition (2002), and Cloud Atlas (2012); and the biographical dramas Saving Mr. Banks (2013), Captain Phillips (2013), Sully (2016), and A Beautiful Day in the Neighborhood (2019). He has also appeared as the title character in the Robert Langdon film series, and has voiced Sheriff Woody in the Toy Story film series.\n\nDescription above from the Wikipedia article Tom Hanks, licensed under CC-BY-SA, full list of contributors on Wikipedia.");
-    EXPECT_EQ(credits[0].birthday(), QDate(1956, 7, 9));
+    EXPECT_EQ(credits[0].id(), 819);
+    EXPECT_STREQ(credits[0].name().toStdString().c_str(), "Edward Norton");
+    EXPECT_EQ(credits[0].alsoKnownAs().size(), 0);
+    EXPECT_STREQ(credits[0].biography().toStdString().c_str(), "");
+    EXPECT_EQ(credits[0].birthday(), QDate());
     EXPECT_EQ(credits[0].deathday(), QDate());
     EXPECT_EQ(credits[0].gender(), 2);
     EXPECT_STREQ(credits[0].homepage().toStdString().c_str(), "");
-    EXPECT_STREQ(credits[0].imdbId().toStdString().c_str(), "nm0000158");
+    EXPECT_STREQ(credits[0].imdbId().toStdString().c_str(), "");
     EXPECT_STREQ(credits[0].knownFor().toStdString().c_str(), "Acting");
-    EXPECT_STREQ(credits[0].placeOfBirth().toStdString().c_str(), "Concord, California, USA");
+    EXPECT_STREQ(credits[0].placeOfBirth().toStdString().c_str(), "");
     EXPECT_GT(credits[0].popularity(), 0.0f);
-    EXPECT_STREQ(credits[0].profilePath().toStdString().c_str(), "/eKF1sGJRrZJbfBG1KirPt1cfNd3.jpg");
+    EXPECT_STREQ(credits[0].profilePath().toStdString().c_str(), "/8nytsqL59SFJTVYVrN72k6qkGgJ.jpg");
+    EXPECT_STREQ(credits[0].character().toStdString().c_str(), "Narrator");
+    EXPECT_STREQ(credits[0].creditID().toStdString().c_str(), "52fe4250c3a36847f80149f3");
 }

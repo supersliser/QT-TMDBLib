@@ -76,6 +76,20 @@ namespace tmdb
         float m_popularity = 0.0f;
         QString m_profilePath;
     };
+
+    class Credit : public Person
+    {
+    protected:
+        QString m_character;
+        QString m_creditID;
+    public:
+        void setCharacter(const QString& i_character);
+        [[nodiscard]] QString character() const;
+        void setCreditID(const QString& i_creditID);
+        [[nodiscard]] QString creditID() const;
+
+        explicit Credit(const QJsonObject& i_json);
+    };
 }
 
 #endif //PERSON_H
