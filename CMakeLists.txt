@@ -53,6 +53,13 @@ set(PROJECT_SOURCES
         src/WatchProvider.cpp
         include/Person.h
         src/Person.cpp
+        include/Series.h
+        include/Network.h
+        src/Network.cpp
+        include/Season.h
+        src/Series.cpp
+        include/Episode.h
+        src/Season.cpp
 )
 
 set(QT_MODULES_NEEDED
@@ -113,6 +120,9 @@ add_executable(TMDBTests
         tests/Movie_Tests.cpp
         tests/WatchProvider_Tests.cpp
         tests/Person_Tests.cpp
+        tests/Network_Tests.cpp
+        tests/Series_Tests.cpp
+        tests/Season_Tests.cpp
 )
 target_sources(TMDBTests PRIVATE)
 target_link_libraries(TMDBTests PRIVATE GTest::gtest GTest::gtest_main)

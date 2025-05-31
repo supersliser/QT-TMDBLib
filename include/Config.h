@@ -43,6 +43,7 @@ namespace tmdb::config
         QString iso_639_1;
         QString english_name;
         QString native_name;
+        language() = default;
     };
     std::vector<language> getSupportedLanguages();
     language getLanguage(const QString& i_iso_639_1);
