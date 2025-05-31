@@ -51,8 +51,8 @@ namespace tmdb
                                                             const config::language& = config::getLanguage("en-US"));
         static std::vector<WatchProvider> getWatchProvidersForMovie(const QString& i_access_token,
                                                                     const QString& i_language, int i_movieID);
-        // static std::vector<WatchProvider> getWatchProvidersForTV(const QString& i_access_token,
-        //                                                          QString i_language, int i_seriesID);
+        static std::vector<WatchProvider> getWatchProvidersForTV(const QString& i_access_token,
+                                                                 const QString& i_language, int i_seriesID);
 
     protected:
         ProviderType m_type = unset;

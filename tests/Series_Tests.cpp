@@ -262,3 +262,77 @@ TEST(SeriesTests, setGetters)
     EXPECT_FLOAT_EQ(s.voteAverage(), 8.5f);
     EXPECT_EQ(s.voteCount(), 1000);
 }
+
+TEST(SeriesTests, GetAiringToday)
+{
+    auto seriesList = tmdb::TV::Series::getAiringToday(std::getenv("API_KEY"), tmdb::config::language{"en", "English"}, 1, "US");
+    EXPECT_FALSE(seriesList.empty());
+    EXPECT_GT(seriesList.size(), 0);
+    for (const auto &series : seriesList) {
+        EXPECT_FALSE(series.name().isEmpty());
+        EXPECT_FALSE(series.posterPath().isEmpty());
+    }
+}
+TEST(SeriesTests, GetOnTheAir)
+{
+    auto seriesList = tmdb::TV::Series::getOnTheAir(std::getenv("API_KEY"), tmdb::config::language{"en", "English"}, 1, "US");
+    EXPECT_FALSE(seriesList.empty());
+    EXPECT_GT(seriesList.size(), 0);
+    for (const auto &series : seriesList) {
+        EXPECT_FALSE(series.name().isEmpty());
+        EXPECT_FALSE(series.posterPath().isEmpty());
+    }
+}
+TEST(SeriesTests, GetPopular)
+{
+    auto seriesList = tmdb::TV::Series::getPopular(std::getenv("API_KEY"), tmdb::config::language{"en", "English"}, 1);
+    EXPECT_FALSE(seriesList.empty());
+    EXPECT_GT(seriesList.size(), 0);
+    for (const auto &series : seriesList) {
+        EXPECT_FALSE(series.name().isEmpty());
+        EXPECT_FALSE(series.posterPath().isEmpty());
+    }
+}
+TEST(SeriesTests, GetTopRated)
+{
+    auto seriesList = tmdb::TV::Series::getTopRated(std::getenv("API_KEY"), tmdb::config::language{"en", "English"}, 1);
+    EXPECT_FALSE(seriesList.empty());
+    EXPECT_GT(seriesList.size(), 0);
+    for (const auto &series : seriesList) {
+        EXPECT_FALSE(series.name().isEmpty());
+        EXPECT_FALSE(series.posterPath().isEmpty());
+    }
+}
+TEST(SeriesTests, Recommendations)
+{
+    tmdb::TV::Series series(std::getenv("API_KEY"), 1399); // Game of Thrones
+    auto recommendations = series.recommendations(std::getenv("API_KEY"), 1);
+    EXPECT_FALSE(recommendations.empty());
+    EXPECT_GT(recommendations.size(), 0);
+    for (const auto &rec : recommendations) {
+        EXPECT_FALSE(rec.name().isEmpty());
+        EXPECT_FALSE(rec.posterPath().isEmpty());
+    }
+}
+TEST(SeriesTests, Similar)
+{
+    tmdb::TV::Series series(std::getenv("API_KEY"), 1399); // Game of Thrones
+    auto similar = series.similar(std::getenv("API_KEY"), 1);
+    EXPECT_FALSE(similar.empty());
+    EXPECT_GT(similar.size(), 0);
+    for (const auto &sim : similar) {
+        EXPECT_FALSE(sim.name().isEmpty());
+    }
+}
+
+TEST(SeriesTests, WatchProviders)
+{
+    tmdb::TV::Series series(std::getenv("API_KEY"), 1399); // Game of Thrones
+    auto watchProviders = series.watchProviders(std::getenv("API_KEY"), tmdb::config::getCountry("GB"));
+    EXPECT_FALSE(watchProviders.empty());
+    EXPECT_GT(watchProviders.size(), 0);
+    for (const auto &provider : watchProviders) {
+        EXPECT_FALSE(provider.providerName().isEmpty());
+        EXPECT_FALSE(provider.logoPath().isEmpty());
+    }
+}

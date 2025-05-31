@@ -218,64 +218,64 @@ std::vector<tmdb::WatchProvider> tmdb::WatchProvider::getWatchProvidersForMovie(
     return watchProviders;
 }
 
-// std::vector<tmdb::WatchProvider> tmdb::WatchProvider::getWatchProvidersForTV(
-//     const QString& i_access_token, QString i_language, int i_seriesID)
-// {
-//     Qtmdb q(i_access_token.toStdString());
-//     auto providers = q.tv_series_watchProviders(i_seriesID);
-//     std::vector<WatchProvider> watchProviders;
-//     auto amProviders = providers["results"].toObject()[i_language].toObject();
-//     std::vector<QString> possibleLinks = config::extractLinksFromUrl(amProviders["link"].toString());
-//     for (const auto& provider : amProviders["flatrate"].toArray())
-//     {
-//         QString link;
-//         for (const auto& possibleLink : possibleLinks)
-//         {
-//             if (possibleLink.contains(provider.toObject()["provider_name"].toString()) &&
-//                 possibleLink.contains("title=%20Watch ") && possibleLink.contains("click.justwatch.com"))
-//             {
-//                 link = possibleLink;
-//                 break;
-//             }
-//         }
-//         WatchProvider temp(flatrate, provider.toObject()["logo_path"].toString(),
-//                            provider.toObject()["provider_id"].toInt(), provider.toObject()["provider_name"].toString(),
-//                            link);
-//         watchProviders.emplace_back(temp);
-//     }
-//     for (const auto& provider : amProviders["buy"].toArray())
-//     {
-//         QString link;
-//         for (const auto& possibleLink : possibleLinks)
-//         {
-//             if (possibleLink.contains(provider.toObject()["provider_name"].toString()) &&
-//                 possibleLink.contains("title=%20Buy ") && possibleLink.contains("click.justwatch.com"))
-//             {
-//                 link = possibleLink;
-//                 break;
-//             }
-//         }
-//         WatchProvider temp(buy, provider.toObject()["logo_path"].toString(),
-//                            provider.toObject()["provider_id"].toInt(), provider.toObject()["provider_name"].toString(),
-//                            link);
-//         watchProviders.emplace_back(temp);
-//     }
-//     for (const auto& provider : amProviders["rent"].toArray())
-//     {
-//         QString link;
-//         for (const auto& possibleLink : possibleLinks)
-//         {
-//             if (possibleLink.contains(provider.toObject()["provider_name"].toString()) &&
-//                 possibleLink.contains("title=%20Rent ") && possibleLink.contains("click.justwatch.com"))
-//             {
-//                 link = possibleLink;
-//                 break;
-//             }
-//         }
-//         WatchProvider temp(rent, provider.toObject()["logo_path"].toString(),
-//                            provider.toObject()["provider_id"].toInt(), provider.toObject()["provider_name"].toString(),
-//                            link);
-//         watchProviders.emplace_back(temp);
-//     }
-//     return watchProviders;
-// }
+std::vector<tmdb::WatchProvider> tmdb::WatchProvider::getWatchProvidersForTV(
+    const QString& i_access_token, const QString& i_language, int i_seriesID)
+{
+    Qtmdb q(i_access_token.toStdString());
+    auto providers = q.tv_series_watchProviders(i_seriesID);
+    std::vector<WatchProvider> watchProviders;
+    auto amProviders = providers["results"].toObject()[i_language].toObject();
+    std::vector<config::LinkInfo> possibleLinks = config::extractLinksFromUrl(amProviders["link"].toString());
+    for (const auto& provider : amProviders["flatrate"].toArray())
+    {
+        QString link;
+        for (const auto& possibleLink : possibleLinks)
+        {
+            if (possibleLink.title.contains(provider.toObject()["provider_name"].toString()) &&
+                possibleLink.title.contains("Watch ") && possibleLink.href.contains("click.justwatch.com"))
+            {
+                link = possibleLink.href;
+                break;
+            }
+        }
+        WatchProvider temp(flatrate, provider.toObject()["logo_path"].toString(),
+                           provider.toObject()["provider_id"].toInt(), provider.toObject()["provider_name"].toString(),
+                           link);
+        watchProviders.emplace_back(temp);
+    }
+    for (const auto& provider : amProviders["buy"].toArray())
+    {
+        QString link;
+        for (const auto& possibleLink : possibleLinks)
+        {
+            if (possibleLink.title.contains(provider.toObject()["provider_name"].toString()) &&
+                possibleLink.title.contains("Buy ") && possibleLink.href.contains("click.justwatch.com"))
+            {
+                link = possibleLink.href;
+                break;
+            }
+        }
+        WatchProvider temp(buy, provider.toObject()["logo_path"].toString(),
+                           provider.toObject()["provider_id"].toInt(), provider.toObject()["provider_name"].toString(),
+                           link);
+        watchProviders.emplace_back(temp);
+    }
+    for (const auto& provider : amProviders["rent"].toArray())
+    {
+        QString link;
+        for (const auto& possibleLink : possibleLinks)
+        {
+            if (possibleLink.title.contains(provider.toObject()["provider_name"].toString()) &&
+                possibleLink.title.contains("Rent ") && possibleLink.href.contains("click.justwatch.com"))
+            {
+                link = possibleLink.href;
+                break;
+            }
+        }
+        WatchProvider temp(rent, provider.toObject()["logo_path"].toString(),
+                           provider.toObject()["provider_id"].toInt(), provider.toObject()["provider_name"].toString(),
+                           link);
+        watchProviders.emplace_back(temp);
+    }
+    return watchProviders;
+}

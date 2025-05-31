@@ -60,6 +60,7 @@ set(PROJECT_SOURCES
         src/Series.cpp
         include/Episode.h
         src/Season.cpp
+        src/Episode.cpp
 )
 
 set(QT_MODULES_NEEDED
@@ -123,6 +124,7 @@ add_executable(TMDBTests
         tests/Network_Tests.cpp
         tests/Series_Tests.cpp
         tests/Season_Tests.cpp
+        tests/Episode_Tests.cpp
 )
 target_sources(TMDBTests PRIVATE)
 target_link_libraries(TMDBTests PRIVATE GTest::gtest GTest::gtest_main)

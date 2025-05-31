@@ -289,3 +289,67 @@ Series Series::getSeries(const QString& i_access_token, int32_t i_seriesID) {
     auto json = q.tv_series_details(i_seriesID);
     return Series(json);
 }
+
+std::vector<Series> Series::getAiringToday(const QString& i_access_token, const config::language& i_language, int32_t i_page, const QString& i_region) {
+    Qtmdb q(i_access_token.toStdString());
+    auto json = q.tv_series_airingToday(i_language.iso_639_1.toStdString(), i_page, i_region.toStdString());
+    std::vector<Series> seriesList;
+    for (const auto &item : json["results"].toArray()) {
+        seriesList.emplace_back(item.toObject());
+    }
+    return seriesList;
+}
+
+std::vector<Series> Series::getOnTheAir(const QString& i_access_token, const config::language& i_language, int32_t i_page, const QString& i_region) {
+    Qtmdb q(i_access_token.toStdString());
+    auto json = q.tv_series_onTheAir(i_language.iso_639_1.toStdString(), i_page, i_region.toStdString());
+    std::vector<Series> seriesList;
+    for (const auto &item : json["results"].toArray()) {
+        seriesList.emplace_back(item.toObject());
+    }
+    return seriesList;
+}
+
+std::vector<Series> Series::getPopular(const QString& i_access_token, const config::language& i_language, int32_t i_page) {
+    Qtmdb q(i_access_token.toStdString());
+    auto json = q.tv_series_popular(i_language.iso_639_1.toStdString(), i_page);
+    std::vector<Series> seriesList;
+    for (const auto &item : json["results"].toArray()) {
+        seriesList.emplace_back(item.toObject());
+    }
+    return seriesList;
+}
+
+std::vector<Series> Series::getTopRated(const QString& i_access_token, const config::language& i_language, int32_t i_page) {
+    Qtmdb q(i_access_token.toStdString());
+    auto json = q.tv_series_topRated(i_language.iso_639_1.toStdString(), i_page);
+    std::vector<Series> seriesList;
+    for (const auto &item : json["results"].toArray()) {
+        seriesList.emplace_back(item.toObject());
+    }
+    return seriesList;
+}
+
+std::vector<Series> Series::recommendations(const QString& i_access_token, int32_t i_page) const {
+    Qtmdb q(i_access_token.toStdString());
+    auto json = q.tv_series_recommendations(m_id, "en-US", i_page);
+    std::vector<Series> seriesList;
+    for (const auto &item : json["results"].toArray()) {
+        seriesList.emplace_back(item.toObject());
+    }
+    return seriesList;
+}
+
+std::vector<Series> Series::similar(const QString& i_access_token, int32_t i_page) const {
+    Qtmdb q(i_access_token.toStdString());
+    auto json = q.tv_series_similar(m_id, "en-US", i_page);
+    std::vector<Series> seriesList;
+    for (const auto &item : json["results"].toArray()) {
+        seriesList.emplace_back(item.toObject());
+    }
+    return seriesList;
+}
+
+std::vector<tmdb::WatchProvider> Series::watchProviders(const QString& i_access_token, const config::country& i_country) const {
+    return WatchProvider::getWatchProvidersForTV(i_access_token, i_country.iso_3166_1, m_id);
+}

@@ -11,6 +11,7 @@
 #include "Network.h"
 #include "Person.h"
 #include "Season.h"
+#include "WatchProvider.h"
 
 namespace tmdb
 {
@@ -80,6 +81,20 @@ namespace tmdb
             ~Series() = default;
 
             static Series getSeries(const QString& i_access_token, int32_t i_seriesID);
+
+            static std::vector<Series> getAiringToday(const QString& i_access_token, const config::language& i_language = config::getLanguage("en-US"),
+                                                int32_t i_page = 1, const QString& i_region = "America/New_York");
+            static std::vector<Series> getOnTheAir(const QString& i_access_token, const config::language& i_language = config::getLanguage("en-US"),
+                                                int32_t i_page = 1, const QString& i_region = "America/New_York");
+            static std::vector<Series> getPopular(const QString& i_access_token, const config::language& i_language = config::getLanguage("en-US"),
+                                                int32_t i_page = 1);
+            static std::vector<Series> getTopRated(const QString& i_access_token, const config::language& i_language = config::getLanguage("en-US"),
+                                                int32_t i_page = 1);
+
+            [[nodiscard]] std::vector<Series> recommendations(const QString& i_access_token, int32_t i_page = 1) const;
+            [[nodiscard]] std::vector<Series> similar(const QString& i_access_token, int32_t i_page = 1) const;
+
+            [[nodiscard]] std::vector<WatchProvider> watchProviders(const QString& i_access_token, const config::country& i_country = config::country()) const;
 
         protected:
             bool m_adult = true;

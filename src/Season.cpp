@@ -83,7 +83,7 @@ Season::Season(const QJsonObject &i_json) {
     QJsonArray episodesArray = i_json["episodes"].toArray();
     std::vector<Episode> episodes;
     for (const auto &episodeValue : episodesArray) {
-        // episodes.emplace_back(episodeValue.toObject());
+        episodes.emplace_back(episodeValue.toObject());
     }
     setEpisodes(episodes);
 }
