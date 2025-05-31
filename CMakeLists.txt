@@ -14,27 +14,53 @@ find_package(fmt REQUIRED)
 
 set(PROJECT_SOURCES
       include/QTMDB.h
-      src/QTMDB.cpp
+        src/JSON/QTMDB.cpp
         include/timeWindow.h
-        src/account_QTMDB.cpp
-        src/certifications_QTMDB.cpp
-        src/changes_QTMDB.cpp
-        src/collection_QTMDB.cpp
-        src/company_QTMDB.cpp
-        src/config_QTMDB.cpp
-        src/credits_QTMDB.cpp
-        src/genres_QTMDB.cpp
-        src/movieList_QTMDB.cpp
-        src/people_QTMDB.cpp
-        src/movie_QTMDB.cpp
-        src/network_QTMDB.cpp
-        src/reviews_QTMDB.cpp
-        src/trending_QTMDB.cpp
-        src/get_QTMDB.cpp
-        src/tv_series_QTMDB.cpp
-        src/tv_seasons_QTMDB.cpp
-        src/tv_episodes_QTMDB.cpp
-        src/watchProviders_QTMDB.cpp
+        src/JSON/account_QTMDB.cpp
+        src/JSON/certifications_QTMDB.cpp
+        src/JSON/changes_QTMDB.cpp
+        src/JSON/collection_QTMDB.cpp
+        src/JSON/company_QTMDB.cpp
+        src/JSON/config_QTMDB.cpp
+        src/JSON/credits_QTMDB.cpp
+        src/JSON/genres_QTMDB.cpp
+        src/JSON/movieList_QTMDB.cpp
+        src/JSON/people_QTMDB.cpp
+        src/JSON/movie_QTMDB.cpp
+        src/JSON/network_QTMDB.cpp
+        src/JSON/reviews_QTMDB.cpp
+        src/JSON/trending_QTMDB.cpp
+        src/JSON/get_QTMDB.cpp
+        src/JSON/tv_series_QTMDB.cpp
+        src/JSON/tv_seasons_QTMDB.cpp
+        src/JSON/tv_episodes_QTMDB.cpp
+        src/JSON/watchProviders_QTMDB.cpp
+        include/Account.h
+        include/Avatar.h
+        src/Account.cpp
+        src/Gravatar.cpp
+        src/Tmdb.cpp
+        src/Avatar.cpp
+        include/Company.h
+        src/Company.cpp
+        include/Config.h
+        src/Config.cpp
+        include/Genre.h
+        src/Genre.cpp
+        include/Movie.h
+        src/Movie.cpp
+        include/WatchProvider.h
+        src/WatchProvider.cpp
+        include/Person.h
+        src/Person.cpp
+        include/Series.h
+        include/Network.h
+        src/Network.cpp
+        include/Season.h
+        src/Series.cpp
+        include/Episode.h
+        src/Season.cpp
+        src/Episode.cpp
 )
 
 set(QT_MODULES_NEEDED
@@ -69,25 +95,36 @@ enable_testing()
 add_executable(TMDBTests
         ${PROJECT_SOURCES}
         tests/main.cpp
-        tests/account.cpp
-        tests/certifications.cpp
-        tests/changes.cpp
-        tests/collection.cpp
-        tests/company.cpp
-        tests/config.cpp
-        tests/credits.cpp
-        tests/genres.cpp
-        tests/movieList.cpp
-        tests/movie.cpp
-        tests/networks.cpp
-        tests/people.cpp
-        tests/reviews.cpp
-        tests/get.cpp
-        tests/trending.cpp
-        tests/tvSeries.cpp
-        tests/tvSeasons.cpp
-        tests/tvEpisodes.cpp
-        tests/watchProviders.cpp
+        tests/JSON/account.cpp
+        tests/JSON/certifications.cpp
+        tests/JSON/changes.cpp
+        tests/JSON/collection.cpp
+        tests/JSON/company.cpp
+        tests/JSON/config.cpp
+        tests/JSON/credits.cpp
+        tests/JSON/genres.cpp
+        tests/JSON/movieList.cpp
+        tests/JSON/movie.cpp
+        tests/JSON/networks.cpp
+        tests/JSON/people.cpp
+        tests/JSON/reviews.cpp
+        tests/JSON/get.cpp
+        tests/JSON/trending.cpp
+        tests/JSON/tvSeries.cpp
+        tests/JSON/tvSeasons.cpp
+        tests/JSON/tvEpisodes.cpp
+        tests/JSON/watchProviders.cpp
+        tests/Account_Tests.cpp
+        tests/Company_Tests.cpp
+        tests/Config_Tests.cpp
+        tests/Genre_Tests.cpp
+        tests/Movie_Tests.cpp
+        tests/WatchProvider_Tests.cpp
+        tests/Person_Tests.cpp
+        tests/Network_Tests.cpp
+        tests/Series_Tests.cpp
+        tests/Season_Tests.cpp
+        tests/Episode_Tests.cpp
 )
 target_sources(TMDBTests PRIVATE)
 target_link_libraries(TMDBTests PRIVATE GTest::gtest GTest::gtest_main)

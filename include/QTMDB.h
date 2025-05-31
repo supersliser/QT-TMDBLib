@@ -2,6 +2,7 @@
 
 #include "timeWindow.h"
 #include <QDate>
+#include <QJsonDocument>
 #include <fmt/format.h>
 #include <QJsonArray>
 
@@ -32,6 +33,8 @@ public:
     /// @brief Set the access token for the TMDB API.
     /// @param i_accessToken The access token for the TMDB API.
     void setAccessToken(std::string i_accessToken);
+
+    static std::string getImageURL(std::string i_path, std::string i_size = "original");
     //|-----------------------------------------------------------------------------------------------------|
 
     //|------------------------------------- API ENDPOINTS -------------------------------------------------|
@@ -292,7 +295,7 @@ public:
     ///@param movie_id The ID of the movie.
     ///@param country The country to use for the results, default is "US".
     ///@details For more information, see the TMDB API documentation: @link https://developers.themoviedb.org/3/accounts/get-account-details @endlink
-    QJsonObject movie_alternativeTitles(int32_t movie_id, std::string country = "US");
+    QJsonObject movie_alternativeTitles(int32_t movie_id, std::string country = "");
 
     ///@brief Get the recent changes for a movie.
     ///@return A QJsonObject containing the recent changes for a movie.
@@ -563,7 +566,7 @@ public:
     /// @param time_window The time window to use for the results, default is "day".
     /// @param language The language to use for the results, default is "en-US".
     ///@details For more information, see the TMDB API documentation: @link https://developers.themoviedb.org/3/accounts/get-account-details @endlink
-    QJsonObject trending_movies(timeWindow::timeWindow time_window = timeWindow::timeWindow::day,
+    QJsonObject trending_movies(tmdb::timeWindow::timeWindow time_window = tmdb::timeWindow::timeWindow::day,
                                 std::string language = "en-US");
 
     ///@brief Get the trending people on TMDB.
@@ -571,7 +574,7 @@ public:
     /// @param time_window The time window to use for the results, default is "day".
     /// @param language The language to use for the results, default is "en-US".
     ///@details For more information, see the TMDB API documentation: @link https://developers.themoviedb.org/3/accounts/get-account-details @endlink
-    QJsonObject trending_people(timeWindow::timeWindow time_window = timeWindow::timeWindow::day,
+    QJsonObject trending_people(tmdb::timeWindow::timeWindow time_window = tmdb::timeWindow::timeWindow::day,
                                 std::string language = "en-US");
 
     ///@brief Get the trending TV shows on TMDB.
@@ -579,7 +582,7 @@ public:
     /// @param time_window The time window to use for the results, default is "day".
     /// @param language The language to use for the results, default is "en-US".
     ///@details For more information, see the TMDB API documentation: @link https://developers.themoviedb.org/3/accounts/get-account-details @endlink
-    QJsonObject trending_tv(timeWindow::timeWindow time_window, std::string language = "en-US");
+    QJsonObject trending_tv(tmdb::timeWindow::timeWindow time_window, std::string language = "en-US");
     //|-----------------------------------------------------------------------------------------------------|
 
     //|-------------------------------------    TV Series    -------------------------------------------------|

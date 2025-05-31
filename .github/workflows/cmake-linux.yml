@@ -1,0 +1,53 @@
+name: Run Tests
+
+on:
+  push:
+    branches: [ "main", "2-setup-movie-and-tv-classes" ]
+
+jobs:
+  build-linux:
+    runs-on: ubuntu-latest
+    env:
+      QT_QPA_PLATFORM: offscreen
+      API_KEY: eyJhbGciOiJIUzI1NiJ9.eyJhdWQiOiJmZWZjMDcwYTExNTZlZDExM2JjN2RhZDA1ZWM5OWMyOCIsIm5iZiI6MTc0Nzc2ODM5Mi44MDgsInN1YiI6IjY4MmNkNDQ4ODA2OTJiYWI1NTY0OTRiYyIsInNjb3BlcyI6WyJhcGlfcmVhZCJdLCJ2ZXJzaW9uIjoxfQ.4wbjpPC366q5YFsHnuo9g4bIQ2xgMB5hIHx84SejLMg
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v4
+        with:
+          submodules: recursive
+
+      - name: Install system dependencies
+        run: |
+          sudo apt-get update
+          sudo apt-get install -y build-essential libgl1-mesa-dev libxkbcommon-x11-0 libpulse-dev \
+          libfmt-dev libxcb-cursor0 libxcb-icccm4 libxcb-image0 libxcb-keysyms1 \
+          libxcb-randr0 libxcb-render-util0 libxcb-xinerama0 libxcb-xkb1 libxkbcommon-x11-0 libgtest-dev 
+
+      - name: Build and install GoogleTest
+        run: |
+          cd /usr/src/gtest
+          sudo cmake .
+          sudo make
+          sudo cp lib/*.a /usr/lib
+
+      - name: Install Qt
+        uses: jurplel/install-qt-action@v3
+        with:
+          version: '6.5.0'
+          modules: 'qt5compat qtmultimedia qtnetworkauth qtpositioning qtcharts qtvirtualkeyboard qtwebchannel qtwebsockets qtwebview'
+
+      - name: Configure CMake
+        run: |
+          export QT_QPA_PLATFORM=offscreen
+          cmake -B build \
+          -DCMAKE_BUILD_TYPE=Release \
+          -DCMAKE_PREFIX_PATH=${{ env.Qt6_DIR }}
+
+      - name: Build
+        run: cmake --build build --config Release --verbose
+
+      - name: Run Tests
+        run: |
+            echo "Running tests..."
+            export QT_QPA_PLATFORM=offscreen
+            ctest --test-dir build --output-on-failure

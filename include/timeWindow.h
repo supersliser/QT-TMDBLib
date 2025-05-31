@@ -5,7 +5,7 @@
 #ifndef TIME_WINDOW_H
 #define TIME_WINDOW_H
 
-namespace timeWindow
+namespace tmdb::timeWindow
 {
     enum class timeWindow
     {
