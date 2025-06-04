@@ -35,7 +35,7 @@ cd ./external/TMDBLib
 cmake -G Ninja -B build .
 cd build
 ninja
-./TMDBTests #This line can be ommitted to avoid running tests
+env API_KEY=<your api key from TMDB here> ./TMDBTests #This line can be ommitted to avoid running tests
 ```
 5. Add the library to CMakeLists.txt
 ```
