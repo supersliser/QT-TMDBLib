@@ -304,7 +304,7 @@ TEST(MovieTests, getUpcoming)
         EXPECT_STRNE(movie.posterPath().toStdString().c_str(), "EMPTY_POSTER_PATH");
         EXPECT_FALSE(movie.productionCompanies().empty());
         EXPECT_FALSE(movie.countries().empty());
-        EXPECT_NE(movie.releaseDate(), QDate::currentDate());
+        EXPECT_GT(movie.releaseDate(), QDate(1990, 1, 1));
         EXPECT_FALSE(movie.languages().empty());
         EXPECT_STRNE(movie.status().toStdString().c_str(), "EMPTY_STATUS");
         EXPECT_STRNE(movie.tagline().toStdString().c_str(), "EMPTY_TAGLINE");
