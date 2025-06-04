@@ -210,7 +210,7 @@ Series::Series(const QString& i_access_token, int32_t i_seriesID) {
     *this = Series(json);
 }
 
-Series::Series(const QJsonObject &i_json) {
+Series::Series(const QJsonObject &i_json, const QString &i_access_token) {
     m_adult = i_json["adult"].toBool();
     m_backdropPath = i_json["backdrop_path"].toString();
     std::vector<tmdb::Person> createdByArray;
@@ -234,21 +234,21 @@ Series::Series(const QJsonObject &i_json) {
     in_production = i_json["in_production"].toBool();
     std::vector<tmdb::config::language> languageArray;
     for (const auto &item : i_json["languages"].toArray()) {
-        languageArray.emplace_back(config::getLanguage(item.toString()));
+        languageArray.emplace_back(config::getLanguage(item.toString(), i_access_token));
     }
     m_languages = languageArray;
     m_lastAirDate = QDate::fromString(i_json["last_air_date"].toString(), Qt::ISODate);
     m_name = i_json["name"].toString();
     std::vector<Network> networkArray;
     for (const auto &item : i_json["networks"].toArray()) {
-        networkArray.emplace_back(item.toObject());
+        networkArray.emplace_back(item.toObject(), i_access_token);
     }
     m_networks = networkArray;
     m_episodeCount = i_json["number_of_episodes"].toInt();
     m_seasonCount = i_json["number_of_seasons"].toInt();
     std::vector<tmdb::config::country> originCountryArray;
     for (const auto &item : i_json["origin_country"].toArray()) {
-        originCountryArray.emplace_back(config::getCountry(item.toString()));
+        originCountryArray.emplace_back(config::getCountry(item.toString(), i_access_token));
     }
     m_originCountries = originCountryArray;
     m_originalLanguage = i_json["original_language"].toString();
@@ -262,7 +262,7 @@ Series::Series(const QJsonObject &i_json) {
     m_productionCompanies = companyArray;
     std::vector<tmdb::config::country> productionCountryArray;
     for (const auto &item : i_json["production_countries"].toArray()) {
-        productionCountryArray.emplace_back(config::getCountry(item.toObject()["iso_3166_1"].toString()));
+        productionCountryArray.emplace_back(config::getCountry(item.toObject()["iso_3166_1"].toString(), i_access_token));
     }
     m_productionCountries = productionCountryArray;
     std::vector<Season> seasonArray;
@@ -287,7 +287,7 @@ Series::Series(const QJsonObject &i_json) {
 Series Series::getSeries(const QString& i_access_token, int32_t i_seriesID) {
     Qtmdb q(i_access_token.toStdString());
     auto json = q.tv_series_details(i_seriesID);
-    return Series(json);
+    return Series(json, i_access_token);
 }
 
 std::vector<Series> Series::getAiringToday(const QString& i_access_token, const config::language& i_language, int32_t i_page, const QString& i_region) {
@@ -295,7 +295,7 @@ std::vector<Series> Series::getAiringToday(const QString& i_access_token, const 
     auto json = q.tv_series_airingToday(i_language.iso_639_1.toStdString(), i_page, i_region.toStdString());
     std::vector<Series> seriesList;
     for (const auto &item : json["results"].toArray()) {
-        seriesList.emplace_back(item.toObject());
+        seriesList.emplace_back(item.toObject(), i_access_token);
     }
     return seriesList;
 }
@@ -305,7 +305,7 @@ std::vector<Series> Series::getOnTheAir(const QString& i_access_token, const con
     auto json = q.tv_series_onTheAir(i_language.iso_639_1.toStdString(), i_page, i_region.toStdString());
     std::vector<Series> seriesList;
     for (const auto &item : json["results"].toArray()) {
-        seriesList.emplace_back(item.toObject());
+        seriesList.emplace_back(item.toObject(), i_access_token);
     }
     return seriesList;
 }
@@ -315,7 +315,7 @@ std::vector<Series> Series::getPopular(const QString& i_access_token, const conf
     auto json = q.tv_series_popular(i_language.iso_639_1.toStdString(), i_page);
     std::vector<Series> seriesList;
     for (const auto &item : json["results"].toArray()) {
-        seriesList.emplace_back(item.toObject());
+        seriesList.emplace_back(item.toObject(), i_access_token);
     }
     return seriesList;
 }
@@ -325,7 +325,7 @@ std::vector<Series> Series::getTopRated(const QString& i_access_token, const con
     auto json = q.tv_series_topRated(i_language.iso_639_1.toStdString(), i_page);
     std::vector<Series> seriesList;
     for (const auto &item : json["results"].toArray()) {
-        seriesList.emplace_back(item.toObject());
+        seriesList.emplace_back(item.toObject(), i_access_token);
     }
     return seriesList;
 }
@@ -335,7 +335,7 @@ std::vector<Series> Series::recommendations(const QString& i_access_token, int32
     auto json = q.tv_series_recommendations(m_id, "en-US", i_page);
     std::vector<Series> seriesList;
     for (const auto &item : json["results"].toArray()) {
-        seriesList.emplace_back(item.toObject());
+        seriesList.emplace_back(item.toObject(), i_access_token);
     }
     return seriesList;
 }
@@ -345,7 +345,7 @@ std::vector<Series> Series::similar(const QString& i_access_token, int32_t i_pag
     auto json = q.tv_series_similar(m_id, "en-US", i_page);
     std::vector<Series> seriesList;
     for (const auto &item : json["results"].toArray()) {
-        seriesList.emplace_back(item.toObject());
+        seriesList.emplace_back(item.toObject(), i_access_token);
     }
     return seriesList;
 }

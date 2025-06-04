@@ -54,7 +54,7 @@ TEST(WatchProviderTests, GetAllWatchProviders)
 {
     auto providers = tmdb::WatchProvider::getAllWatchProviders(
         std::getenv("API_KEY"),
-        tmdb::flatrate, tmdb::config::getLanguage("GB"));
+        tmdb::flatrate, tmdb::config::getLanguage("GB", std::getenv("API_KEY")));
     EXPECT_FALSE(providers.empty());
     EXPECT_EQ(providers[0].type(), tmdb::unset);
     EXPECT_STREQ(providers[0].logoPath().toStdString().c_str(), "/9ghgSC0MA082EL6HLCW3GalykFD.jpg");

@@ -384,7 +384,7 @@ TEST(MovieTests, getSimilar)
 TEST(MovieTests, getWatchProviders)
 {
     auto movie = tmdb::Movie::getMovie(std::getenv("API_KEY"), 550);
-    auto providers = movie.watchProviders(std::getenv("API_KEY"), tmdb::config::getCountry("GB"));
+    auto providers = movie.watchProviders(std::getenv("API_KEY"), tmdb::config::getCountry("GB", std::getenv("API_KEY")));
     EXPECT_FALSE(providers.empty());
     EXPECT_EQ(providers[0].type(), tmdb::flatrate);
     EXPECT_EQ(providers[0].providerID(), 337);

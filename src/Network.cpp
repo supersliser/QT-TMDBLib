@@ -65,17 +65,17 @@ tmdb::TV::Network::Network(const QString& i_access_token, int32_t i_networkID)
     *this = getNetwork(i_access_token, i_networkID);
 }
 
-tmdb::TV::Network::Network(const QJsonObject &i_json) {
+tmdb::TV::Network::Network(const QJsonObject &i_json, const QString& i_accessToken) {
     m_headquarters = i_json["headquarters"].toString();
     m_homepage = i_json["homepage"].toString();
     m_id = i_json["id"].toInt();
     m_logoPath = i_json["logo_path"].toString();
     m_name = i_json["name"].toString();
-    m_originCountry = tmdb::config::getCountry(i_json["origin_country"].toString());
+    m_originCountry = tmdb::config::getCountry(i_json["origin_country"].toString(), i_accessToken);
 }
 
 tmdb::TV::Network tmdb::TV::Network::getNetwork(const QString& i_access_token, int32_t i_networkID)
 {
     Qtmdb q(i_access_token.toStdString());
-    return Network(q.network_details(i_networkID));
+    return Network(q.network_details(i_networkID), i_access_token);
 }

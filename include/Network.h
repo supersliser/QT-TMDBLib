@@ -31,7 +31,7 @@ namespace tmdb
                     const QString &i_logoPath, const QString &i_name,
                     const tmdb::config::country &i_originCountry);
             Network(const QString& i_access_token, int32_t i_networkID);
-            explicit Network(const QJsonObject &i_json);
+            explicit Network(const QJsonObject &i_json, const QString& i_accessToken);
             ~Network() = default;
 
             static Network getNetwork(const QString& i_access_token, int32_t i_networkID);

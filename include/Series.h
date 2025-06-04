@@ -77,18 +77,18 @@ namespace tmdb
 
             Series() = default;
             Series(const QString& i_access_token, int32_t i_seriesID);
-            explicit Series(const QJsonObject &i_json);
+            explicit Series(const QJsonObject &i_json, const QString &i_access_token);
             ~Series() = default;
 
             static Series getSeries(const QString& i_access_token, int32_t i_seriesID);
 
-            static std::vector<Series> getAiringToday(const QString& i_access_token, const config::language& i_language = config::getLanguage("en-US"),
+            static std::vector<Series> getAiringToday(const QString& i_access_token, const config::language& i_language = {"en-US", "English", "English"},
                                                 int32_t i_page = 1, const QString& i_region = "America/New_York");
-            static std::vector<Series> getOnTheAir(const QString& i_access_token, const config::language& i_language = config::getLanguage("en-US"),
+            static std::vector<Series> getOnTheAir(const QString& i_access_token, const config::language& i_language = {"en-US", "English", "English"},
                                                 int32_t i_page = 1, const QString& i_region = "America/New_York");
-            static std::vector<Series> getPopular(const QString& i_access_token, const config::language& i_language = config::getLanguage("en-US"),
+            static std::vector<Series> getPopular(const QString& i_access_token, const config::language& i_language = {"en-US", "English", "English"},
                                                 int32_t i_page = 1);
-            static std::vector<Series> getTopRated(const QString& i_access_token, const config::language& i_language = config::getLanguage("en-US"),
+            static std::vector<Series> getTopRated(const QString& i_access_token, const config::language& i_language = {"en-US", "English", "English"},
                                                 int32_t i_page = 1);
 
             [[nodiscard]] std::vector<Series> recommendations(const QString& i_access_token, int32_t i_page = 1) const;

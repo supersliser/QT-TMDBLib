@@ -37,13 +37,13 @@ namespace tmdb
                                                   const QString& i_language = "en-US");
         Movie(const QJsonObject& i_json, const QString& i_access_token);
 
-        static std::vector<Movie> getNowPlaying(const QString& i_access_token, const config::language& i_language = config::getLanguage("en-US"),
+        static std::vector<Movie> getNowPlaying(const QString& i_access_token, const config::language& i_language = {"en-US", "United States", "United States"},
                                                 int32_t i_page = 1, const config::country& i_region = config::country());
-        static std::vector<Movie> getPopular(const QString& i_access_token, const config::language& i_language = config::getLanguage("en-US"),
+        static std::vector<Movie> getPopular(const QString& i_access_token, const config::language& i_language = {"en-US", "United States", "United States"},
                                                 int32_t i_page = 1, const config::country& i_region = config::country());
-        static std::vector<Movie> getTopRated(const QString& i_access_token, const config::language& i_language = config::getLanguage("en-US"),
+        static std::vector<Movie> getTopRated(const QString& i_access_token, const config::language& i_language = {"en-US", "United States", "United States"},
                                                 int32_t i_page = 1, const config::country& i_region = config::country());
-        static std::vector<Movie> getUpcoming(const QString& i_access_token, const config::language& i_language = config::getLanguage("en-US"),
+        static std::vector<Movie> getUpcoming(const QString& i_access_token, const config::language& i_language = {"en-US", "United States", "United States"},
                                                 int32_t i_page = 1, const config::country& i_region = config::country());
 
         [[nodiscard]] std::vector<Movie> recommendations(const QString& i_access_token, int32_t i_page = 1) const;

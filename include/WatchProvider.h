@@ -42,13 +42,11 @@ namespace tmdb
         static WatchProvider getWatchProvider(const QString& i_access_token, int i_providerID);
         static std::vector<WatchProvider> getAllWatchProviders(const QString& i_access_token,
                                                                ProviderType i_type = unset,
-                                                               config::language i_language = config::getLanguage(
-                                                                   "en-US"));
+                                                               config::language i_language = {"en-US", "United States", "United States"});
         static std::vector<WatchProvider> getAllMovieProviders(const QString& i_access_token,
-                                                               config::language i_language = config::getLanguage(
-                                                                   "en-US"));
+                                                               config::language i_language = {"en-US", "United States", "United States"});
         static std::vector<WatchProvider> getAllTVProviders(const QString& i_access_token,
-                                                            const config::language& = config::getLanguage("en-US"));
+                                                            const config::language& = {"en-US", "United States", "United States"});
         static std::vector<WatchProvider> getWatchProvidersForMovie(const QString& i_access_token,
                                                                     const QString& i_language, int i_movieID);
         static std::vector<WatchProvider> getWatchProvidersForTV(const QString& i_access_token,

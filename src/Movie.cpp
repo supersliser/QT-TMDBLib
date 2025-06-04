@@ -62,7 +62,7 @@ tmdb::Movie::Movie(const QJsonObject& i_json, const QString& i_access_token)
     if (i_json.contains("original_language"))
     {
         QString originalLanguageStr = i_json["original_language"].toString();
-        setOriginalLanguage(config::getLanguage(originalLanguageStr));
+        setOriginalLanguage(config::getLanguage(originalLanguageStr, i_access_token));
     }
     else
     {
@@ -143,7 +143,7 @@ tmdb::Movie::Movie(const QJsonObject& i_json, const QString& i_access_token)
         std::vector<config::language> languages;
         for (const auto& language : languagesArray)
         {
-            languages.emplace_back(config::getLanguage(language.toObject()["iso_639_1"].toString()));
+            languages.emplace_back(config::getLanguage(language.toObject()["iso_639_1"].toString(), i_access_token));
         }
         setLanguages(languages);
     }
@@ -350,7 +350,7 @@ std::vector<tmdb::AlternateTitle> tmdb::Movie::alternateTitles(const QString& i_
     for (const auto& item : response["titles"].toArray())
     {
         QJsonObject titleObj = item.toObject();
-        titles.emplace_back(AlternateTitle{config::getCountry(titleObj["iso_3166_1"].toString()), titleObj["title"].toString(), titleObj["type"].toString()});
+        titles.emplace_back(AlternateTitle{config::getCountry(titleObj["iso_3166_1"].toString(), i_access_token), titleObj["title"].toString(), titleObj["type"].toString()});
     }
     return titles;
 }

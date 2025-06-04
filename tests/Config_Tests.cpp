@@ -7,7 +7,7 @@
 #include <gtest/gtest.h>
 
 TEST(ConfigTests, SupportedCountries) {
-    auto countries = tmdb::config::getSupportedCountries();
+    auto countries = tmdb::config::getSupportedCountries(std::getenv("API_KEY"));
     ASSERT_FALSE(countries.empty());
     bool passed = false;
     for (const auto& country : countries) {
@@ -20,12 +20,12 @@ TEST(ConfigTests, SupportedCountries) {
 }
 
 TEST(ConfigTests, GetCountry) {
-    auto country = tmdb::config::getCountry("GB");
+    auto country = tmdb::config::getCountry("GB", std::getenv("API_KEY"));
     ASSERT_STREQ(country.english_name.toStdString().c_str(), "United Kingdom");
     ASSERT_STREQ(country.iso_3166_1.toStdString().c_str(), "GB");
 
     // Test with an invalid country code
-    auto invalidCountry = tmdb::config::getCountry("XX");
+    auto invalidCountry = tmdb::config::getCountry("XX", std::getenv("API_KEY"));
     ASSERT_TRUE(invalidCountry.english_name.isEmpty());
     ASSERT_TRUE(invalidCountry.iso_3166_1.isEmpty());
 }
@@ -42,7 +42,7 @@ TEST(ConfigTests, GetCountryFromJson) {
 }
 
 TEST(ConfigTests, SupportedJobs) {
-    auto jobs = tmdb::config::getSupportedJobs();
+    auto jobs = tmdb::config::getSupportedJobs(std::getenv("API_KEY"));
     ASSERT_FALSE(jobs.empty());
     bool passed = false;
     for (const auto& job : jobs) {
@@ -55,7 +55,7 @@ TEST(ConfigTests, SupportedJobs) {
 }
 
 TEST(ConfigTests, SupportedLanguages) {
-    auto languages = tmdb::config::getSupportedLanguages();
+    auto languages = tmdb::config::getSupportedLanguages(std::getenv("API_KEY"));
     ASSERT_FALSE(languages.empty());
     bool passed = false;
     for (const auto& language : languages) {
@@ -69,18 +69,18 @@ TEST(ConfigTests, SupportedLanguages) {
 
 TEST(ConfigTests, getLanguage)
 {
-    auto language = tmdb::config::getLanguage("en");
+    auto language = tmdb::config::getLanguage("en", std::getenv("API_KEY"));
     ASSERT_STREQ(language.english_name.toStdString().c_str(), "English");
     ASSERT_STREQ(language.iso_639_1.toStdString().c_str(), "en");
 
     // Test with an invalid language code
-    auto invalidLanguage = tmdb::config::getLanguage("xx");
+    auto invalidLanguage = tmdb::config::getLanguage("xx", std::getenv("API_KEY"));
     ASSERT_STREQ(invalidLanguage.english_name.toStdString().c_str(), "No Language");
     ASSERT_STREQ(invalidLanguage.iso_639_1.toStdString().c_str(), "xx");
 }
 
 TEST(ConfigTests, SupportedTranslations) {
-    auto translations = tmdb::config::getSupportedTranslations();
+    auto translations = tmdb::config::getSupportedTranslations(std::getenv("API_KEY"));
     ASSERT_FALSE(translations.empty());
     bool passed = false;
     for (const auto& translation : translations) {
@@ -93,7 +93,7 @@ TEST(ConfigTests, SupportedTranslations) {
 }
 
 TEST(ConfigTests, SupportedTimezones) {
-    auto timezones = tmdb::config::getSupportedTimezones();
+    auto timezones = tmdb::config::getSupportedTimezones(std::getenv("API_KEY"));
     ASSERT_FALSE(timezones.empty());
     bool passed = false;
     for (const auto& timezone : timezones) {

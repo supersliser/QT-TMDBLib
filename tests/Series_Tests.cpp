@@ -122,7 +122,7 @@ TEST(SeriesTests, APIJSON)
     Qtmdb q(std::getenv("API_KEY"));
     QJsonObject response = q.tv_series_details(1399); // Game of Thrones
     EXPECT_FALSE(response.isEmpty());
-    tmdb::TV::Series series(response);
+    tmdb::TV::Series series(response, std::getenv("API_KEY"));
     EXPECT_FALSE(series.adult());
     EXPECT_STREQ(series.backdropPath().toStdString().c_str(), "/zZqpAXxVSBtxV9qPBcscfXBcL2w.jpg");
     EXPECT_EQ(series.createdBy().size(), 2);
@@ -328,7 +328,7 @@ TEST(SeriesTests, Similar)
 TEST(SeriesTests, WatchProviders)
 {
     tmdb::TV::Series series(std::getenv("API_KEY"), 1399); // Game of Thrones
-    auto watchProviders = series.watchProviders(std::getenv("API_KEY"), tmdb::config::getCountry("GB"));
+    auto watchProviders = series.watchProviders(std::getenv("API_KEY"), tmdb::config::getCountry("GB", std::getenv("API_KEY")));
     EXPECT_FALSE(watchProviders.empty());
     EXPECT_GT(watchProviders.size(), 0);
     for (const auto &provider : watchProviders) {

@@ -22,9 +22,9 @@
 #include <QTextCursor>
 
 
-std::vector<tmdb::config::country> tmdb::config::getSupportedCountries()
+std::vector<tmdb::config::country> tmdb::config::getSupportedCountries(const QString& i_accessToken)
 {
-    Qtmdb q(std::getenv("API_KEY"));
+    Qtmdb q(i_accessToken.toStdString());
     QJsonArray response = q.config_countries();
     std::vector<country> countries;
     for (const auto& item : response) {
@@ -38,9 +38,9 @@ std::vector<tmdb::config::country> tmdb::config::getSupportedCountries()
     return countries;
 }
 
-tmdb::config::country tmdb::config::getCountry(const QString& country_code)
+tmdb::config::country tmdb::config::getCountry(const QString& country_code, const QString& i_accessToken)
 {
-    auto countries = getSupportedCountries();
+    auto countries = getSupportedCountries(i_accessToken);
     for (const auto& country : countries) {
         if (country.iso_3166_1 == country_code) {
             return country;
@@ -58,9 +58,9 @@ tmdb::config::country tmdb::config::getCountry(const QJsonObject& i_json)
     return country;
 }
 
-std::vector<tmdb::config::jobDept> tmdb::config::getSupportedJobs()
+std::vector<tmdb::config::jobDept> tmdb::config::getSupportedJobs(const QString& i_accessToken)
 {
-    Qtmdb q(std::getenv("API_KEY"));
+    Qtmdb q(i_accessToken.toStdString());
     QJsonArray response = q.config_jobs();
     std::vector<tmdb::config::jobDept> jobs;
     for (const auto& item : response) {
@@ -76,9 +76,9 @@ std::vector<tmdb::config::jobDept> tmdb::config::getSupportedJobs()
     return jobs;
 }
 
-tmdb::config::jobDept tmdb::config::getDept(const QString& dept_title)
+tmdb::config::jobDept tmdb::config::getDept(const QString& dept_title, const QString& i_accessToken)
 {
-    auto jobs = getSupportedJobs();
+    auto jobs = getSupportedJobs(i_accessToken);
     for (const auto& job : jobs) {
         if (job.dept_name == dept_title) {
             return job;
@@ -87,9 +87,9 @@ tmdb::config::jobDept tmdb::config::getDept(const QString& dept_title)
     return tmdb::config::jobDept(); // Return an empty jobDept if not found
 }
 
-std::vector<tmdb::config::language> tmdb::config::getSupportedLanguages()
+std::vector<tmdb::config::language> tmdb::config::getSupportedLanguages(const QString& i_accessToken)
 {
-    Qtmdb q(std::getenv("API_KEY"));
+    Qtmdb q(i_accessToken.toStdString());
     QJsonArray response = q.config_languages();
     std::vector<language> languages;
     for (const auto& item : response) {
@@ -103,9 +103,9 @@ std::vector<tmdb::config::language> tmdb::config::getSupportedLanguages()
     return languages;
 }
 
-tmdb::config::language tmdb::config::getLanguage(const QString& i_iso_639_1)
+tmdb::config::language tmdb::config::getLanguage(const QString& i_iso_639_1, const QString& i_accessToken)
 {
-    auto languages = getSupportedLanguages();
+    auto languages = getSupportedLanguages(i_accessToken);
     for (const auto& lang : languages) {
         if (lang.iso_639_1 == i_iso_639_1.toLower()) {
             return lang;
@@ -113,9 +113,9 @@ tmdb::config::language tmdb::config::getLanguage(const QString& i_iso_639_1)
     }
     return tmdb::config::language(); // Return an empty language if not found
 }
-std::vector<QString> tmdb::config::getSupportedTranslations()
+std::vector<QString> tmdb::config::getSupportedTranslations(const QString& i_accessToken)
 {
-    Qtmdb q(std::getenv("API_KEY"));
+    Qtmdb q(i_accessToken.toStdString());
     QJsonArray response = q.config_primaryTranslations();
     std::vector<QString> translations;
     for (const auto& item : response) {
@@ -124,9 +124,9 @@ std::vector<QString> tmdb::config::getSupportedTranslations()
     return translations;
 }
 
-std::vector<QString> tmdb::config::getSupportedTimezones()
+std::vector<QString> tmdb::config::getSupportedTimezones(const QString& i_accessToken)
 {
-    Qtmdb q(std::getenv("API_KEY"));
+    Qtmdb q(i_accessToken.toStdString());
     QJsonArray response = q.config_timezones();
     std::vector<QString> timezones;
     for (const auto& item : response) {
