@@ -340,6 +340,14 @@ TEST(MovieTests, getBackdrops)
     EXPECT_EQ(backdrops[0].width(), 1920);
 }
 
+TEST(MovieTests, getBackdrop)
+{
+    auto movie = tmdb::Movie::getMovie(std::getenv("API_KEY"), 550);
+    auto backdrop = movie.backdrop(std::getenv("API_KEY"), 0, "original");
+    EXPECT_EQ(backdrop.height(), 1080);
+    EXPECT_EQ(backdrop.width(), 1920);
+}
+
 TEST(MovieTests, getLogos)
 {
     auto movie = tmdb::Movie::getMovie(std::getenv("API_KEY"), 550);
@@ -348,12 +356,28 @@ TEST(MovieTests, getLogos)
     EXPECT_EQ(logos[0].width(), 1804);
 }
 
+TEST(MovieTests, getLogo)
+{
+    auto movie = tmdb::Movie::getMovie(std::getenv("API_KEY"), 550);
+    auto backdrop = movie.logo(std::getenv("API_KEY"), 0, "original");
+    EXPECT_EQ(backdrop.height(), 389);
+    EXPECT_EQ(backdrop.width(), 1804);
+}
+
 TEST(MovieTests, getPosters)
 {
     auto movie = tmdb::Movie::getMovie(std::getenv("API_KEY"), 550);
     auto posters = movie.posters(std::getenv("API_KEY"), "original");
     EXPECT_EQ(posters[0].height(), 3000);
     EXPECT_EQ(posters[0].width(), 2000);
+}
+
+TEST(MovieTests, getPoster)
+{
+    auto movie = tmdb::Movie::getMovie(std::getenv("API_KEY"), 550);
+    auto poster = movie.poster(std::getenv("API_KEY"), 0, "original");
+    EXPECT_EQ(poster.height(), 3000);
+    EXPECT_EQ(poster.width(), 2000);
 }
 
 TEST(MovieTests, getKeywords)

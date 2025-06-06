@@ -366,6 +366,13 @@ TEST(SeriesTests, Backdrops)
     }
 }
 
+TEST(SeriesTests, Backdrop)
+{
+    tmdb::TV::Series series(std::getenv("API_KEY"), 1399); // Game of Thrones
+    auto backdrop = series.backdrop(std::getenv("API_KEY"), 0, "original");
+    EXPECT_FALSE(backdrop.isNull());
+}
+
 TEST(SeriesTests, Posters)
 {
     tmdb::TV::Series series(std::getenv("API_KEY"), 1399); // Game of Thrones
@@ -377,6 +384,13 @@ TEST(SeriesTests, Posters)
     }
 }
 
+TEST(SeriesTests, Poster)
+{
+    tmdb::TV::Series series(std::getenv("API_KEY"), 1399); // Game of Thrones
+    auto poster = series.poster(std::getenv("API_KEY"), 0, "original");
+    EXPECT_FALSE(poster.isNull());
+}
+
 TEST(SeriesTests, Logos)
 {
     tmdb::TV::Series series(std::getenv("API_KEY"), 1399); // Game of Thrones
@@ -386,4 +400,11 @@ TEST(SeriesTests, Logos)
     for (const auto &poster : logos) {
         EXPECT_FALSE(poster.isNull());
     }
+}
+
+TEST(SeriesTests, Logo)
+{
+    tmdb::TV::Series series(std::getenv("API_KEY"), 1399); // Game of Thrones
+    auto logo = series.logo(std::getenv("API_KEY"), 0, "original");
+    EXPECT_FALSE(logo.isNull());
 }

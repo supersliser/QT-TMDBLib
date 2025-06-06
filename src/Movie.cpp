@@ -383,6 +383,18 @@ std::vector<QPixmap> tmdb::Movie::backdrops(const QString& i_access_token, const
     return backdrops;
 }
 
+QPixmap tmdb::Movie::backdrop(const QString& i_access_token, int i_index, const QString& i_size) const
+{
+    Qtmdb q(i_access_token.toStdString());
+    auto response = q.movie_images(m_id, "en");
+    if (i_index < 0 || i_index >= response["backdrops"].toArray().size())
+    {
+        return QPixmap();
+    }
+    QJsonObject backdropObj = response["backdrops"].toArray()[i_index].toObject();
+    QString filePath = backdropObj["file_path"].toString();
+    return config::getPixmapFromUrl(QUrl(q.getImageURL(filePath.toStdString(), i_size.toStdString()).c_str()));
+}
 
 std::vector<QPixmap> tmdb::Movie::posters(const QString& i_access_token, const QString& i_size) const
 {
@@ -398,6 +410,19 @@ std::vector<QPixmap> tmdb::Movie::posters(const QString& i_access_token, const Q
     return posters;
 }
 
+QPixmap tmdb::Movie::poster(const QString& i_access_token, int i_index, const QString& i_size) const
+{
+    Qtmdb q(i_access_token.toStdString());
+    auto response = q.movie_images(m_id, "en");
+    if (i_index < 0 || i_index >= response["posters"].toArray().size())
+    {
+        return QPixmap();
+    }
+    QJsonObject backdropObj = response["posters"].toArray()[i_index].toObject();
+    QString filePath = backdropObj["file_path"].toString();
+    return config::getPixmapFromUrl(QUrl(q.getImageURL(filePath.toStdString(), i_size.toStdString()).c_str()));
+}
+
 std::vector<QPixmap> tmdb::Movie::logos(const QString& i_access_token, const QString& i_size) const
 {
     Qtmdb q(i_access_token.toStdString());
@@ -410,6 +435,19 @@ std::vector<QPixmap> tmdb::Movie::logos(const QString& i_access_token, const QSt
         logos.emplace_back(config::getPixmapFromUrl(QUrl(q.getImageURL(filePath.toStdString(), i_size.toStdString()).c_str())));
     }
     return logos;
+}
+
+QPixmap tmdb::Movie::logo(const QString& i_access_token, int i_index, const QString& i_size) const
+{
+    Qtmdb q(i_access_token.toStdString());
+    auto response = q.movie_images(m_id, "en");
+    if (i_index < 0 || i_index >= response["logos"].toArray().size())
+    {
+        return QPixmap();
+    }
+    QJsonObject backdropObj = response["logos"].toArray()[i_index].toObject();
+    QString filePath = backdropObj["file_path"].toString();
+    return config::getPixmapFromUrl(QUrl(q.getImageURL(filePath.toStdString(), i_size.toStdString()).c_str()));
 }
 
 std::map<int, QString> tmdb::Movie::keywords(const QString& i_access_token) const
