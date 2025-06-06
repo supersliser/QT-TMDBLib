@@ -1,3 +1,9 @@
+//
+// Created by t on 07/06/25.
+//
+
+#ifndef AQTMDB_H
+#define AQTMDB_H
 #include <QObject>
 
 #include "timeWindow.h"
@@ -6,31 +12,22 @@
 #include <fmt/format.h>
 #include <QJsonArray>
 
-/// @file QTMDB.h
-/// @class Qtmdb
-/// @author Thomas Lower
-/// @brief "Qtmdb" is a C++ wrapper for the TMDB API.
-/// @details This class provides methods to interact with the TMDB API, allowing users to retrieve information about movies, TV shows, people, and more.
-/// It is based on the QT framework and uses its QJson classes for simplicity of design.
-/// To be able to use this class, you must have a valid access token from the TMDB API. This can be obtained by creating an account on the TMDB website and generating an API key. [https://www.themoviedb.org/documentation/api] (https://www.themoviedb.org/documentation/api)
-/// @note This is a placeholder that will be replaced with true C++ classes and methods, rather than relying on the JSON setup.
-/// @cite Special Thanks to JustWatch for access to data for the TMDB API
-class Qtmdb : public QObject
+
+class aQtmdb : public QObject
 {
     Q_OBJECT
 private:
     const std::string _m_baseUrl = "https://api.themoviedb.org/3/";
-    QJsonObject _runGetRequest(std::string i_request, std::map<std::string, std::string> i_params = {});
-    QJsonArray _runGetRequestArray(std::string i_request, std::map<std::string, std::string> i_params = {});
+    void _runGetRequest(std::string i_request, std::map<std::string, std::string> i_params = {});
     std::string _m_accessToken;
 public:
     /// @brief Default constructor for Qtmdb.
     /// @note For this class to be functional, you must initialise a QApplication object beforehand.
     /// @param i_accessToken The access token for the TMDB API.
     /// @param parent The parent QObject, default is nullptr. (You should probably leave this blank)
-    explicit Qtmdb(std::string i_accessToken, QObject* parent = nullptr);
+    explicit aQtmdb(std::string i_accessToken, QObject* parent = nullptr);
     /// @brief Default destructor for Qtmdb.
-    ~Qtmdb() override = default;
+    ~aQtmdb() override = default;
     /// @brief Get the access token for the TMDB API.
     /// @return The access token for the TMDB API.
     std::string accessToken();
@@ -41,88 +38,82 @@ public:
     static std::string getImageURL(std::string i_path, std::string i_size = "original");
     //|-----------------------------------------------------------------------------------------------------|
 
+    signals:
+
+    void startedLoadingData();
+    void finishedLoadingData(void* i_data);
+
     //|------------------------------------- API ENDPOINTS -------------------------------------------------|
     //|-------------------------------------    Account    -------------------------------------------------|
     ///@brief Get the public details of an account on TMDB.
     ///@param account_id The ID of the account.
-    ///@return A QJsonObject containing the account details.
     ///@details For more information, see the TMDB API documentation: @link https://developers.themoviedb.org/3/accounts/get-account-details @endlink
-    QJsonObject account_details(int32_t account_id);
+    void account_details(int32_t account_id);
 
     ///@brief Get a users list of favourite movies.
     ///@param account_id The ID of the account.
     ///@param language The language to use for the results, default is "en-US".
     ///@param page The page number to retrieve, default is 1.
-    ///@return A QJsonObject containing the account's favourite movies.
     ///@details For more information, see the TMDB API documentation: @link https://developers.themoviedb.org/3/accounts/get-account-details @endlink
-    QJsonObject account_favoriteMovies(int32_t account_id, std::string language = "en-US", int32_t page = 1);
+    void account_favoriteMovies(int32_t account_id, std::string language = "en-US", int32_t page = 1);
 
     ///@brief Get a users list of favourite TV shows.
     ///@param account_id The ID of the account.
     ///@param language The language to use for the results, default is "en-US".
     ///@param page The page number to retrieve, default is 1.
-    ///@return A QJsonObject containing the account's favourite TV Shows.
     ///@details For more information, see the TMDB API documentation: @link https://developers.themoviedb.org/3/accounts/get-account-details @endlink
-    QJsonObject account_favoriteTV(int32_t account_id, std::string language = "en-US", int32_t page = 1);
+    void account_favoriteTV(int32_t account_id, std::string language = "en-US", int32_t page = 1);
 
     ///@brief Get a users list of custom lists.
     ///@param account_id The ID of the account.
     ///@param page The page number to retrieve, default is 1.
-    ///@return A QJsonObject containing the account's created lists.
     ///@details For more information, see the TMDB API documentation: @link https://developers.themoviedb.org/3/accounts/get-account-details @endlink
-    QJsonObject account_lists(int32_t account_id, int32_t page = 1);
+    void account_lists(int32_t account_id, int32_t page = 1);
 
     ///@brief Gets the movies rated by an account.
     ///@param account_id The ID of the account.
     ///@param language The language to use for the results, default is "en-US".
     ///@param page The page number to retrieve, default is 1.
-    ///@return A QJsonObject containing the account's rated movies.
     ///@details For more information, see the TMDB API documentation: @link https://developers.themoviedb.org/3/accounts/get-account-details @endlink
-    QJsonObject account_ratedMovies(int32_t account_id, std::string language = "en-US", int32_t page = 1);
+    void account_ratedMovies(int32_t account_id, std::string language = "en-US", int32_t page = 1);
 
     ///@brief Gets the TV shows rated by an account.
     ///@param account_id The ID of the account.
     ///@param language The language to use for the results, default is "en-US".
     ///@param page The page number to retrieve, default is 1.
-    ///@return A QJsonObject containing the account's rated TV shows.
     ///@details For more information, see the TMDB API documentation: @link https://developers.themoviedb.org/3/accounts/get-account-details @endlink
-    QJsonObject account_ratedTV(int32_t account_id, std::string language = "en-US", int32_t page = 1);
+    void account_ratedTV(int32_t account_id, std::string language = "en-US", int32_t page = 1);
 
     ///@brief Gets the TV Episodes rated by an account.
     ///@param account_id The ID of the account.
     ///@param language The language to use for the results, default is "en-US".
     ///@param page The page number to retrieve, default is 1.
-    ///@return A QJsonObject containing the account's rated TV episodes.
     ///@details For more information, see the TMDB API documentation: @link https://developers.themoviedb.org/3/accounts/get-account-details @endlink
-    QJsonObject account_ratedTVEpisodes(int32_t account_id, std::string language = "en-US", int32_t page = 1);
+    void account_ratedTVEpisodes(int32_t account_id, std::string language = "en-US", int32_t page = 1);
 
     ///@brief Get a list of movies added to a users watchlist.
     ///@param account_id The ID of the account.
     ///@param language The language to use for the results, default is "en-US".
     ///@param page The page number to retrieve, default is 1.
-    ///@return A QJsonObject containing the movies from the account's watchlist.
     ///@details For more information, see the TMDB API documentation: @link https://developers.themoviedb.org/3/accounts/get-account-details @endlink
-    QJsonObject account_watchlistMovies(int32_t account_id, std::string language = "en-US", int32_t page = 1);
+    void account_watchlistMovies(int32_t account_id, std::string language = "en-US", int32_t page = 1);
 
     ///@brief Get a list of TV shows added to a users watchlist.
     ///@param account_id The ID of the account.
     ///@param language The language to use for the results, default is "en-US".
     ///@param page The page number to retrieve, default is 1.
-    ///@return A QJsonObject containing the TV shows from the account's watchlist.
     ///@details For more information, see the TMDB API documentation: @link https://developers.themoviedb.org/3/accounts/get-account-details @endlink
-    QJsonObject account_watchlistTV(int32_t account_id, std::string language = "en-US", int32_t page = 1);
+    void account_watchlistTV(int32_t account_id, std::string language = "en-US", int32_t page = 1);
     //|-----------------------------------------------------------------------------------------------------|
 
     //|-------------------------------------    Certifications    -------------------------------------------------|
     ///@brief Get an up-to-date list of the officially supported movie certifications on TMDB.
-    ///@return A QJsonObject containing the certifications for all countries for movies.
     ///@details For more information, see the TMDB API documentation: @link https://developers.themoviedb.org/3/accounts/get-account-details @endlink
-    QJsonObject certifications_movie();
+    void certifications_movie();
 
     ///@brief Get an up-to-date list of the officially supported TV certifications on TMDB.
-    ///@return A QJsonObject containing the certifications for all countries for TV shows.
     ///@details For more information, see the TMDB API documentation: @link https://developers.themoviedb.org/3/accounts/get-account-details @endlink
-    QJsonObject certifications_tv();
+    void certifications_tv();
     //|-----------------------------------------------------------------------------------------------------|
 
     //|-------------------------------------    Changes    -------------------------------------------------|
@@ -130,30 +121,27 @@ public:
     ///@param start_date The start date for the changes, default is 2023-10-22.
     ///@param end_date The end date for the changes, default is 2023-10-22.
     ///@param page The page number to retrieve, default is 1.
-    ///@return A QJsonObject containing the list of movies which have been changed on TMDB.
     ///@note start_date and end_date cannot be more than 14 days apart.
     ///@details For more information, see the TMDB API documentation: @link https://developers.themoviedb.org/3/accounts/get-account-details @endlink
-    QJsonObject changes_movie(QDate end_date = QDate(2023, 10, 22), QDate start_date = QDate(2023, 10, 22),
+    void changes_movie(QDate end_date = QDate(2023, 10, 22), QDate start_date = QDate(2023, 10, 22),
                               int32_t page = 1);
 
     ///@brief Get a list of all of the people ids that have been changed in the past 24 hours.
     ///@param start_date The start date for the changes, default is 2023-10-22.
     ///@param end_date The end date for the changes, default is 2023-10-22.
     ///@param page The page number to retrieve, default is 1.
-    ///@return A QJsonObject containing the list of people which have been changed on TMDB.
     ///@note start_date and end_date cannot be more than 14 days apart.
     ///@details For more information, see the TMDB API documentation: @link https://developers.themoviedb.org/3/accounts/get-account-details @endlink
-    QJsonObject changes_people(QDate end_date = QDate(2023, 10, 22), QDate start_date = QDate(2023, 10, 22),
+    void changes_people(QDate end_date = QDate(2023, 10, 22), QDate start_date = QDate(2023, 10, 22),
                                int32_t page = 1);
 
     ///@brief Get a list of all of the TV ids that have been changed in the past 24 hours.
     ///@param start_date The start date for the changes, default is 2023-10-22.
     ///@param end_date The end date for the changes, default is 2023-10-22.
     ///@param page The page number to retrieve, default is 1.
-    ///@return A QJsonObject containing the list of TV shows which have been changed on TMDB.
     ///@note start_date and end_date cannot be more than 14 days apart.
     ///@details For more information, see the TMDB API documentation: @link https://developers.themoviedb.org/3/accounts/get-account-details @endlink
-    QJsonObject changes_tv(QDate end_date = QDate(2023, 10, 22), QDate start_date = QDate(2023, 10, 22),
+    void changes_tv(QDate end_date = QDate(2023, 10, 22), QDate start_date = QDate(2023, 10, 22),
                            int32_t page = 1);
     //|-----------------------------------------------------------------------------------------------------|
 
@@ -161,97 +149,82 @@ public:
     ///@brief Get collection details by ID.
     ///@param collection_id The ID of the collection.
     ///@param language The language to use for the results, default is "en-US".
-    ///@return A QJsonObject containing the collection details.
     ///@details For more information, see the TMDB API documentation: @link https://developers.themoviedb.org/3/accounts/get-account-details @endlink
-    QJsonObject collection_details(int32_t collection_id, std::string language = "en-US");
+    void collection_details(int32_t collection_id, std::string language = "en-US");
 
     ///@brief Get the images that belong to a collection.
     ///@param collection_id The ID of the collection.
     ///@param language The language to use for the results, default is "en".
-    ///@return A QJsonObject containing the collection images.
     ///@details For more information, see the TMDB API documentation: @link https://developers.themoviedb.org/3/accounts/get-account-details @endlink
-    QJsonObject collection_images(int32_t collection_id, std::string language = "en");
+    void collection_images(int32_t collection_id, std::string language = "en");
 
     ///@brief Get the translations that belong to a collection.
     ///@param collection_id The ID of the collection.
-    ///@return A QJsonObject containing the collection translations.
     ///@details For more information, see the TMDB API documentation: @link https://developers.themoviedb.org/3/accounts/get-account-details @endlink
-    QJsonObject collection_translations(int32_t collection_id);
+    void collection_translations(int32_t collection_id);
     //|-----------------------------------------------------------------------------------------------------|
 
     //|-------------------------------------    Company    -------------------------------------------------|
     ///@brief Get the company details by ID.
     ///@param company_id The ID of the company.
-    ///@return A QJsonObject containing the company details.
     ///@details For more information, see the TMDB API documentation: @link https://developers.themoviedb.org/3/accounts/get-account-details @endlink
-    QJsonObject company_details(int32_t company_id);
+    void company_details(int32_t company_id);
 
     ///@brief Get the company alternative names by ID.
     ///@param company_id The ID of the company.
-    ///@return A QJsonObject containing the company alternative names.
     ///@details For more information, see the TMDB API documentation: @link https://developers.themoviedb.org/3/accounts/get-account-details @endlink
-    QJsonObject company_alternativeNames(int32_t company_id);
+    void company_alternativeNames(int32_t company_id);
 
     ///@brief Get the company images by ID.
     ///@param company_id The ID of the company.
-    ///@return A QJsonObject containing the company images.
     ///@details For more information, see the TMDB API documentation: @link https://developers.themoviedb.org/3/accounts/get-account-details @endlink
-    QJsonObject company_images(int32_t company_id);
+    void company_images(int32_t company_id);
     //|-----------------------------------------------------------------------------------------------------|
 
     //|-------------------------------------    Configuration    -------------------------------------------------|
     ///@brief Query the API configuration details.
-    ///@return A QJsonObject containing some of the required information you'll need as you integrate our API.
     ///@details For more information, see the TMDB API documentation: @link https://developers.themoviedb.org/3/accounts/get-account-details @endlink
-    QJsonObject config_details();
+    void config_details();
 
     ///@brief Get the list of countries (ISO 3166-1 tags) used throughout TMDB.
     ///@param language The language to use for the results, default is "en-US".
-    ///@return A QJsonArray containing the list of countries.
     ///@details For more information, see the TMDB API documentation: @link https://developers.themoviedb.org/3/accounts/get-account-details @endlink
-    QJsonArray config_countries(std::string language = "en-US");
+    void config_countries(std::string language = "en-US");
 
     ///@brief Get the list of the jobs and departments we use on TMDB.
-    ///@return A QJsonArray containing the list of departments and associated jobs.
     ///@details For more information, see the TMDB API documentation: @link https://developers.themoviedb.org/3/accounts/get-account-details @endlink
-    QJsonArray config_jobs();
+    void config_jobs();
 
     ///@brief Get the list of languages (ISO 639-1 tags) used throughout TMDB.
-    ///@return A QJsonArray containing the list of languages on TMDB.
     ///@details For more information, see the TMDB API documentation: @link https://developers.themoviedb.org/3/accounts/get-account-details @endlink
-    QJsonArray config_languages();
+    void config_languages();
 
     ///@brief Get a list of the officially supported translations on TMDB.
-    ///@return A QJsonArray containing the translations we support for localizing the website with which means they are "primary" translations.
     ///@details For more information, see the TMDB API documentation: @link https://developers.themoviedb.org/3/accounts/get-account-details @endlink
-    QJsonArray config_primaryTranslations();
+    void config_primaryTranslations();
 
     ///@brief Get the list of timezones used throughout TMDB.
-    ///@return A QJsonArray containing the list of timezones.
     ///@details For more information, see the TMDB API documentation: @link https://developers.themoviedb.org/3/accounts/get-account-details @endlink
-    QJsonArray config_timezones();
+    void config_timezones();
     //|-----------------------------------------------------------------------------------------------------|
 
     //|-------------------------------------    Credits    -------------------------------------------------|
     ///@brief Get a movie or TV credit details by ID.
-    ///@return A QJsonObject containing the credit details.
     ///@param credit_id The ID of the credit.
     ///@details For more information, see the TMDB API documentation: @link https://developers.themoviedb.org/3/accounts/get-account-details @endlink
-    QJsonObject credits_details(std::string credit_id);
+    void credits_details(std::string credit_id);
     //|-----------------------------------------------------------------------------------------------------|
 
     //|-------------------------------------    Genres    -------------------------------------------------|
     ///@brief Get the list of official genres for movies.
-    ///@return A QJsonObject containing the list of genres for movies.
     ///@param language The language to use for the results, default is "en".
     ///@details For more information, see the TMDB API documentation: @link https://developers.themoviedb.org/3/accounts/get-account-details @endlink
-    QJsonObject genres_movie(std::string language = "en");
+    void genres_movie(std::string language = "en");
 
     ///@brief Get the list of official genres for TV shows.
-    ///@return A QJsonObject containing the list of genres for TV shows.
     ///@param language The language to use for the results, default is "en".
     ///@details For more information, see the TMDB API documentation: @link https://developers.themoviedb.org/3/accounts/get-account-details @endlink
-    QJsonObject genres_tv(std::string language = "en");
+    void genres_tv(std::string language = "en");
     //|-----------------------------------------------------------------------------------------------------|
 
     //|-------------------------------------    Movies    -------------------------------------------------|
@@ -919,3 +892,4 @@ public:
     //|-----------------------------------------------------------------------------------------------------|
     //|-----------------------------------------------------------------------------------------------------|
 };
+#endif //AQTMDB_H

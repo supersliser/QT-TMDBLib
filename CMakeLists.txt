@@ -14,27 +14,27 @@ find_package(fmt REQUIRED)
 
 set(PROJECT_SOURCES
       include/QTMDB.h
-        src/JSON/QTMDB.cpp
+        src/JSON/Sync/QTMDB.cpp
         include/timeWindow.h
-        src/JSON/account_QTMDB.cpp
-        src/JSON/certifications_QTMDB.cpp
-        src/JSON/changes_QTMDB.cpp
-        src/JSON/collection_QTMDB.cpp
-        src/JSON/company_QTMDB.cpp
-        src/JSON/config_QTMDB.cpp
-        src/JSON/credits_QTMDB.cpp
-        src/JSON/genres_QTMDB.cpp
-        src/JSON/movieList_QTMDB.cpp
-        src/JSON/people_QTMDB.cpp
-        src/JSON/movie_QTMDB.cpp
-        src/JSON/network_QTMDB.cpp
-        src/JSON/reviews_QTMDB.cpp
-        src/JSON/trending_QTMDB.cpp
-        src/JSON/get_QTMDB.cpp
-        src/JSON/tv_series_QTMDB.cpp
-        src/JSON/tv_seasons_QTMDB.cpp
-        src/JSON/tv_episodes_QTMDB.cpp
-        src/JSON/watchProviders_QTMDB.cpp
+        src/JSON/Sync/account_QTMDB.cpp
+        src/JSON/Sync/certifications_QTMDB.cpp
+        src/JSON/Sync/changes_QTMDB.cpp
+        src/JSON/Sync/collection_QTMDB.cpp
+        src/JSON/Sync/company_QTMDB.cpp
+        src/JSON/Sync/config_QTMDB.cpp
+        src/JSON/Sync/credits_QTMDB.cpp
+        src/JSON/Sync/genres_QTMDB.cpp
+        src/JSON/Sync/movieList_QTMDB.cpp
+        src/JSON/Sync/people_QTMDB.cpp
+        src/JSON/Sync/movie_QTMDB.cpp
+        src/JSON/Sync/network_QTMDB.cpp
+        src/JSON/Sync/reviews_QTMDB.cpp
+        src/JSON/Sync/trending_QTMDB.cpp
+        src/JSON/Sync/get_QTMDB.cpp
+        src/JSON/Sync/tv_series_QTMDB.cpp
+        src/JSON/Sync/tv_seasons_QTMDB.cpp
+        src/JSON/Sync/tv_episodes_QTMDB.cpp
+        src/JSON/Sync/watchProviders_QTMDB.cpp
         include/Account.h
         include/Avatar.h
         src/Account.cpp
@@ -61,6 +61,8 @@ set(PROJECT_SOURCES
         include/Episode.h
         src/Season.cpp
         src/Episode.cpp
+        include/aQTMDB.h
+        src/JSON/ASync/QTMDB.cpp
 )
 
 set(QT_MODULES_NEEDED
