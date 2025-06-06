@@ -8,6 +8,7 @@
 
 #include "Company.h"
 #include "Genre.h"
+#include "Movie.h"
 #include "Network.h"
 #include "Person.h"
 #include "Season.h"
@@ -95,6 +96,11 @@ namespace tmdb
             [[nodiscard]] std::vector<Series> similar(const QString& i_access_token, int32_t i_page = 1) const;
 
             [[nodiscard]] std::vector<WatchProvider> watchProviders(const QString& i_access_token, const config::country& i_country = config::country()) const;
+            [[nodiscard]] std::vector<Season> seasons(const QString& i_access_token, int32_t i_page = 1) const;
+            [[nodiscard]] std::array<QString, 9> externalIDs(const QString& i_access_token) const;
+            [[nodiscard]] std::vector<QPixmap> backdrops(const QString& i_access_token, const QString& i_size = "original") const;
+            [[nodiscard]] std::vector<QPixmap> posters(const QString& i_access_token, const QString& i_size = "original") const;
+            [[nodiscard]] std::vector<QPixmap> logos(const QString& i_access_token, const QString& i_size = "original") const;
 
         protected:
             bool m_adult = true;

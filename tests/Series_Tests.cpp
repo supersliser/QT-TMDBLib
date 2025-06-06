@@ -336,3 +336,54 @@ TEST(SeriesTests, WatchProviders)
         EXPECT_FALSE(provider.logoPath().isEmpty());
     }
 }
+
+TEST(SeriesTests, Seasons)
+{
+    tmdb::TV::Series series(std::getenv("API_KEY"), 1399); // Game of Thrones
+    auto seasons = series.seasons(std::getenv("API_KEY"), 1);
+    EXPECT_FALSE(seasons.empty());
+    EXPECT_GT(seasons.size(), 0);
+        EXPECT_STREQ(seasons[0].name().toStdString().c_str(), "Specials");
+        EXPECT_EQ(seasons[0].episodes().size(), 283);
+}
+
+TEST(SeriesTests, ExternalIDs)
+{
+    tmdb::TV::Series series(std::getenv("API_KEY"), 1399); // Game of Thrones
+    auto externalIDs = series.externalIDs(std::getenv("API_KEY"));
+    EXPECT_EQ(externalIDs.size(), 9);
+    EXPECT_STREQ(externalIDs[0].toStdString().c_str(), "tt0944947");
+}
+
+TEST(SeriesTests, Backdrops)
+{
+    tmdb::TV::Series series(std::getenv("API_KEY"), 1399); // Game of Thrones
+    auto backdrops = series.backdrops(std::getenv("API_KEY"), "original");
+    EXPECT_FALSE(backdrops.empty());
+    EXPECT_GT(backdrops.size(), 0);
+    for (const auto &backdrop : backdrops) {
+        EXPECT_FALSE(backdrop.isNull());
+    }
+}
+
+TEST(SeriesTests, Posters)
+{
+    tmdb::TV::Series series(std::getenv("API_KEY"), 1399); // Game of Thrones
+    auto posters = series.posters(std::getenv("API_KEY"), "original");
+    EXPECT_FALSE(posters.empty());
+    EXPECT_GT(posters.size(), 0);
+    for (const auto &poster : posters) {
+        EXPECT_FALSE(poster.isNull());
+    }
+}
+
+TEST(SeriesTests, Logos)
+{
+    tmdb::TV::Series series(std::getenv("API_KEY"), 1399); // Game of Thrones
+    auto logos = series.logos(std::getenv("API_KEY"), "original");
+    EXPECT_FALSE(logos.empty());
+    EXPECT_GT(logos.size(), 0);
+    for (const auto &poster : logos) {
+        EXPECT_FALSE(poster.isNull());
+    }
+}

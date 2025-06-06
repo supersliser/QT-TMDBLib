@@ -353,3 +353,74 @@ std::vector<Series> Series::similar(const QString& i_access_token, int32_t i_pag
 std::vector<tmdb::WatchProvider> Series::watchProviders(const QString& i_access_token, const config::country& i_country) const {
     return WatchProvider::getWatchProvidersForTV(i_access_token, i_country.iso_3166_1, m_id);
 }
+
+std::vector<Season> Series::seasons(const QString& i_access_token, int32_t i_page) const
+{
+    Qtmdb q(i_access_token.toStdString());
+    auto json = q.tv_series_details(m_id);
+    std::vector<Season> seasonsList;
+    for (const auto &item : json["seasons"].toArray()) {
+        seasonsList.emplace_back(i_access_token, m_id, item.toObject()["season_number"].toInt());
+    }
+    return seasonsList;
+}
+
+std::array<QString, 9> Series::externalIDs(const QString& i_access_token) const
+{
+    Qtmdb q(i_access_token.toStdString());
+    auto json = q.tv_series_externalIDs(m_id);
+    std::array<QString, 9> externalIDs = {
+        json["imdb_id"].toString(),
+        json["freebase_mid"].toString(),
+        json["freebase_id"].toString(),
+        json["tvdb_id"].toString(),
+        json["tvrage_id"].toString(),
+        json["wikidata_id"].toString(),
+        json["facebook_id"].toString(),
+        json["instagram_id"].toString(),
+        json["twitter_id"].toString()
+    };
+    return externalIDs;
+}
+
+std::vector<QPixmap> Series::backdrops(const QString& i_access_token, const QString& i_size) const
+{
+    Qtmdb q(i_access_token.toStdString());
+    auto response = q.tv_series_images(m_id, "en");
+    std::vector<QPixmap> backdrops;
+    for (const auto& item : response["backdrops"].toArray())
+    {
+        QJsonObject backdropObj = item.toObject();
+        QString filePath = backdropObj["file_path"].toString();
+        backdrops.emplace_back(config::getPixmapFromUrl(QUrl(q.getImageURL(filePath.toStdString(), i_size.toStdString()).c_str())));
+    }
+    return backdrops;
+}
+
+std::vector<QPixmap> Series::posters(const QString& i_access_token, const QString& i_size) const
+{
+    Qtmdb q(i_access_token.toStdString());
+    auto response = q.tv_series_images(m_id, "en");
+    std::vector<QPixmap> posters;
+    for (const auto& item : response["posters"].toArray())
+    {
+        QJsonObject backdropObj = item.toObject();
+        QString filePath = backdropObj["file_path"].toString();
+        posters.emplace_back(config::getPixmapFromUrl(QUrl(q.getImageURL(filePath.toStdString(), i_size.toStdString()).c_str())));
+    }
+    return posters;
+}
+
+std::vector<QPixmap> Series::logos(const QString& i_access_token, const QString& i_size) const
+{
+    Qtmdb q(i_access_token.toStdString());
+    auto response = q.tv_series_images(m_id, "en");
+    std::vector<QPixmap> logos;
+    for (const auto& item : response["logos"].toArray())
+    {
+        QJsonObject backdropObj = item.toObject();
+        QString filePath = backdropObj["file_path"].toString();
+        logos.emplace_back(config::getPixmapFromUrl(QUrl(q.getImageURL(filePath.toStdString(), i_size.toStdString()).c_str())));
+    }
+    return logos;
+}
