@@ -11,7 +11,6 @@
 #include <QPixmap>
 
 #include "Person.h"
-#include "QTMDB.h"
 #include "WatchProvider.h"
 
 namespace tmdb
@@ -25,26 +24,25 @@ namespace tmdb
 
     class Movie
     {
-    enum currentRunning
-    {
-        NONE,
-        BACKDROPS,
-        BACKDROP,
-        POSTERS,
-        POSTER,
-        LOGOS,
-        LOGO,
-        NOW_PLAYING,
-        POPULAR,
-        TOP_RATED,
-        UPCOMING,
-        RECOMMENDATIONS,
-        SIMILAR
-    };
+    // enum currentRunning
+    // {
+    //     NONE,
+    //     BACKDROPS,
+    //     BACKDROP,
+    //     POSTERS,
+    //     POSTER,
+    //     LOGOS,
+    //     LOGO,
+    //     NOW_PLAYING,
+    //     POPULAR,
+    //     TOP_RATED,
+    //     UPCOMING,
+    //     RECOMMENDATIONS,
+    //     SIMILAR
+    // };
 
     public:
         Movie() = default;
-    explicit Movie(const QString& i_accessToken);
         ~Movie() = default;
         Movie(const QString& i_access_token, int32_t i_movieID);
         static Movie getMovie(const QString& i_access_token, int32_t i_movieID);
@@ -131,45 +129,41 @@ namespace tmdb
         [[nodiscard]] std::map<int, QString> keywords(const QString& i_access_token) const;
         [[nodiscard]] std::vector<Credit> credits(const QString& i_access_token) const;
 
-        signals:
-        void startedLoadingBackdrops();
-        void loadedFirstBackdrop(QPixmap i_backdrop);
-        void finishedLoadingBackdrops(std::vector<QPixmap> i_backdrops);
-        void startedLoadingBackdrop();
-        void finishedLoadingBackdrop(QPixmap i_backdrop);
+        // signals:
+        // void startedLoadingBackdrops();
+        // void finishedLoadingBackdrops(std::vector<QPixmap> i_backdrops);
+        // void startedLoadingBackdrop();
+        // void finishedLoadingBackdrop(QPixmap i_backdrop);
+        //
+        // void startedLoadingPosters();
+        // void finishedLoadingPosters(std::vector<QPixmap> i_posters);
+        // void startedLoadingPoster();
+        // void finishedLoadingPoster(QPixmap i_poster);
+        //
+        // void startedLoadingLogos();
+        // void finishedLoadingLogos(std::vector<QPixmap> i_logos);
+        // void startedLoadingLogo();
+        // void finishedLoadingLogo(QPixmap i_logo);
+        //
+        // void startedLoadingNowPlaying();
+        // void finishedLoadingNowPlaying(std::vector<Movie> i_nowPlaying);
+        // void startedLoadingPopular();
+        // void finishedLoadingPopular(std::vector<Movie> i_popular);
+        // void startedLoadingTopRated();
+        // void finishedLoadingTopRated(std::vector<Movie> i_topRated);
+        // void startedLoadingUpcoming();
+        // void finishedLoadingUpcoming(std::vector<Movie> i_upcoming);
+        // void startedLoadingRecommendations();
+        // void finishedLoadingRecommendations(std::vector<Movie> i_recommendations);
+        // void startedLoadingSimilar();
+        // void finishedLoadingSimilar(std::vector<Movie> i_similar);
 
-        void startedLoadingPosters();
-        void loadedFirstPoster(QPixmap i_poster);
-        void finishedLoadingPosters(std::vector<QPixmap> i_posters);
-        void startedLoadingPoster();
-        void finishedLoadingPoster(QPixmap i_poster);
-
-        void startedLoadingLogos();
-        void loadedFirstLogo(QPixmap i_logo);
-        void finishedLoadingLogos(std::vector<QPixmap> i_logos);
-        void startedLoadingLogo();
-        void finishedLoadingLogo(QPixmap i_logo);
-
-        void startedLoadingNowPlaying();
-        void finishedLoadingNowPlaying(std::vector<Movie> i_nowPlaying);
-        void startedLoadingPopular();
-        void finishedLoadingPopular(std::vector<Movie> i_popular);
-        void startedLoadingTopRated();
-        void finishedLoadingTopRated(std::vector<Movie> i_topRated);
-        void startedLoadingUpcoming();
-        void finishedLoadingUpcoming(std::vector<Movie> i_upcoming);
-        void startedLoadingRecommendations();
-        void finishedLoadingRecommendations(std::vector<Movie> i_recommendations);
-        void startedLoadingSimilar();
-        void finishedLoadingSimilar(std::vector<Movie> i_similar);
-
-        protected slots:
-        void onStartedLoadingData();
-        void onLoadedFirstData(void* i_data);
-        void onFinishedLoadingData(void* i_data);
+        // protected slots:
+        // void onStartedLoadingData();
+        // void onFinishedLoadingData(void* i_data);
 
     protected:
-        Qtmdb q;
+        // Qtmdb m_q = Qtmdb("");
         bool m_adult = true;
         QString m_backdropPath = "EMPTY_BACKDROP_PATH";
         QString m_belongsToCollection = "EMPTY_COLLECTION";
@@ -195,7 +189,7 @@ namespace tmdb
         bool m_video = true;
         float m_voteAverage = 0.0f;
         int m_voteCount = 0;
-        currentRunning m_currentRunning = NONE;
+        // currentRunning m_currentRunning = NONE;
 
     };
 }

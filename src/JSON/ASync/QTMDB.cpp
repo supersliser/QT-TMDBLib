@@ -68,6 +68,7 @@ void aQtmdb::_runGetRequest(std::string i_request, std::map<std::string, std::st
     };
     connect(reply, &QNetworkReply::finished, lambda);
 }
+
 std::string aQtmdb::getImageURL(std::string i_path, std::string i_size)
 {
     return fmt::format("https://image.tmdb.org/t/p/{}{}", i_size, i_path);

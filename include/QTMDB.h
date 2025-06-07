@@ -15,7 +15,7 @@
 /// To be able to use this class, you must have a valid access token from the TMDB API. This can be obtained by creating an account on the TMDB website and generating an API key. [https://www.themoviedb.org/documentation/api] (https://www.themoviedb.org/documentation/api)
 /// @note This is a placeholder that will be replaced with true C++ classes and methods, rather than relying on the JSON setup.
 /// @cite Special Thanks to JustWatch for access to data for the TMDB API
-class Qtmdb : public QObject
+class Qtmdb final : public QObject
 {
     Q_OBJECT
 private:

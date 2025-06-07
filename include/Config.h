@@ -6,7 +6,6 @@
 #define CONFIG_H
 
 
-#include <map>
 #include <QJsonObject>
 #include <QString>
 #include <vector>

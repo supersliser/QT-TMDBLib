@@ -3,16 +3,8 @@
 //
 
 #include "Movie.h"
-
-#include <filesystem>
-#include <qimage.h>
-
 #include "Account.h"
-
-tmdb::Movie::Movie(const QString& i_accessToken): q(i_accessToken.toStdString())
-{
-
-}
+#include "QTMDB.h"
 
 tmdb::Movie::Movie(const QString& i_access_token, int32_t i_movieID)
 {

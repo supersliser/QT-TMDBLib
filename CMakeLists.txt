@@ -63,6 +63,7 @@ set(PROJECT_SOURCES
         src/Episode.cpp
         include/aQTMDB.h
         src/JSON/ASync/QTMDB.cpp
+        src/JSON/ASync/account_QTMDB.cpp
 )
 
 set(QT_MODULES_NEEDED
@@ -97,25 +98,25 @@ enable_testing()
 add_executable(TMDBTests
         ${PROJECT_SOURCES}
         tests/main.cpp
-        tests/JSON/account.cpp
-        tests/JSON/certifications.cpp
-        tests/JSON/changes.cpp
-        tests/JSON/collection.cpp
-        tests/JSON/company.cpp
-        tests/JSON/config.cpp
-        tests/JSON/credits.cpp
-        tests/JSON/genres.cpp
-        tests/JSON/movieList.cpp
-        tests/JSON/movie.cpp
-        tests/JSON/networks.cpp
-        tests/JSON/people.cpp
-        tests/JSON/reviews.cpp
-        tests/JSON/get.cpp
-        tests/JSON/trending.cpp
-        tests/JSON/tvSeries.cpp
-        tests/JSON/tvSeasons.cpp
-        tests/JSON/tvEpisodes.cpp
-        tests/JSON/watchProviders.cpp
+        tests/JSON/Sync/account.cpp
+        tests/JSON/Sync/certifications.cpp
+        tests/JSON/Sync/changes.cpp
+        tests/JSON/Sync/collection.cpp
+        tests/JSON/Sync/company.cpp
+        tests/JSON/Sync/config.cpp
+        tests/JSON/Sync/credits.cpp
+        tests/JSON/Sync/genres.cpp
+        tests/JSON/Sync/movieList.cpp
+        tests/JSON/Sync/movie.cpp
+        tests/JSON/Sync/networks.cpp
+        tests/JSON/Sync/people.cpp
+        tests/JSON/Sync/reviews.cpp
+        tests/JSON/Sync/get.cpp
+        tests/JSON/Sync/trending.cpp
+        tests/JSON/Sync/tvSeries.cpp
+        tests/JSON/Sync/tvSeasons.cpp
+        tests/JSON/Sync/tvEpisodes.cpp
+        tests/JSON/Sync/watchProviders.cpp
         tests/Account_Tests.cpp
         tests/Company_Tests.cpp
         tests/Config_Tests.cpp
@@ -127,6 +128,7 @@ add_executable(TMDBTests
         tests/Series_Tests.cpp
         tests/Season_Tests.cpp
         tests/Episode_Tests.cpp
+        tests/JSON/ASync/account.cpp
 )
 target_sources(TMDBTests PRIVATE)
 target_link_libraries(TMDBTests PRIVATE GTest::gtest GTest::gtest_main)

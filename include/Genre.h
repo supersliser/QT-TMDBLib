@@ -4,10 +4,8 @@
 
 #ifndef GENRE_H
 #define GENRE_H
-#include <cstdint>
 #include <QJsonObject>
 #include <QString>
-#include <utility>
 
 namespace tmdb
 {
