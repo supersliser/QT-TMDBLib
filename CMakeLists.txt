@@ -13,7 +13,7 @@ find_package(Qt6 REQUIRED COMPONENTS Core Network Widgets)
 find_package(fmt REQUIRED)
 
 set(PROJECT_SOURCES
-      include/QTMDB.h
+        include/QTMDB.h
         src/JSON/Sync/QTMDB.cpp
         include/timeWindow.h
         src/JSON/Sync/account_QTMDB.cpp
@@ -64,6 +64,24 @@ set(PROJECT_SOURCES
         include/aQTMDB.h
         src/JSON/ASync/QTMDB.cpp
         src/JSON/ASync/account_QTMDB.cpp
+        src/JSON/ASync/certifications_QTMDB.cpp
+        src/JSON/ASync/changes_QTMDB.cpp
+        src/JSON/ASync/collection_QTMDB.cpp
+        src/JSON/ASync/company_QTMDB.cpp
+        src/JSON/ASync/config_QTMDB.cpp
+        src/JSON/ASync/credits_QTMDB.cpp
+        src/JSON/ASync/genres_QTMDB.cpp
+        src/JSON/ASync/movieList_QTMDB.cpp
+        src/JSON/ASync/people_QTMDB.cpp
+        src/JSON/ASync/movie_QTMDB.cpp
+        src/JSON/ASync/network_QTMDB.cpp
+        src/JSON/ASync/reviews_QTMDB.cpp
+        src/JSON/ASync/trending_QTMDB.cpp
+        src/JSON/ASync/get_QTMDB.cpp
+        src/JSON/ASync/tv_series_QTMDB.cpp
+        src/JSON/ASync/tv_seasons_QTMDB.cpp
+        src/JSON/ASync/tv_episodes_QTMDB.cpp
+        src/JSON/ASync/watchProviders_QTMDB.cpp
 )
 
 set(QT_MODULES_NEEDED
@@ -74,7 +92,7 @@ set(QT_MODULES_NEEDED
 
 include_directories(include)
 add_library(QTMDB STATIC
-      ${PROJECT_SOURCES}
+        ${PROJECT_SOURCES}
 )
 
 
@@ -83,14 +101,14 @@ target_link_libraries(QTMDB PRIVATE fmt::fmt)
 
 include(GNUInstallDirs)
 install(TARGETS QTMDB
-    BUNDLE DESTINATION .
-    LIBRARY DESTINATION ${CMAKE_INSTALL_LIBDIR}
-    RUNTIME DESTINATION ${CMAKE_INSTALL_BINDIR}
+        BUNDLE DESTINATION .
+        LIBRARY DESTINATION ${CMAKE_INSTALL_LIBDIR}
+        RUNTIME DESTINATION ${CMAKE_INSTALL_BINDIR}
 )
 
-if(QT_VERSION_MAJOR EQUAL 6)
-  qt_finalize_executable(QTMDB)
-endif()
+if (QT_VERSION_MAJOR EQUAL 6)
+    qt_finalize_executable(QTMDB)
+endif ()
 
 find_package(GTest CONFIG REQUIRED)
 include(GoogleTest)
@@ -129,6 +147,12 @@ add_executable(TMDBTests
         tests/Season_Tests.cpp
         tests/Episode_Tests.cpp
         tests/JSON/ASync/account.cpp
+        tests/JSON/ASync/certifications.cpp
+        tests/JSON/ASync/changes.cpp
+        tests/JSON/ASync/collection.cpp
+        tests/JSON/ASync/company.cpp
+        tests/JSON/ASync/credits.cpp
+        tests/JSON/ASync/config.cpp
 )
 target_sources(TMDBTests PRIVATE)
 target_link_libraries(TMDBTests PRIVATE GTest::gtest GTest::gtest_main)

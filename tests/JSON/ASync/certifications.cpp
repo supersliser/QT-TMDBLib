@@ -6,20 +6,34 @@
 #include <QJsonArray>
 #include <QApplication>
 #include <gtest/gtest.h>
-#include "QTMDB.h"
+#include "aQTMDB.h"
 
-TEST(Qtmdb_JSON_Certifications_Test, movie)
+TEST(aQtmdb_JSON_Certifications_Test, movie)
 {
-    Qtmdb qtmdb(std::getenv("API_KEY"));
-    QJsonObject response = qtmdb.certifications_movie();
-    EXPECT_FALSE(response.isEmpty());
-    EXPECT_STREQ(response.value("certifications").toObject().value("GB").toArray()[0].toObject().value("certification").toString().toStdString().c_str(), "15");
+    aQtmdb qtmdb(std::getenv("API_KEY"));
+    qtmdb.certifications_movie();
+    QObject::connect(&qtmdb, &aQtmdb::finishedLoadingData, [&qtmdb](void* response)
+    {
+        QJsonObject data = *static_cast<QJsonObject*>(response);
+
+        EXPECT_FALSE(data.isEmpty());
+        EXPECT_STREQ(
+            data.value("certifications").toObject().value("GB").toArray()[0].toObject().value("certification").
+            toString().toStdString().c_str(), "15");
+    });
 }
 
-TEST(Qtmdb_JSON_Certifications_Test, tv)
+TEST(aQtmdb_JSON_Certifications_Test, tv)
 {
-    Qtmdb qtmdb(std::getenv("API_KEY"));
-    QJsonObject response = qtmdb.certifications_tv();
-    EXPECT_FALSE(response.isEmpty());
-    EXPECT_STREQ(response.value("certifications").toObject().value("GB").toArray()[0].toObject().value("certification").toString().toStdString().c_str(), "U");
+    aQtmdb qtmdb(std::getenv("API_KEY"));
+    qtmdb.certifications_tv();
+    QObject::connect(&qtmdb, &aQtmdb::finishedLoadingData, [&qtmdb](void* response)
+    {
+        QJsonObject data = *static_cast<QJsonObject*>(response);
+
+        EXPECT_FALSE(data.isEmpty());
+        EXPECT_STREQ(
+            data.value("certifications").toObject().value("GB").toArray()[0].toObject().value("certification").
+            toString().toStdString().c_str(), "U");
+    });
 }

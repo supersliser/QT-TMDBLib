@@ -6,56 +6,80 @@
 #include <QJsonArray>
 #include <QApplication>
 #include <gtest/gtest.h>
-#include "QTMDB.h"
+#include "aQTMDB.h"
 
-TEST(Qtmdb_JSON_Config_Test, details)
+TEST(aQtmdb_JSON_Config_Test, details)
 {
-    Qtmdb qtmdb(std::getenv("API_KEY"));
-    QJsonObject response = qtmdb.config_details();
-    EXPECT_FALSE(response.isEmpty());
-    EXPECT_STREQ(response.value("change_keys").toArray()[0].toString().toStdString().c_str(), "adult");
+    aQtmdb aQtmdb(std::getenv("API_KEY"));
+    aQtmdb.config_details();
+    QObject::connect(&aQtmdb, &aQtmdb::finishedLoadingData, [&aQtmdb](void* response)
+    {
+        QJsonObject data = *static_cast<QJsonObject*>(response);
+        EXPECT_FALSE(data.isEmpty());
+        EXPECT_STREQ(data.value("change_keys").toArray()[0].toString().toStdString().c_str(), "adult");
+    });
 }
 
-TEST(Qtmdb_JSON_Config_Test, countries)
+TEST(aQtmdb_JSON_Config_Test, countries)
 {
-    Qtmdb qtmdb(std::getenv("API_KEY"));
-    QJsonArray response = qtmdb.config_countries("en-GB");
-    EXPECT_FALSE(response.isEmpty());
-    EXPECT_STREQ(response[0].toObject().value("iso_3166_1").toString().toStdString().c_str(), "AD");
+    aQtmdb aQtmdb(std::getenv("API_KEY"));
+    aQtmdb.config_countries("en-GB");
+    QObject::connect(&aQtmdb, &aQtmdb::finishedLoadingData, [&aQtmdb](void* response)
+    {
+        QJsonArray data = *static_cast<QJsonArray*>(response);
+        EXPECT_FALSE(data.isEmpty());
+        EXPECT_STREQ(data[0].toObject().value("iso_3166_1").toString().toStdString().c_str(), "AD");
+    });
 }
 
-TEST(Qtmdb_JSON_Config_Test, jobs)
+TEST(aQtmdb_JSON_Config_Test, jobs)
 {
-    Qtmdb qtmdb(std::getenv("API_KEY"));
-    QJsonArray response = qtmdb.config_jobs();
-    EXPECT_FALSE(response.isEmpty());
-    EXPECT_TRUE(response[0].toObject().value("jobs").toArray()[0].isString());
+    aQtmdb aQtmdb(std::getenv("API_KEY"));
+    aQtmdb.config_jobs();
+    QObject::connect(&aQtmdb, &aQtmdb::finishedLoadingData, [&aQtmdb](void* response)
+    {
+        QJsonArray data = *static_cast<QJsonArray*>(response);
+        EXPECT_FALSE(data.isEmpty());
+        EXPECT_TRUE(data[0].toObject().value("jobs").toArray()[0].isString());
+    });
 }
 
-TEST(Qtmdb_JSON_Config_Test, languages)
+TEST(aQtmdb_JSON_Config_Test, languages)
 {
-    Qtmdb qtmdb(std::getenv("API_KEY"));
-    QJsonArray response = qtmdb.config_languages();
-    EXPECT_FALSE(response.isEmpty());
-    QJsonObject temp;
-    temp.insert("iso_639_1", "xx");
-    temp.insert("english_name", "No Language");
-    temp.insert("name", "No Language");
-    EXPECT_TRUE(response.contains(temp));
+    aQtmdb aQtmdb(std::getenv("API_KEY"));
+    aQtmdb.config_languages();
+    QObject::connect(&aQtmdb, &aQtmdb::finishedLoadingData, [&aQtmdb](void* response)
+    {
+        QJsonArray data = *static_cast<QJsonArray*>(response);
+        EXPECT_FALSE(data.isEmpty());
+        QJsonObject temp;
+        temp.insert("iso_639_1", "xx");
+        temp.insert("english_name", "No Language");
+        temp.insert("name", "No Language");
+        EXPECT_TRUE(data.contains(temp));
+    });
 }
 
-TEST(Qtmdb_JSON_Config_Test, primaryTranslations)
+TEST(aQtmdb_JSON_Config_Test, primaryTranslations)
 {
-    Qtmdb qtmdb(std::getenv("API_KEY"));
-    QJsonArray response = qtmdb.config_primaryTranslations();
-    EXPECT_FALSE(response.isEmpty());
-    EXPECT_STREQ(response[0].toString().toStdString().c_str(), "af-ZA");
+    aQtmdb aQtmdb(std::getenv("API_KEY"));
+    aQtmdb.config_primaryTranslations();
+    QObject::connect(&aQtmdb, &aQtmdb::finishedLoadingData, [&aQtmdb](void* response)
+    {
+        QJsonArray data = *static_cast<QJsonArray*>(response);
+        EXPECT_FALSE(data.isEmpty());
+        EXPECT_STREQ(data[0].toString().toStdString().c_str(), "af-ZA");
+    });
 }
 
-TEST(Qtmdb_JSON_Config_Test, timezones)
+TEST(aQtmdb_JSON_Config_Test, timezones)
 {
-    Qtmdb qtmdb(std::getenv("API_KEY"));
-    QJsonArray response = qtmdb.config_timezones();
-    EXPECT_FALSE(response.isEmpty());
-    EXPECT_STREQ(response[0].toObject().value("iso_3166_1").toString().toStdString().c_str(), "AD");
+    aQtmdb aQtmdb(std::getenv("API_KEY"));
+    aQtmdb.config_timezones();
+    QObject::connect(&aQtmdb, &aQtmdb::finishedLoadingData, [&aQtmdb](void* response)
+    {
+        QJsonArray data = *static_cast<QJsonArray*>(response);
+        EXPECT_FALSE(data.isEmpty());
+        EXPECT_STREQ(data[0].toObject().value("iso_3166_1").toString().toStdString().c_str(), "AD");
+    });
 }

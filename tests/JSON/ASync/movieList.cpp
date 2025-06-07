@@ -6,36 +6,52 @@
 #include <QJsonArray>
 #include <QApplication>
 #include <gtest/gtest.h>
-#include "QTMDB.h"
+#include "aQTMDB.h"
 
-TEST(Qtmdb_JSON_MovieList_Test, nowPlaying)
+TEST(aQtmdb_JSON_MovieList_Test, nowPlaying)
 {
-    Qtmdb qtmdb(std::getenv("API_KEY"));
-    QJsonObject response = qtmdb.movieList_nowPlaying("GB");
-    EXPECT_FALSE(response.isEmpty());
-    EXPECT_EQ(response.value("results").isArray(), true);
+    aQtmdb aQtmdb(std::getenv("API_KEY"));
+    aQtmdb.movieList_nowPlaying("GB");
+    QObject::connect(&aQtmdb, &aQtmdb::finishedLoadingData, [&aQtmdb](void* response)
+    {
+        QJsonObject data = *static_cast<QJsonObject*>(response);
+        EXPECT_FALSE(data.isEmpty());
+        EXPECT_EQ(data.value("results").isArray(), true);
+    });
 }
 
-TEST(Qtmdb_JSON_MovieList_Test, popular)
+TEST(aQtmdb_JSON_MovieList_Test, popular)
 {
-    Qtmdb qtmdb(std::getenv("API_KEY"));
-    QJsonObject response = qtmdb.movieList_popular("GB");
-    EXPECT_FALSE(response.isEmpty());
-    EXPECT_EQ(response.value("results").isArray(), true);
+    aQtmdb aQtmdb(std::getenv("API_KEY"));
+    aQtmdb.movieList_popular("GB");
+    QObject::connect(&aQtmdb, &aQtmdb::finishedLoadingData, [&aQtmdb](void* response)
+    {
+        QJsonObject data = *static_cast<QJsonObject*>(response);
+        EXPECT_FALSE(data.isEmpty());
+        EXPECT_EQ(data.value("results").isArray(), true);
+    });
 }
 
-TEST(Qtmdb_JSON_MovieList_Test, topRated)
+TEST(aQtmdb_JSON_MovieList_Test, topRated)
 {
-    Qtmdb qtmdb(std::getenv("API_KEY"));
-    QJsonObject response = qtmdb.movieList_topRated("GB");
-    EXPECT_FALSE(response.isEmpty());
-    EXPECT_EQ(response.value("results").isArray(), true);
+    aQtmdb aQtmdb(std::getenv("API_KEY"));
+    aQtmdb.movieList_topRated("GB");
+    QObject::connect(&aQtmdb, &aQtmdb::finishedLoadingData, [&aQtmdb](void* response)
+    {
+        QJsonObject data = *static_cast<QJsonObject*>(response);
+        EXPECT_FALSE(data.isEmpty());
+        EXPECT_EQ(data.value("results").isArray(), true);
+    });
 }
 
-TEST(Qtmdb_JSON_MovieList_Test, upcoming)
+TEST(aQtmdb_JSON_MovieList_Test, upcoming)
 {
-    Qtmdb qtmdb(std::getenv("API_KEY"));
-    QJsonObject response = qtmdb.movieList_upcoming("GB");
-    EXPECT_FALSE(response.isEmpty());
-    EXPECT_EQ(response.value("results").isArray(), true);
+    aQtmdb aQtmdb(std::getenv("API_KEY"));
+    aQtmdb.movieList_upcoming("GB");
+    QObject::connect(&aQtmdb, &aQtmdb::finishedLoadingData, [&aQtmdb](void* response)
+    {
+        QJsonObject data = *static_cast<QJsonObject*>(response);
+        EXPECT_FALSE(data.isEmpty());
+        EXPECT_EQ(data.value("results").isArray(), true);
+    });
 }

@@ -6,52 +6,76 @@
 #include <QJsonArray>
 #include <QApplication>
 #include <gtest/gtest.h>
-#include "QTMDB.h"
+#include "aQTMDB.h"
 
-TEST(Qtmdb_JSON_Get_Test, collection)
+TEST(aQtmdb_JSON_Get_Test, collection)
 {
-    Qtmdb qtmdb(std::getenv("API_KEY"));
-    QJsonObject response = qtmdb.get_collection("Avengers");
-    EXPECT_FALSE(response.isEmpty());
-    EXPECT_EQ(response.value("results").toArray()[0].toObject()["id"].toInt(), 482721);
+    aQtmdb aQtmdb(std::getenv("API_KEY"));
+    aQtmdb.get_collection("Avengers");
+    QObject::connect(&aQtmdb, &aQtmdb::finishedLoadingData, [&aQtmdb](void* response)
+    {
+        QJsonObject data = *static_cast<QJsonObject*>(response);
+        EXPECT_FALSE(data.isEmpty());
+        EXPECT_EQ(data.value("results").toArray()[0].toObject()["id"].toInt(), 482721);
+    });
 }
 
-TEST(Qtmdb_JSON_Get_Test, company)
+TEST(aQtmdb_JSON_Get_Test, company)
 {
-    Qtmdb qtmdb(std::getenv("API_KEY"));
-    QJsonObject response = qtmdb.get_company("HBO");
-    EXPECT_FALSE(response.isEmpty());
-    EXPECT_EQ(response.value("results").toArray()[0].toObject()["id"].toInt(), 3268);
+    aQtmdb aQtmdb(std::getenv("API_KEY"));
+    aQtmdb.get_company("HBO");
+    QObject::connect(&aQtmdb, &aQtmdb::finishedLoadingData, [&aQtmdb](void* response)
+    {
+        QJsonObject data = *static_cast<QJsonObject*>(response);
+        EXPECT_FALSE(data.isEmpty());
+        EXPECT_EQ(data.value("results").toArray()[0].toObject()["id"].toInt(), 3268);
+    });
 }
 
-TEST(Qtmdb_JSON_Get_Test, keyword)
+TEST(aQtmdb_JSON_Get_Test, keyword)
 {
-    Qtmdb qtmdb(std::getenv("API_KEY"));
-    QJsonObject response = qtmdb.get_keyword("lost");
-    EXPECT_FALSE(response.isEmpty());
-    EXPECT_EQ(response.value("results").toArray()[0].toObject()["id"].toInt(), 262419);
+    aQtmdb aQtmdb(std::getenv("API_KEY"));
+    aQtmdb.get_keyword("lost");
+    QObject::connect(&aQtmdb, &aQtmdb::finishedLoadingData, [&aQtmdb](void* response)
+    {
+        QJsonObject data = *static_cast<QJsonObject*>(response);
+        EXPECT_FALSE(data.isEmpty());
+        EXPECT_EQ(data.value("results").toArray()[0].toObject()["id"].toInt(), 262419);
+    });
 }
 
-TEST(Qtmdb_JSON_Get_Test, movie)
+TEST(aQtmdb_JSON_Get_Test, movie)
 {
-    Qtmdb qtmdb(std::getenv("API_KEY"));
-    QJsonObject response = qtmdb.get_movie("Fight Club");
-    EXPECT_FALSE(response.isEmpty());
-    EXPECT_EQ(response.value("results").toArray()[0].toObject()["id"].toInt(), 550);
+    aQtmdb aQtmdb(std::getenv("API_KEY"));
+    aQtmdb.get_movie("Fight Club");
+    QObject::connect(&aQtmdb, &aQtmdb::finishedLoadingData, [&aQtmdb](void* response)
+    {
+        QJsonObject data = *static_cast<QJsonObject*>(response);
+        EXPECT_FALSE(data.isEmpty());
+        EXPECT_EQ(data.value("results").toArray()[0].toObject()["id"].toInt(), 550);
+    });
 }
 
-TEST(Qtmdb_JSON_Get_Test, person)
+TEST(aQtmdb_JSON_Get_Test, person)
 {
-    Qtmdb qtmdb(std::getenv("API_KEY"));
-    QJsonObject response = qtmdb.get_person("Tom Hanks");
-    EXPECT_FALSE(response.isEmpty());
-    EXPECT_EQ(response.value("results").toArray()[0].toObject()["id"].toInt(), 31);
+    aQtmdb aQtmdb(std::getenv("API_KEY"));
+    aQtmdb.get_person("Tom Hanks");
+    QObject::connect(&aQtmdb, &aQtmdb::finishedLoadingData, [&aQtmdb](void* response)
+    {
+        QJsonObject data = *static_cast<QJsonObject*>(response);
+        EXPECT_FALSE(data.isEmpty());
+        EXPECT_EQ(data.value("results").toArray()[0].toObject()["id"].toInt(), 31);
+    });
 }
 
-TEST(Qtmdb_JSON_Get_Test, tv)
+TEST(aQtmdb_JSON_Get_Test, tv)
 {
-    Qtmdb qtmdb(std::getenv("API_KEY"));
-    QJsonObject response = qtmdb.get_tv("Breaking Bad");
-    EXPECT_FALSE(response.isEmpty());
-    EXPECT_EQ(response.value("results").toArray()[0].toObject()["id"].toInt(), 1396);
+    aQtmdb aQtmdb(std::getenv("API_KEY"));
+    aQtmdb.get_tv("Breaking Bad");
+    QObject::connect(&aQtmdb, &aQtmdb::finishedLoadingData, [&aQtmdb](void* response)
+    {
+        QJsonObject data = *static_cast<QJsonObject*>(response);
+        EXPECT_FALSE(data.isEmpty());
+        EXPECT_EQ(data.value("results").toArray()[0].toObject()["id"].toInt(), 1396);
+    });
 }

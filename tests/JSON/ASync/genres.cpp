@@ -6,20 +6,30 @@
 #include <QJsonArray>
 #include <QApplication>
 #include <gtest/gtest.h>
-#include "QTMDB.h"
+#include "aQTMDB.h"
 
-TEST(Qtmdb_JSON_Genres_Test, movie)
+TEST(aaQtmdb_JSON_Genres_Test, movie)
 {
-    Qtmdb qtmdb(std::getenv("API_KEY"));
-    QJsonObject response = qtmdb.genres_movie();
-    EXPECT_FALSE(response.isEmpty());
-    EXPECT_STREQ(response.value("genres").toArray()[0].toObject().value("name").toString().toStdString().c_str(), "Action");
+    aQtmdb aQtmdb(std::getenv("API_KEY"));
+    aQtmdb.genres_movie();
+    QObject::connect(&aQtmdb, &aQtmdb::finishedLoadingData, [&aQtmdb](void* response)
+    {
+        QJsonObject data = *static_cast<QJsonObject*>(response);
+        EXPECT_FALSE(data.isEmpty());
+        EXPECT_STREQ(data.value("genres").toArray()[0].toObject().value("name").toString().toStdString().c_str(),
+                     "Action");
+    });
 }
 
-TEST(Qtmdb_JSON_Genres_Test, tv)
+TEST(aQtmdb_JSON_Genres_Test, tv)
 {
-    Qtmdb qtmdb(std::getenv("API_KEY"));
-    QJsonObject response = qtmdb.genres_tv();
-    EXPECT_FALSE(response.isEmpty());
-    EXPECT_STREQ(response.value("genres").toArray()[0].toObject().value("name").toString().toStdString().c_str(), "Action & Adventure");
+    aQtmdb aQtmdb(std::getenv("API_KEY"));
+    aQtmdb.genres_tv();
+    QObject::connect(&aQtmdb, &aQtmdb::finishedLoadingData, [&aQtmdb](void* response)
+    {
+        QJsonObject data = *static_cast<QJsonObject*>(response);
+        EXPECT_FALSE(data.isEmpty());
+        EXPECT_STREQ(data.value("genres").toArray()[0].toObject().value("name").toString().toStdString().c_str(),
+                     "Action & Adventure");
+    });
 }

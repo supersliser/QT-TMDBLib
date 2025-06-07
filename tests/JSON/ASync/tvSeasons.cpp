@@ -6,68 +6,103 @@
 #include <QJsonArray>
 #include <QApplication>
 #include <gtest/gtest.h>
-#include "QTMDB.h"
+#include "aQTMDB.h"
 
-TEST(Qtmdb_JSON_TV_Season_Test, details)
+TEST(aQtmdb_JSON_TV_Season_Test, details)
 {
-    Qtmdb qtmdb(std::getenv("API_KEY"));
-    QJsonObject response = qtmdb.tv_seasons_details(1399, 1);
-    EXPECT_FALSE(response.isEmpty());
-    EXPECT_STREQ(response.value("name").toString().toStdString().c_str(), "Season 1");
+    aQtmdb aQtmdb(std::getenv("API_KEY"));
+    aQtmdb.tv_seasons_details(1399, 1);
+    QObject::connect(&aQtmdb, &aQtmdb::finishedLoadingData, [&aQtmdb](void* response)
+    {
+        QJsonObject data = *static_cast<QJsonObject*>(response);
+        EXPECT_FALSE(data.isEmpty());
+        EXPECT_STREQ(data.value("name").toString().toStdString().c_str(), "Season 1");
+    });
 }
 
-TEST(Qtmdb_JSON_TV_Season_Test, aggregateCredits)
+TEST(aQtmdb_JSON_TV_Season_Test, aggregateCredits)
 {
-    Qtmdb qtmdb(std::getenv("API_KEY"));
-    QJsonObject response = qtmdb.tv_seasons_aggregateCredits(1399, 1);
-    EXPECT_FALSE(response.isEmpty());
-    EXPECT_TRUE(response.value("cast").toArray()[0].toObject().value("id").isDouble());
+    aQtmdb aQtmdb(std::getenv("API_KEY"));
+    aQtmdb.tv_seasons_aggregateCredits(1399, 1);
+    QObject::connect(&aQtmdb, &aQtmdb::finishedLoadingData, [&aQtmdb](void* response)
+    {
+        QJsonObject data = *static_cast<QJsonObject*>(response);
+        EXPECT_FALSE(data.isEmpty());
+        EXPECT_TRUE(data.value("cast").toArray()[0].toObject().value("id").isDouble());
+    });
 }
 
-TEST(Qtmdb_JSON_TV_Season_Test, changes)
+TEST(aQtmdb_JSON_TV_Season_Test, changes)
 {
-    Qtmdb qtmdb(std::getenv("API_KEY"));
-    QJsonObject response = qtmdb.tv_seasons_changes(3624);
-    EXPECT_FALSE(response.isEmpty());
-    EXPECT_TRUE(response.value("changes").isArray());
+    aQtmdb aQtmdb(std::getenv("API_KEY"));
+    aQtmdb.tv_seasons_changes(3624);
+    QObject::connect(&aQtmdb, &aQtmdb::finishedLoadingData, [&aQtmdb](void* response)
+    {
+        QJsonObject data = *static_cast<QJsonObject*>(response);
+        EXPECT_FALSE(data.isEmpty());
+        EXPECT_TRUE(data.value("changes").isArray());
+    });
 }
 
-TEST(Qtmdb_JSON_TV_Season_Test, credits)
+TEST(aQtmdb_JSON_TV_Season_Test, credits)
 {
-    Qtmdb qtmdb(std::getenv("API_KEY"));
-    QJsonObject response = qtmdb.tv_seasons_credits(1399, 1);
-    EXPECT_FALSE(response.isEmpty());
-    EXPECT_EQ(response.value("cast").toArray()[0].toObject().value("id").toInt(), 22970);
+    aQtmdb aQtmdb(std::getenv("API_KEY"));
+    aQtmdb.tv_seasons_credits(1399, 1);
+    QObject::connect(&aQtmdb, &aQtmdb::finishedLoadingData, [&aQtmdb](void* response)
+    {
+        QJsonObject data = *static_cast<QJsonObject*>(response);
+        EXPECT_FALSE(data.isEmpty());
+        EXPECT_EQ(data.value("cast").toArray()[0].toObject().value("id").toInt(), 22970);
+    });
 }
 
-TEST(Qtmdb_JSON_TV_Season_Test, images)
+TEST(aQtmdb_JSON_TV_Season_Test, images)
 {
-    Qtmdb qtmdb(std::getenv("API_KEY"));
-    QJsonObject response = qtmdb.tv_seasons_images(1399, 1);
-    EXPECT_FALSE(response.isEmpty());
-    EXPECT_EQ(response.value("posters").toArray()[0].toObject().value("width").toInt(), 1000);
+    aQtmdb aQtmdb(std::getenv("API_KEY"));
+    aQtmdb.tv_seasons_images(1399, 1);
+    QObject::connect(&aQtmdb, &aQtmdb::finishedLoadingData, [&aQtmdb](void* response)
+    {
+        QJsonObject data = *static_cast<QJsonObject*>(response);
+        EXPECT_FALSE(data.isEmpty());
+        EXPECT_EQ(data.value("posters").toArray()[0].toObject().value("width").toInt(), 1000);
+    });
 }
 
-TEST(Qtmdb_JSON_TV_Season_Test, videos)
+TEST(aQtmdb_JSON_TV_Season_Test, videos)
 {
-    Qtmdb qtmdb(std::getenv("API_KEY"));
-    QJsonObject response = qtmdb.tv_seasons_videos(1399, 1);
-    EXPECT_FALSE(response.isEmpty());
-    EXPECT_TRUE(response.value("results").toArray()[0].toObject().value("site").isString());
+    aQtmdb aQtmdb(std::getenv("API_KEY"));
+    aQtmdb.tv_seasons_videos(1399, 1);
+    QObject::connect(&aQtmdb, &aQtmdb::finishedLoadingData, [&aQtmdb](void* response)
+    {
+        QJsonObject data = *static_cast<QJsonObject*>(response);
+        EXPECT_FALSE(data.isEmpty());
+        EXPECT_TRUE(data.value("results").toArray()[0].toObject().value("site").isString());
+    });
 }
 
-TEST(Qtmdb_JSON_TV_Season_Test, translations)
+TEST(aQtmdb_JSON_TV_Season_Test, translations)
 {
-    Qtmdb qtmdb(std::getenv("API_KEY"));
-    QJsonObject response = qtmdb.tv_seasons_translations(1399, 1);
-    EXPECT_FALSE(response.isEmpty());
-    EXPECT_STREQ(response.value("translations").toArray()[0].toObject().value("name").toString().toStdString().c_str(), "English");
+    aQtmdb aQtmdb(std::getenv("API_KEY"));
+    aQtmdb.tv_seasons_translations(1399, 1);
+    QObject::connect(&aQtmdb, &aQtmdb::finishedLoadingData, [&aQtmdb](void* response)
+    {
+        QJsonObject data = *static_cast<QJsonObject*>(response);
+        EXPECT_FALSE(data.isEmpty());
+        EXPECT_STREQ(data.value("translations").toArray()[0].toObject().value("name").toString().toStdString().c_str(),
+                     "English");
+    });
 }
 
-TEST(Qtmdb_JSON_TV_Season_Test, watchProviders)
+TEST(aQtmdb_JSON_TV_Season_Test, watchProviders)
 {
-    Qtmdb qtmdb(std::getenv("API_KEY"));
-    QJsonObject response = qtmdb.tv_seasons_watchProviders(1399, 1);
-    EXPECT_FALSE(response.isEmpty());
-    EXPECT_STREQ(response.value("results").toObject().value("GB").toObject().value("buy").toArray()[0].toObject().value("provider_name").toString().toStdString().c_str(), "Apple TV");
+    aQtmdb aQtmdb(std::getenv("API_KEY"));
+    aQtmdb.tv_seasons_watchProviders(1399, 1);
+    QObject::connect(&aQtmdb, &aQtmdb::finishedLoadingData, [&aQtmdb](void* response)
+    {
+        QJsonObject data = *static_cast<QJsonObject*>(response);
+        EXPECT_FALSE(data.isEmpty());
+        EXPECT_STREQ(
+            data.value("results").toObject().value("GB").toObject().value("buy").toArray()[0].toObject().value(
+                "provider_name").toString().toStdString().c_str(), "Apple TV");
+    });
 }

@@ -6,28 +6,46 @@
 #include <QJsonArray>
 #include <QApplication>
 #include <gtest/gtest.h>
-#include "QTMDB.h"
+#include "aQTMDB.h"
 
-TEST(Qtmdb_JSON_WatchProviders_Test, regions)
+TEST(aQtmdb_JSON_WatchProviders_Test, regions)
 {
-    Qtmdb qtmdb(std::getenv("API_KEY"));
-    QJsonObject response = qtmdb.watchProviders_regions();
-    EXPECT_FALSE(response.isEmpty());
-    EXPECT_STREQ(response.value("results").toArray()[0].toObject().value("english_name").toString().toStdString().c_str(), "Andorra");
+    aQtmdb aQtmdb(std::getenv("API_KEY"));
+    aQtmdb.watchProviders_regions();
+    QObject::connect(&aQtmdb, &aQtmdb::finishedLoadingData, [&aQtmdb](void* response)
+    {
+        QJsonObject data = *static_cast<QJsonObject*>(response);
+        EXPECT_FALSE(data.isEmpty());
+        EXPECT_STREQ(
+            data.value("results").toArray()[0].toObject().value("english_name").toString().toStdString().c_str(),
+            "Andorra");
+    });
 }
 
-TEST(Qtmdb_JSON_WatchProviders_Test, movie)
+TEST(aQtmdb_JSON_WatchProviders_Test, movie)
 {
-    Qtmdb qtmdb(std::getenv("API_KEY"));
-    QJsonObject response = qtmdb.watchProviders_movie();
-    EXPECT_FALSE(response.isEmpty());
-    EXPECT_EQ(response.value("results").toArray()[0].toObject().value("display_priorities").toObject().value("GB").toInt(), 4);
+    aQtmdb aQtmdb(std::getenv("API_KEY"));
+    aQtmdb.watchProviders_movie();
+    QObject::connect(&aQtmdb, &aQtmdb::finishedLoadingData, [&aQtmdb](void* response)
+    {
+        QJsonObject data = *static_cast<QJsonObject*>(response);
+        EXPECT_FALSE(data.isEmpty());
+        EXPECT_EQ(
+            data.value("results").toArray()[0].toObject().value("display_priorities").toObject().value("GB").toInt(),
+            4);
+    });
 }
 
-TEST(Qtmdb_JSON_WatchProviders_Test, tv)
+TEST(aQtmdb_JSON_WatchProviders_Test, tv)
 {
-    Qtmdb qtmdb(std::getenv("API_KEY"));
-    QJsonObject response = qtmdb.watchProviders_tv();
-    EXPECT_FALSE(response.isEmpty());
-    EXPECT_EQ(response.value("results").toArray()[0].toObject().value("display_priorities").toObject().value("GB").toInt(), 4);
+    aQtmdb aQtmdb(std::getenv("API_KEY"));
+    aQtmdb.watchProviders_tv();
+    QObject::connect(&aQtmdb, &aQtmdb::finishedLoadingData, [&aQtmdb](void* response)
+    {
+        QJsonObject data = *static_cast<QJsonObject*>(response);
+        EXPECT_FALSE(data.isEmpty());
+        EXPECT_EQ(
+            data.value("results").toArray()[0].toObject().value("display_priorities").toObject().value("GB").toInt(),
+            4);
+    });
 }

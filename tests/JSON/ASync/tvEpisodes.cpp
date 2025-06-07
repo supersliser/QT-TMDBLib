@@ -6,60 +6,89 @@
 #include <QJsonArray>
 #include <QApplication>
 #include <gtest/gtest.h>
-#include "QTMDB.h"
+#include "aQTMDB.h"
 
-TEST(Qtmdb_JSON_TV_Episode_Test, details)
+TEST(aQtmdb_JSON_TV_Episode_Test, details)
 {
-    Qtmdb qtmdb(std::getenv("API_KEY"));
-    QJsonObject response = qtmdb.tv_episodes_details(1399, 1, 1);
-    EXPECT_FALSE(response.isEmpty());
-    EXPECT_STREQ(response.value("air_date").toString().toStdString().c_str(), "2011-04-17");
+    aQtmdb aQtmdb(std::getenv("API_KEY"));
+    aQtmdb.tv_episodes_details(1399, 1, 1);
+    QObject::connect(&aQtmdb, &aQtmdb::finishedLoadingData, [&aQtmdb](void* response)
+    {
+        QJsonObject data = *static_cast<QJsonObject*>(response);
+        EXPECT_FALSE(data.isEmpty());
+        EXPECT_STREQ(data.value("air_date").toString().toStdString().c_str(), "2011-04-17");
+    });
 }
 
-TEST(Qtmdb_JSON_TV_Episode_Test, changes)
+TEST(aQtmdb_JSON_TV_Episode_Test, changes)
 {
-    Qtmdb qtmdb(std::getenv("API_KEY"));
-    QJsonObject response = qtmdb.tv_episodes_changes(63056);
-    EXPECT_FALSE(response.isEmpty());
-    EXPECT_TRUE(response.value("changes").isArray());
+    aQtmdb aQtmdb(std::getenv("API_KEY"));
+    aQtmdb.tv_episodes_changes(63056);
+    QObject::connect(&aQtmdb, &aQtmdb::finishedLoadingData, [&aQtmdb](void* response)
+    {
+        QJsonObject data = *static_cast<QJsonObject*>(response);
+        EXPECT_FALSE(data.isEmpty());
+        EXPECT_TRUE(data.value("changes").isArray());
+    });
 }
 
-TEST(Qtmdb_JSON_TV_Episode_Test, credits)
+TEST(aQtmdb_JSON_TV_Episode_Test, credits)
 {
-    Qtmdb qtmdb(std::getenv("API_KEY"));
-    QJsonObject response = qtmdb.tv_episodes_credits(1399, 1, 1);
-    EXPECT_FALSE(response.isEmpty());
-    EXPECT_EQ(response.value("cast").toArray()[0].toObject().value("id").toInt(), 22970);
+    aQtmdb aQtmdb(std::getenv("API_KEY"));
+    aQtmdb.tv_episodes_credits(1399, 1, 1);
+    QObject::connect(&aQtmdb, &aQtmdb::finishedLoadingData, [&aQtmdb](void* response)
+    {
+        QJsonObject data = *static_cast<QJsonObject*>(response);
+        EXPECT_FALSE(data.isEmpty());
+        EXPECT_EQ(data.value("cast").toArray()[0].toObject().value("id").toInt(), 22970);
+    });
 }
 
-TEST(Qtmdb_JSON_TV_Episode_Test, externalIDs)
+TEST(aQtmdb_JSON_TV_Episode_Test, externalIDs)
 {
-    Qtmdb qtmdb(std::getenv("API_KEY"));
-    QJsonObject response = qtmdb.tv_episodes_externalIDs(1399, 1, 1);
-    EXPECT_FALSE(response.isEmpty());
-    EXPECT_STREQ(response.value("imdb_id").toString().toStdString().c_str(), "tt1480055");
+    aQtmdb aQtmdb(std::getenv("API_KEY"));
+    aQtmdb.tv_episodes_externalIDs(1399, 1, 1);
+    QObject::connect(&aQtmdb, &aQtmdb::finishedLoadingData, [&aQtmdb](void* response)
+    {
+        QJsonObject data = *static_cast<QJsonObject*>(response);
+        EXPECT_FALSE(data.isEmpty());
+        EXPECT_STREQ(data.value("imdb_id").toString().toStdString().c_str(), "tt1480055");
+    });
 }
 
-TEST(Qtmdb_JSON_TV_Episode_Test, images)
+TEST(aQtmdb_JSON_TV_Episode_Test, images)
 {
-    Qtmdb qtmdb(std::getenv("API_KEY"));
-    QJsonObject response = qtmdb.tv_episodes_images(1399, 1, 1);
-    EXPECT_FALSE(response.isEmpty());
-    EXPECT_EQ(response.value("id").toInt(), 63056);
+    aQtmdb aQtmdb(std::getenv("API_KEY"));
+    aQtmdb.tv_episodes_images(1399, 1, 1);
+    QObject::connect(&aQtmdb, &aQtmdb::finishedLoadingData, [&aQtmdb](void* response)
+    {
+        QJsonObject data = *static_cast<QJsonObject*>(response);
+        EXPECT_FALSE(data.isEmpty());
+        EXPECT_EQ(data.value("id").toInt(), 63056);
+    });
 }
 
-TEST(Qtmdb_JSON_TV_Episode_Test, translations)
+TEST(aQtmdb_JSON_TV_Episode_Test, translations)
 {
-    Qtmdb qtmdb(std::getenv("API_KEY"));
-    QJsonObject response = qtmdb.tv_episodes_translations(1399, 1, 1);
-    EXPECT_FALSE(response.isEmpty());
-    EXPECT_STREQ(response.value("translations").toArray()[0].toObject().value("name").toString().toStdString().c_str(), "English");
+    aQtmdb aQtmdb(std::getenv("API_KEY"));
+    aQtmdb.tv_episodes_translations(1399, 1, 1);
+    QObject::connect(&aQtmdb, &aQtmdb::finishedLoadingData, [&aQtmdb](void* response)
+    {
+        QJsonObject data = *static_cast<QJsonObject*>(response);
+        EXPECT_FALSE(data.isEmpty());
+        EXPECT_STREQ(data.value("translations").toArray()[0].toObject().value("name").toString().toStdString().c_str(),
+                     "English");
+    });
 }
 
-TEST(Qtmdb_JSON_TV_Episode_Test, videos)
+TEST(aQtmdb_JSON_TV_Episode_Test, videos)
 {
-    Qtmdb qtmdb(std::getenv("API_KEY"));
-    QJsonObject response = qtmdb.tv_episodes_videos(1399, 1, 1);
-    EXPECT_FALSE(response.isEmpty());
-    EXPECT_TRUE(response.value("results").isArray());
+    aQtmdb aQtmdb(std::getenv("API_KEY"));
+    aQtmdb.tv_episodes_videos(1399, 1, 1);
+    QObject::connect(&aQtmdb, &aQtmdb::finishedLoadingData, [&aQtmdb](void* response)
+    {
+        QJsonObject data = *static_cast<QJsonObject*>(response);
+        EXPECT_FALSE(data.isEmpty());
+        EXPECT_TRUE(data.value("results").isArray());
+    });
 }

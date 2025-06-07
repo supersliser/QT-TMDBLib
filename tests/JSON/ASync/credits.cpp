@@ -6,12 +6,16 @@
 #include <QJsonArray>
 #include <QApplication>
 #include <gtest/gtest.h>
-#include "QTMDB.h"
+#include "aQTMDB.h"
 
-TEST(Qtmdb_JSON_Credits_Test, details)
+TEST(aQtmdb_JSON_Credits_Test, details)
 {
-    Qtmdb qtmdb(std::getenv("API_KEY"));
-    QJsonObject response = qtmdb.credits_details("6024a814c0ae36003d59cc3c");
-    EXPECT_FALSE(response.isEmpty());
-    EXPECT_STREQ(response.value("job").toString().toStdString().c_str(), "Actor");
+    aQtmdb qtmdb(std::getenv("API_KEY"));
+    qtmdb.credits_details("6024a814c0ae36003d59cc3c");
+    QObject::connect(&qtmdb, &aQtmdb::finishedLoadingData, [&qtmdb](void* response)
+    {
+        QJsonObject data = *static_cast<QJsonObject*>(response);
+        EXPECT_FALSE(data.isEmpty());
+        EXPECT_STREQ(data.value("job").toString().toStdString().c_str(), "Actor");
+    });
 }
