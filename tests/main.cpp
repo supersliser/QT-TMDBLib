@@ -6,7 +6,7 @@
 #include <QJsonArray>
 #include <QApplication>
 #include <gtest/gtest.h>
-#include "QTMDB.h"
+#include "../include/Sync/QTMDB.h"
 
 int main(int argc, char *argv[])
 {

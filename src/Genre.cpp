@@ -2,8 +2,8 @@
 // Created by t on 26/05/25.
 //
 
-#include "Genre.h"
-#include "QTMDB.h"
+#include "Sync/Genre.h"
+#include "Sync/QTMDB.h"
 
 void tmdb::Genre::setID(int32_t i_id) {
     m_id = i_id;

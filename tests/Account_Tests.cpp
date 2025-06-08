@@ -2,11 +2,11 @@
 // Created by t on 25/05/25.
 //
 
-#include "Account.h"
+#include "Sync/Account.h"
 #include <QJsonObject>
 #include <gtest/gtest.h>
 
-#include "QTMDB.h"
+#include "Sync/QTMDB.h"
 
 TEST(AccountTests, DefaultConstructor)
 {

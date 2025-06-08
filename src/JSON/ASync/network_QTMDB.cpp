@@ -2,7 +2,7 @@
 // Created by t on 21/05/25.
 //
 
-#include "aQTMDB.h"
+#include "Async/QTMDB.h"
 #include <QJsonObject>
 
 void aQtmdb::network_details(int32_t network_id)

@@ -4,10 +4,10 @@
 
 #include <QJsonObject>
 
-#include "Season.h"
+#include "Sync/Season.h"
 #include <gtest/gtest.h>
 
-#include "QTMDB.h"
+#include "Sync/QTMDB.h"
 
 TEST(SeasonTests, DefaultConstructor)
 {

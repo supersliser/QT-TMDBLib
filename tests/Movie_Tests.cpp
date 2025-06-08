@@ -2,8 +2,8 @@
 // Created by t on 26/05/25.
 //
 
-#include "Movie.h"
-#include "QTMDB.h"
+#include "Sync/Movie.h"
+#include "Sync/QTMDB.h"
 #include <gtest/gtest.h>
 
 TEST(MovieTests, DefaultConstructor)

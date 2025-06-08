@@ -2,9 +2,9 @@
 // Created by t on 31/05/25.
 //
 
-#include "Episode.h"
+#include "Sync/Episode.h"
 #include <gtest/gtest.h>
-#include "QTMDB.h"
+#include "Sync/QTMDB.h"
 
 TEST(EpisodeTests, DefaultConstructor)
 {

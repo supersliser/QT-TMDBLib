@@ -6,9 +6,9 @@
 #include <QJsonArray>
 #include <QApplication>
 #include <gtest/gtest.h>
-#include "aQTMDB.h"
+#include "Async/QTMDB.h"
 
-TEST(aaQtmdb_JSON_Genres_Test, movie)
+TEST(aQtmdb_JSON_Genres_Test, movie)
 {
     aQtmdb aQtmdb(std::getenv("API_KEY"));
     aQtmdb.genres_movie();

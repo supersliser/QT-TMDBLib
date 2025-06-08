@@ -37,6 +37,7 @@ namespace tmdb
         static Account getAccount(const QString& i_access_token, int32_t i_accountID);
 
         ~Account() = default;
+
     protected:
         Avatar m_avatar;
         int32_t m_id = 0;

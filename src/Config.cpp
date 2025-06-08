@@ -2,12 +2,12 @@
 // Created by t on 26/05/25.
 //
 
-#include "Config.h"
+#include "Sync/Config.h"
 
 #include <QJsonArray>
 #include <QJsonObject>
 
-#include "QTMDB.h"
+#include "Sync/QTMDB.h"
 #include <QPixmap>
 #include <QNetworkAccessManager>
 #include <QNetworkReply>

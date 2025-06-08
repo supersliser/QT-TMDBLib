@@ -2,8 +2,8 @@
 // Created by t on 26/05/25.
 //
 
-#include "Config.h"
-#include "QTMDB.h"
+#include "Sync/Config.h"
+#include "Sync/QTMDB.h"
 #include <gtest/gtest.h>
 
 TEST(ConfigTests, SupportedCountries) {

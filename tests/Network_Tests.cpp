@@ -2,10 +2,10 @@
 // Created by t on 30/05/25.
 //
 
-#include "Network.h"
+#include "Sync/Network.h"
 #include <gtest/gtest.h>
 
-#include "QTMDB.h"
+#include "Sync/QTMDB.h"
 
 TEST(NetworkTests, DefaultConstructor)
 {

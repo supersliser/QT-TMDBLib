@@ -2,9 +2,9 @@
 // Created by t on 26/05/25.
 //
 
-#include "Movie.h"
-#include "Account.h"
-#include "QTMDB.h"
+#include "Sync/Movie.h"
+#include "Sync/Account.h"
+#include "Sync/QTMDB.h"
 
 tmdb::Movie::Movie(const QString& i_access_token, int32_t i_movieID)
 {

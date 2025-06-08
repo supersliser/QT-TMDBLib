@@ -5,7 +5,7 @@
 #include <QJsonArray>
 #include <QApplication>
 #include <gtest/gtest.h>
-#include "QTMDB.h"
+#include "Sync/QTMDB.h"
 
 
 TEST(Qtmdb_JSON_Account_Test, details)

@@ -2,8 +2,8 @@
 // Created by t on 28/05/25.
 //
 
-#include "WatchProvider.h"
-#include "QTMDB.h"
+#include "Sync/WatchProvider.h"
+#include "Sync/QTMDB.h"
 #include <gtest/gtest.h>
 
 TEST(WatchProviderTests, DefaultConstructor)

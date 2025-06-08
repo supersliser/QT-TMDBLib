@@ -2,9 +2,9 @@
 // Created by t on 25/05/25.
 //
 
-#include "Company.h"
+#include "Sync/Company.h"
 
-#include "QTMDB.h"
+#include "Sync/QTMDB.h"
 
 void tmdb::Company::setDescription(const QString& i_description)
 {

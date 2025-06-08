@@ -2,8 +2,8 @@
 // Created by t on 27/05/25.
 //
 
-#include "WatchProvider.h"
-#include "QTMDB.h"
+#include "Sync/WatchProvider.h"
+#include "Sync/QTMDB.h"
 
 void tmdb::WatchProvider::setType(ProviderType i_type)
 {

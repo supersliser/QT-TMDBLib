@@ -2,8 +2,8 @@
 // Created by t on 30/05/25.
 //
 
-#include "Person.h"
-#include "QTMDB.h"
+#include "Sync/Person.h"
+#include "Sync/QTMDB.h"
 
 void tmdb::Person::setId(int i_id) {
     m_id = i_id;

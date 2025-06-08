@@ -13,9 +13,9 @@ find_package(Qt6 REQUIRED COMPONENTS Core Network Widgets)
 find_package(fmt REQUIRED)
 
 set(PROJECT_SOURCES
-        include/QTMDB.h
+        include/Sync/QTMDB.h
         src/JSON/Sync/QTMDB.cpp
-        include/timeWindow.h
+        include/Sync/timeWindow.h
         src/JSON/Sync/account_QTMDB.cpp
         src/JSON/Sync/certifications_QTMDB.cpp
         src/JSON/Sync/changes_QTMDB.cpp
@@ -35,33 +35,32 @@ set(PROJECT_SOURCES
         src/JSON/Sync/tv_seasons_QTMDB.cpp
         src/JSON/Sync/tv_episodes_QTMDB.cpp
         src/JSON/Sync/watchProviders_QTMDB.cpp
-        include/Account.h
-        include/Avatar.h
+        include/Sync/Account.h
+        include/Sync/Avatar.h
         src/Account.cpp
         src/Gravatar.cpp
         src/Tmdb.cpp
         src/Avatar.cpp
-        include/Company.h
+        include/Sync/Company.h
         src/Company.cpp
-        include/Config.h
+        include/Sync/Config.h
         src/Config.cpp
-        include/Genre.h
+        include/Sync/Genre.h
         src/Genre.cpp
-        include/Movie.h
+        include/Sync/Movie.h
         src/Movie.cpp
-        include/WatchProvider.h
+        include/Sync/WatchProvider.h
         src/WatchProvider.cpp
-        include/Person.h
+        include/Sync/Person.h
         src/Person.cpp
-        include/Series.h
-        include/Network.h
+        include/Sync/Series.h
+        include/Sync/Network.h
         src/Network.cpp
-        include/Season.h
+        include/Sync/Season.h
         src/Series.cpp
-        include/Episode.h
+        include/Sync/Episode.h
         src/Season.cpp
         src/Episode.cpp
-        include/aQTMDB.h
         src/JSON/ASync/QTMDB.cpp
         src/JSON/ASync/account_QTMDB.cpp
         src/JSON/ASync/certifications_QTMDB.cpp
@@ -82,6 +81,19 @@ set(PROJECT_SOURCES
         src/JSON/ASync/tv_seasons_QTMDB.cpp
         src/JSON/ASync/tv_episodes_QTMDB.cpp
         src/JSON/ASync/watchProviders_QTMDB.cpp
+        include/Async/Account.h
+        include/Async/Company.h
+        include/Async/Config.h
+        include/Async/Episode.h
+        include/Async/Genre.h
+        include/Async/Movie.h
+        include/Async/Network.h
+        include/Async/Person.h
+        include/Async/Season.h
+        include/Async/Series.h
+        include/Async/WatchProvider.h
+        include/Async/QTMDB.h
+        include/Async/Avatar.h
 )
 
 set(QT_MODULES_NEEDED

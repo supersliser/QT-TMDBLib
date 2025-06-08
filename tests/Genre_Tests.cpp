@@ -2,8 +2,8 @@
 // Created by t on 26/05/25.
 //
 
-#include "Genre.h"
-#include "QTMDB.h"
+#include "Sync/Genre.h"
+#include "Sync/QTMDB.h"
 #include <gtest/gtest.h>
 
 TEST(GenreTests, DefaultConstructor)

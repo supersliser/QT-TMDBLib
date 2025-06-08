@@ -2,7 +2,7 @@
 // Created by t on 21/05/25.
 //
 
-#include "QTMDB.h"
+#include "Sync/QTMDB.h"
 #include <QJsonObject>
 
 QJsonObject Qtmdb::tv_episodes_details(int32_t series_id, int32_t season_number, int32_t episode_number, std::string language)

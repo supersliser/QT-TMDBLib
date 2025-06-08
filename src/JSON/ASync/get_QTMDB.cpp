@@ -2,7 +2,7 @@
 // Created by t on 21/05/25.
 //
 
-#include "aQTMDB.h"
+#include "Async/QTMDB.h"
 #include <QJsonObject>
 
 void aQtmdb::get_collection(std::string query, bool include_adult, std::string language, int32_t page, std::string region)

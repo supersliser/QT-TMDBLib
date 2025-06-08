@@ -2,15 +2,15 @@
 // Created by t on 30/05/25.
 //
 
-#include "Network.h"
-#include "Series.h"
-#include "Season.h"
-#include "Config.h"
-#include "Company.h"
-#include "Genre.h"
+#include "Sync/Network.h"
+#include "Sync/Series.h"
+#include "Sync/Season.h"
+#include "Sync/Config.h"
+#include "Sync/Company.h"
+#include "Sync/Genre.h"
 #include <QJsonObject>
 
-#include "QTMDB.h"
+#include "Sync/QTMDB.h"
 
 using namespace tmdb::TV;
 void Series::setAdult(bool i_adult) {

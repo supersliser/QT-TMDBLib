@@ -6,7 +6,7 @@
 #include <QJsonArray>
 #include <QApplication>
 #include <gtest/gtest.h>
-#include "aQTMDB.h"
+#include "Async/QTMDB.h"
 
 TEST(aQtmdb_JSON_Reviews_Test, details)
 {

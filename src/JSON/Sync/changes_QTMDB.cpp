@@ -1,7 +1,7 @@
 //
 // Created by t on 21/05/25.
 //
-#include "QTMDB.h"
+#include "Sync/QTMDB.h"
 #include <QJsonObject>
 
 QJsonObject Qtmdb::changes_movie(QDate end_date, QDate start_date, int32_t page)

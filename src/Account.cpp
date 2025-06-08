@@ -2,12 +2,12 @@
 // Created by t on 25/05/25.
 //
 
-#include "Account.h"
+#include "Sync/Account.h"
 #include <QJsonObject>
 #include <QJsonArray>
 #include <QJsonDocument>
 
-#include "QTMDB.h"
+#include "../include/Sync/QTMDB.h"
 
 void tmdb::Account::setAvatar(const Avatar* i_avatar)
 {

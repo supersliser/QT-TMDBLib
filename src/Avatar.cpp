@@ -2,7 +2,7 @@
 // Created by t on 25/05/25.
 //
 
-#include "Account.h"
+#include "Sync/Account.h"
 
 tmdb::Avatar::Avatar(const Gravatar& i_gravatar, const Tmdb& i_tmdb)
 {

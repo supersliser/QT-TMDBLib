@@ -1,5 +1,5 @@
-#include "QTMDB.h"
-#include "timeWindow.h"
+#include "Sync/QTMDB.h"
+#include "Sync/timeWindow.h"
 #include <QJsonObject>
 
 QJsonObject Qtmdb::trending_movies(tmdb::timeWindow::timeWindow time_window, std::string language)

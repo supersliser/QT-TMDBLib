@@ -2,7 +2,7 @@
 // Created by t on 21/05/25.
 //
 
-#include "QTMDB.h"
+#include "Sync/QTMDB.h"
 #include <QJsonObject>
 
 QJsonObject Qtmdb::account_details(int32_t account_id)

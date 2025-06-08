@@ -2,7 +2,7 @@
 // Created by t on 21/05/25.
 //
 
-#include "QTMDB.h"
+#include "Sync/QTMDB.h"
 #include <QJsonObject>
 
 QJsonObject Qtmdb::people_popular(std::string language, int32_t page)

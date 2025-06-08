@@ -2,9 +2,9 @@
 // Created by t on 30/05/25.
 //
 
-#include "Network.h"
+#include "Sync/Network.h"
 
-#include "QTMDB.h"
+#include "Sync/QTMDB.h"
 
 void tmdb::TV::Network::setHeadquarters(const QString &i_headquarters) {
     m_headquarters = i_headquarters;

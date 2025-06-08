@@ -2,7 +2,7 @@
 // Created by t on 25/05/25.
 //
 
-#include "Avatar.h"
+#include "Sync/Avatar.h"
 #include <utility>
 
 tmdb::Gravatar::Gravatar(QString i_hash)

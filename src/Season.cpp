@@ -2,12 +2,12 @@
 // Created by t on 31/05/25.
 //
 
-#include "Season.h"
-#include "Episode.h"
+#include "Sync/Season.h"
+#include "Sync/Episode.h"
 #include <QJsonArray>
 #include <QJsonObject>
 
-#include "QTMDB.h"
+#include "Sync/QTMDB.h"
 
 using namespace tmdb::TV;
 

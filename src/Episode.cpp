@@ -2,9 +2,9 @@
 // Created by t on 31/05/25.
 //
 
-#include "Episode.h"
+#include "Sync/Episode.h"
 
-#include "QTMDB.h"
+#include "Sync/QTMDB.h"
 
 void tmdb::TV::Episode::setAirDate(const QDate &i_airDate) {
     m_airDate = i_airDate;
