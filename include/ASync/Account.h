@@ -7,11 +7,14 @@
 #include <QJsonObject>
 
 #include "Avatar.h"
+#include "QTMDB.h"
 
-namespace tmdb
+namespace tmdb::ASync
 {
-    class Account
+    class Account : public QObject
     {
+        Q_OBJECT
+
     public:
         void setAvatar(const Avatar* i_avatar);
         [[nodiscard]] Avatar* avatar() const;
@@ -29,16 +32,25 @@ namespace tmdb
         [[nodiscard]] bool includeAdult() const;
 
         Account() = default;
-        Account(int i_id, const QString& i_iso_639_1, const QString& i_iso_3166_1, const QString& i_name,
-                const QString& i_username, bool i_include_adult = true);
         explicit Account(const QString& i_access_token, int32_t i_accountID);
-        explicit Account(const QJsonObject& i_json);
 
+        static Account* fromJSON(const QJsonObject& i_json);
         static Account getAccount(const QString& i_access_token, int32_t i_accountID);
+        ~Account() override = default;
 
-        ~Account() = default;
+    public slots:
+        void loadAccount(int32_t i_accountID);
+
+    private slots:
+        void startedLoadingAccountReceived();
+        void finishedLoadingAccountReceived(void* i_data);
+
+    signals:
+        void startedLoadingAccount();
+        void finishedLoadingAccount(tmdb::ASync::Account* i_account);
 
     protected:
+        aQtmdb* m_q;
         Avatar m_avatar;
         int32_t m_id = 0;
         QString m_iso_639_1;

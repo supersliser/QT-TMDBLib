@@ -37,30 +37,30 @@ set(PROJECT_SOURCES
         src/JSON/Sync/watchProviders_QTMDB.cpp
         include/Sync/Account.h
         include/Sync/Avatar.h
-        src/Account.cpp
-        src/Gravatar.cpp
-        src/Tmdb.cpp
-        src/Avatar.cpp
+        src/Sync/Account.cpp
+        src/Sync/Gravatar.cpp
+        src/Sync/Tmdb.cpp
+        src/Sync/Avatar.cpp
         include/Sync/Company.h
-        src/Company.cpp
+        src/Sync/Company.cpp
         include/Sync/Config.h
-        src/Config.cpp
+        src/Sync/Config.cpp
         include/Sync/Genre.h
-        src/Genre.cpp
+        src/Sync/Genre.cpp
         include/Sync/Movie.h
-        src/Movie.cpp
+        src/Sync/Movie.cpp
         include/Sync/WatchProvider.h
-        src/WatchProvider.cpp
+        src/Sync/WatchProvider.cpp
         include/Sync/Person.h
-        src/Person.cpp
+        src/Sync/Person.cpp
         include/Sync/Series.h
         include/Sync/Network.h
-        src/Network.cpp
+        src/Sync/Network.cpp
         include/Sync/Season.h
-        src/Series.cpp
+        src/Sync/Series.cpp
         include/Sync/Episode.h
-        src/Season.cpp
-        src/Episode.cpp
+        src/Sync/Season.cpp
+        src/Sync/Episode.cpp
         src/JSON/ASync/QTMDB.cpp
         src/JSON/ASync/account_QTMDB.cpp
         src/JSON/ASync/certifications_QTMDB.cpp
@@ -81,19 +81,20 @@ set(PROJECT_SOURCES
         src/JSON/ASync/tv_seasons_QTMDB.cpp
         src/JSON/ASync/tv_episodes_QTMDB.cpp
         src/JSON/ASync/watchProviders_QTMDB.cpp
-        include/Async/Account.h
-        include/Async/Company.h
-        include/Async/Config.h
-        include/Async/Episode.h
-        include/Async/Genre.h
-        include/Async/Movie.h
-        include/Async/Network.h
-        include/Async/Person.h
-        include/Async/Season.h
-        include/Async/Series.h
-        include/Async/WatchProvider.h
-        include/Async/QTMDB.h
-        include/Async/Avatar.h
+        include/ASync/Account.h
+        include/ASync/Company.h
+        include/ASync/Config.h
+        include/ASync/Episode.h
+        include/ASync/Genre.h
+        include/ASync/Movie.h
+        include/ASync/Network.h
+        include/ASync/Person.h
+        include/ASync/Season.h
+        include/ASync/Series.h
+        include/ASync/WatchProvider.h
+        include/ASync/QTMDB.h
+        include/ASync/Avatar.h
+        src/ASync/Account.cpp
 )
 
 set(QT_MODULES_NEEDED

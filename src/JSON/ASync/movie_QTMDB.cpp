@@ -2,7 +2,7 @@
 // Created by t on 21/05/25.
 //
 
-#include "Async/QTMDB.h"
+#include "ASync/QTMDB.h"
 #include <QJsonObject>
 
 void aQtmdb::movie_details(int32_t movie_id, std::string language)

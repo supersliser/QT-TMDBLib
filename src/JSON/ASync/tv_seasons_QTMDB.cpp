@@ -2,7 +2,7 @@
 // Created by t on 21/05/25.
 //
 
-#include "Async/QTMDB.h"
+#include "ASync/QTMDB.h"
 #include <QJsonObject>
 
 void aQtmdb::tv_seasons_details(int32_t series_id, int32_t season_number, std::string language)

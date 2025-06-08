@@ -2,7 +2,7 @@
 // Created by t on 21/05/25.
 //
 
-#include "Async/QTMDB.h"
+#include "ASync/QTMDB.h"
 #include <QJsonObject>
 
 void aQtmdb::movieList_nowPlaying(std::string region,std::string language, int32_t page)

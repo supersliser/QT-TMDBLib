@@ -5,7 +5,7 @@
 #include <QJsonObject>
 #include <QNetworkAccessManager>
 #include <QNetworkReply>
-#include "Async/QTMDB.h"
+#include "ASync/QTMDB.h"
 
 aQtmdb::aQtmdb(std::string i_accessToken, QObject* parent) : QObject(parent)
 {

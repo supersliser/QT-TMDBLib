@@ -7,7 +7,7 @@
 #include <QJsonArray>
 #include <QJsonDocument>
 
-#include "../include/Sync/QTMDB.h"
+#include "Sync/QTMDB.h"
 
 void tmdb::Account::setAvatar(const Avatar* i_avatar)
 {
