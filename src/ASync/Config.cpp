@@ -21,60 +21,6 @@
 #include <QTextFragment>
 #include <QTextCursor>
 
-std::vector<tmdb::ASync::config::country> tmdb::ASync::config::getSupportedCountries(const QString& i_accessToken)
-{
-    aQtmdb q(i_accessToken.toStdString());
-    QJsonArray response = q.config_countries();
-    std::vector<country> countries;
-    for (const auto& item : response) {
-        QJsonObject countryObj = item.toObject();
-        country country;
-        country.native_name = countryObj.value("native_name").toString();
-        country.english_name = countryObj.value("english_name").toString();
-        country.iso_3166_1 = countryObj.value("iso_3166_1").toString();
-        countries.push_back(country);
-    }
-    return countries;
-}
-
-tmdb::ASync::config::country tmdb::ASync::config::getCountry(const QString& country_code, const QString& i_accessToken)
-{
-    auto countries = getSupportedCountries(i_accessToken);
-    for (const auto& country : countries) {
-        if (country.iso_3166_1 == country_code) {
-            return country;
-        }
-    }
-    return tmdb::ASync::config::country(); // Return an empty country if not found
-}
-
-tmdb::ASync::config::country tmdb::ASync::config::getCountry(const QJsonObject& i_json)
-{
-    country country;
-    country.native_name = i_json.value("native_name").toString();
-    country.english_name = i_json.value("english_name").toString();
-    country.iso_3166_1 = i_json.value("iso_3166_1").toString();
-    return country;
-}
-
-std::vector<tmdb::ASync::config::jobDept> tmdb::ASync::config::getSupportedJobs(const QString& i_accessToken)
-{
-    Qtmdb q(i_accessToken.toStdString());
-    QJsonArray response = q.config_jobs();
-    std::vector<tmdb::ASync::config::jobDept> jobs;
-    for (const auto& item : response) {
-        QJsonObject jobObj = item.toObject();
-        tmdb::ASync::config::jobDept jobDept;
-        jobDept.dept_name = jobObj.value("department").toString();
-        QJsonArray jobTitlesArray = jobObj.value("jobs").toArray();
-        for (const auto& title : jobTitlesArray) {
-            jobDept.job_titles.push_back(title.toString());
-        }
-        jobs.push_back(jobDept);
-    }
-    return jobs;
-}
-
 tmdb::ASync::config::jobDept tmdb::ASync::config::getDept(const QString& dept_title, const QString& i_accessToken)
 {
     auto jobs = getSupportedJobs(i_accessToken);

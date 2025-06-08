@@ -96,6 +96,10 @@ set(PROJECT_SOURCES
         src/ASync/Account.cpp
         src/ASync/Company.cpp
         src/ASync/Config.cpp
+        include/ASync/Country.h
+        src/ASync/Country.cpp
+        include/ASync/Department.h
+        src/ASync/Department.cpp
 )
 
 set(QT_MODULES_NEEDED

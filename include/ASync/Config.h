@@ -9,24 +9,20 @@
 #include <QString>
 #include <vector>
 
+#include "QTMDB.h"
+
 namespace tmdb::ASync::config
 {
+
+
+
+
     struct LinkInfo {
         QString href;
         QString title;
     };
     std::vector<LinkInfo> extractLinksFromUrl(const QUrl& url);
 
-
-    struct country
-    {
-        QString iso_3166_1;
-        QString native_name;
-        QString english_name;
-    };
-    std::vector<country> getSupportedCountries(const QString& i_accessToken);
-    country getCountry(const QString& country_code, const QString& i_accessToken);
-    country getCountry(const QJsonObject& i_json);
     struct jobDept
     {
         QString dept_name;
