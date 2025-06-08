@@ -93,8 +93,9 @@ set(PROJECT_SOURCES
         include/ASync/Series.h
         include/ASync/WatchProvider.h
         include/ASync/QTMDB.h
-        include/ASync/Avatar.h
         src/ASync/Account.cpp
+        src/ASync/Company.cpp
+        src/ASync/Config.cpp
 )
 
 set(QT_MODULES_NEEDED

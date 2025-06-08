@@ -9,12 +9,13 @@
 
 #include "ASync/QTMDB.h"
 
-void tmdb::ASync::Account::setAvatar(const tmdb::ASync::Avatar* i_avatar)
+
+void tmdb::ASync::Account::setAvatar(const tmdb::Avatar* i_avatar)
 {
     m_avatar = *i_avatar;
 }
 
-tmdb::ASync::Avatar* tmdb::ASync::Account::avatar() const
+tmdb::Avatar* tmdb::ASync::Account::avatar() const
 {
     return const_cast<Avatar*>(&m_avatar);
 }
@@ -79,11 +80,14 @@ bool tmdb::ASync::Account::includeAdult() const
     return m_include_adult;
 }
 
-tmdb::ASync::Account::Account(const QString& i_access_token, int32_t i_accountID) : m_q(new aQtmdb(i_access_token.toStdString()))
+tmdb::ASync::Account::Account() : m_q("")
 {
-    connect(m_q, &aQtmdb::startedLoadingData, this, &tmdb::ASync::Account::startedLoadingAccountReceived);
-    connect(m_q, &aQtmdb::finishedLoadingData, this, &tmdb::ASync::Account::finishedLoadingAccountReceived);
-    m_q->setParent(this);
+    m_q.setParent(this);
+}
+
+tmdb::ASync::Account::Account(const QString& i_access_token, int32_t i_accountID) : m_q(i_access_token.toStdString())
+{
+    m_q.setParent(this);
     loadAccount(i_accountID);
 }
 
@@ -102,11 +106,6 @@ tmdb::ASync::Account* tmdb::ASync::Account::fromJSON(const QJsonObject& i_json)
     return output;
 }
 
-tmdb::ASync::Account tmdb::ASync::Account::getAccount(const QString& i_access_token, int32_t i_accountID)
-{
-    return Account(i_access_token, i_accountID);
-}
-
 void tmdb::ASync::Account::startedLoadingAccountReceived()
 {
     emit startedLoadingAccount();
@@ -118,12 +117,13 @@ void tmdb::ASync::Account::finishedLoadingAccountReceived(void* i_data)
     emit finishedLoadingAccount(
         tmdb::ASync::Account::fromJSON(*var)
     );
+    disconnect(&m_q, &aQtmdb::startedLoadingData, this, &tmdb::ASync::Account::startedLoadingAccountReceived);
+    disconnect(&m_q, &aQtmdb::finishedLoadingData, this, &tmdb::ASync::Account::finishedLoadingAccountReceived);
 }
-
 
 void tmdb::ASync::Account::loadAccount(int32_t i_accountID)
 {
-    connect(m_q, &aQtmdb::startedLoadingData, this, &tmdb::ASync::Account::startedLoadingAccountReceived);
-    connect(m_q, &aQtmdb::finishedLoadingData, this, &tmdb::ASync::Account::finishedLoadingAccountReceived);
-    m_q->account_details(i_accountID);
+    connect(&m_q, &aQtmdb::startedLoadingData, this, &tmdb::ASync::Account::startedLoadingAccountReceived);
+    connect(&m_q, &aQtmdb::finishedLoadingData, this, &tmdb::ASync::Account::finishedLoadingAccountReceived);
+    m_q.account_details(i_accountID);
 }

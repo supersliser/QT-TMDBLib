@@ -2,8 +2,8 @@
 // Created by t on 30/05/25.
 //
 
-#ifndef PERSON_H
-#define PERSON_H
+#ifndef ASYNC_PERSON_H
+#define ASYNC_PERSON_H
 #include <QDate>
 #include <QString>
 

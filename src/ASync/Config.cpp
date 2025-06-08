@@ -2,12 +2,12 @@
 // Created by t on 26/05/25.
 //
 
-#include "Sync/Config.h"
+#include "ASync/Config.h"
 
 #include <QJsonArray>
 #include <QJsonObject>
 
-#include "Sync/QTMDB.h"
+#include "ASync/QTMDB.h"
 #include <QPixmap>
 #include <QNetworkAccessManager>
 #include <QNetworkReply>
@@ -21,10 +21,9 @@
 #include <QTextFragment>
 #include <QTextCursor>
 
-
-std::vector<tmdb::config::country> tmdb::config::getSupportedCountries(const QString& i_accessToken)
+std::vector<tmdb::ASync::config::country> tmdb::ASync::config::getSupportedCountries(const QString& i_accessToken)
 {
-    Qtmdb q(i_accessToken.toStdString());
+    aQtmdb q(i_accessToken.toStdString());
     QJsonArray response = q.config_countries();
     std::vector<country> countries;
     for (const auto& item : response) {
@@ -38,7 +37,7 @@ std::vector<tmdb::config::country> tmdb::config::getSupportedCountries(const QSt
     return countries;
 }
 
-tmdb::config::country tmdb::config::getCountry(const QString& country_code, const QString& i_accessToken)
+tmdb::ASync::config::country tmdb::ASync::config::getCountry(const QString& country_code, const QString& i_accessToken)
 {
     auto countries = getSupportedCountries(i_accessToken);
     for (const auto& country : countries) {
@@ -46,10 +45,10 @@ tmdb::config::country tmdb::config::getCountry(const QString& country_code, cons
             return country;
         }
     }
-    return tmdb::config::country(); // Return an empty country if not found
+    return tmdb::ASync::config::country(); // Return an empty country if not found
 }
 
-tmdb::config::country tmdb::config::getCountry(const QJsonObject& i_json)
+tmdb::ASync::config::country tmdb::ASync::config::getCountry(const QJsonObject& i_json)
 {
     country country;
     country.native_name = i_json.value("native_name").toString();
@@ -58,14 +57,14 @@ tmdb::config::country tmdb::config::getCountry(const QJsonObject& i_json)
     return country;
 }
 
-std::vector<tmdb::config::jobDept> tmdb::config::getSupportedJobs(const QString& i_accessToken)
+std::vector<tmdb::ASync::config::jobDept> tmdb::ASync::config::getSupportedJobs(const QString& i_accessToken)
 {
     Qtmdb q(i_accessToken.toStdString());
     QJsonArray response = q.config_jobs();
-    std::vector<tmdb::config::jobDept> jobs;
+    std::vector<tmdb::ASync::config::jobDept> jobs;
     for (const auto& item : response) {
         QJsonObject jobObj = item.toObject();
-        tmdb::config::jobDept jobDept;
+        tmdb::ASync::config::jobDept jobDept;
         jobDept.dept_name = jobObj.value("department").toString();
         QJsonArray jobTitlesArray = jobObj.value("jobs").toArray();
         for (const auto& title : jobTitlesArray) {
@@ -76,7 +75,7 @@ std::vector<tmdb::config::jobDept> tmdb::config::getSupportedJobs(const QString&
     return jobs;
 }
 
-tmdb::config::jobDept tmdb::config::getDept(const QString& dept_title, const QString& i_accessToken)
+tmdb::ASync::config::jobDept tmdb::ASync::config::getDept(const QString& dept_title, const QString& i_accessToken)
 {
     auto jobs = getSupportedJobs(i_accessToken);
     for (const auto& job : jobs) {
@@ -84,10 +83,10 @@ tmdb::config::jobDept tmdb::config::getDept(const QString& dept_title, const QSt
             return job;
         }
     }
-    return tmdb::config::jobDept(); // Return an empty jobDept if not found
+    return tmdb::ASync::config::jobDept(); // Return an empty jobDept if not found
 }
 
-std::vector<tmdb::config::language> tmdb::config::getSupportedLanguages(const QString& i_accessToken)
+std::vector<tmdb::ASync::config::language> tmdb::ASync::config::getSupportedLanguages(const QString& i_accessToken)
 {
     Qtmdb q(i_accessToken.toStdString());
     QJsonArray response = q.config_languages();
@@ -103,7 +102,7 @@ std::vector<tmdb::config::language> tmdb::config::getSupportedLanguages(const QS
     return languages;
 }
 
-tmdb::config::language tmdb::config::getLanguage(const QString& i_iso_639_1, const QString& i_accessToken)
+tmdb::ASync::config::language tmdb::ASync::config::getLanguage(const QString& i_iso_639_1, const QString& i_accessToken)
 {
     auto languages = getSupportedLanguages(i_accessToken);
     for (const auto& lang : languages) {
@@ -111,9 +110,9 @@ tmdb::config::language tmdb::config::getLanguage(const QString& i_iso_639_1, con
             return lang;
         }
     }
-    return tmdb::config::language(); // Return an empty language if not found
+    return tmdb::ASync::config::language(); // Return an empty language if not found
 }
-std::vector<QString> tmdb::config::getSupportedTranslations(const QString& i_accessToken)
+std::vector<QString> tmdb::ASync::config::getSupportedTranslations(const QString& i_accessToken)
 {
     Qtmdb q(i_accessToken.toStdString());
     QJsonArray response = q.config_primaryTranslations();
@@ -124,7 +123,7 @@ std::vector<QString> tmdb::config::getSupportedTranslations(const QString& i_acc
     return translations;
 }
 
-std::vector<QString> tmdb::config::getSupportedTimezones(const QString& i_accessToken)
+std::vector<QString> tmdb::ASync::config::getSupportedTimezones(const QString& i_accessToken)
 {
     Qtmdb q(i_accessToken.toStdString());
     QJsonArray response = q.config_timezones();
@@ -147,7 +146,7 @@ std::vector<QString> tmdb::config::getSupportedTimezones(const QString& i_access
     return timezones;
 }
 
-QPixmap tmdb::config::getPixmapFromUrl(const QUrl& url) {
+QPixmap tmdb::ASync::config::getPixmapFromUrl(const QUrl& url) {
     QNetworkAccessManager manager;
     QNetworkReply* reply = manager.get(QNetworkRequest(url));
     QEventLoop loop;
@@ -163,7 +162,7 @@ QPixmap tmdb::config::getPixmapFromUrl(const QUrl& url) {
     return pixmap;
 }
 
-std::vector<tmdb::config::LinkInfo> tmdb::config::extractLinksFromUrl(const QUrl& url) {
+std::vector<tmdb::ASync::config::LinkInfo> tmdb::ASync::config::extractLinksFromUrl(const QUrl& url) {
     QNetworkAccessManager manager;
     QEventLoop loop;
     QNetworkReply* reply = manager.get(QNetworkRequest(url));

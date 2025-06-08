@@ -2,8 +2,8 @@
 // Created by t on 27/05/25.
 //
 
-#ifndef WATCHPROVIDER_H
-#define WATCHPROVIDER_H
+#ifndef ASYNC_WATCHPROVIDER_H
+#define ASYNC_WATCHPROVIDER_H
 #include <QJsonObject>
 #include <QString>
 #include <QUrl>

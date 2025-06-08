@@ -2,8 +2,8 @@
 // Created by t on 30/05/25.
 //
 
-#ifndef SERIES_H
-#define SERIES_H
+#ifndef ASYNC_SERIES_H
+#define ASYNC_SERIES_H
 #include <QString>
 
 #include "Company.h"

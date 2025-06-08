@@ -2,11 +2,11 @@
 // Created by t on 25/05/25.
 //
 
-#ifndef ADULT_H
-#define ADULT_H
+#ifndef ASYNC_ADULT_H
+#define ASYNC_ADULT_H
 #include <QJsonObject>
 
-#include "Avatar.h"
+#include "Sync/Avatar.h"
 #include "QTMDB.h"
 
 namespace tmdb::ASync
@@ -31,11 +31,10 @@ namespace tmdb::ASync
         void setIncludeAdult(bool i_include_adult);
         [[nodiscard]] bool includeAdult() const;
 
-        Account() = default;
+        Account();
         explicit Account(const QString& i_access_token, int32_t i_accountID);
 
         static Account* fromJSON(const QJsonObject& i_json);
-        static Account getAccount(const QString& i_access_token, int32_t i_accountID);
         ~Account() override = default;
 
     public slots:
@@ -50,7 +49,7 @@ namespace tmdb::ASync
         void finishedLoadingAccount(tmdb::ASync::Account* i_account);
 
     protected:
-        aQtmdb* m_q;
+        aQtmdb m_q;
         Avatar m_avatar;
         int32_t m_id = 0;
         QString m_iso_639_1;

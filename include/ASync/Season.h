@@ -2,8 +2,8 @@
 // Created by t on 30/05/25.
 //
 
-#ifndef SEASON_H
-#define SEASON_H
+#ifndef ASYNC_SEASON_H
+#define ASYNC_SEASON_H
 #include <QDate>
 
 #include "Episode.h"

@@ -2,17 +2,14 @@
 // Created by t on 26/05/25.
 //
 
-#ifndef CONFIG_H
-#define CONFIG_H
-
+#ifndef ASYNC_CONFIG_H
+#define ASYNC_CONFIG_H
 
 #include <QJsonObject>
 #include <QString>
 #include <vector>
 
-
-
-namespace tmdb::config
+namespace tmdb::ASync::config
 {
     struct LinkInfo {
         QString href;

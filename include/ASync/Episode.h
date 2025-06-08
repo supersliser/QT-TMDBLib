@@ -2,8 +2,8 @@
 // Created by t on 31/05/25.
 //
 
-#ifndef EPISODE_H
-#define EPISODE_H
+#ifndef ASYNC_EPISODE_H
+#define ASYNC_EPISODE_H
 #include "Person.h"
 
 namespace tmdb

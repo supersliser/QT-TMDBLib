@@ -2,8 +2,8 @@
 // Created by t on 26/05/25.
 //
 
-#ifndef MOVIE_H
-#define MOVIE_H
+#ifndef ASYNC_MOVIE_H
+#define ASYNC_MOVIE_H
 
 #include "Company.h"
 #include "Config.h"

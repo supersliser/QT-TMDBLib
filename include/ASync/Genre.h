@@ -2,8 +2,8 @@
 // Created by t on 26/05/25.
 //
 
-#ifndef GENRE_H
-#define GENRE_H
+#ifndef ASYNC_GENRE_H
+#define ASYNC_GENRE_H
 #include <QJsonObject>
 #include <QString>
 

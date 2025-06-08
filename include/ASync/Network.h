@@ -2,8 +2,8 @@
 // Created by t on 30/05/25.
 //
 
-#ifndef NETWORK_H
-#define NETWORK_H
+#ifndef ASYNC_NETWORK_H
+#define ASYNC_NETWORK_H
 #include "Config.h"
 
 namespace tmdb

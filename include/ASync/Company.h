@@ -2,49 +2,62 @@
 // Created by t on 25/05/25.
 //
 
-#ifndef COMPANY_H
-#define COMPANY_H
+#ifndef ASYNC_COMPANY_H
+#define ASYNC_COMPANY_H
 #include <QJsonObject>
 #include <QString>
 
-namespace tmdb
+#include "QTMDB.h"
+#include "Sync/Config.h"
+
+namespace tmdb::ASync
 {
-    class Company
+    class Company : public QObject
     {
+        Q_OBJECT
+
     public:
-        void setDescription(const QString &i_description);
+        void setDescription(const QString& i_description);
         [[nodiscard]] QString description() const;
-        void setHeadquarters(const QString &i_headquarters);
+        void setHeadquarters(const QString& i_headquarters);
         [[nodiscard]] QString headquarters() const;
-        void setHomepage(const QString &i_homepage);
+        void setHomepage(const QString& i_homepage);
         [[nodiscard]] QString homepage() const;
-        void setName(const QString &i_name);
+        void setName(const QString& i_name);
         [[nodiscard]] QString name() const;
-        void setOriginCountry(const QString &i_originCountry);
-        [[nodiscard]] QString originCountry() const;
-        void setParentCompany(const QString &i_parentCompany);
+        void setOriginCountry(const config::country& i_originCountry);
+        [[nodiscard]] config::country originCountry() const;
+        void setParentCompany(const QString& i_parentCompany);
         [[nodiscard]] QString parentCompany() const;
-        void setLogoPath(const QString &i_logoPath);
+        void setLogoPath(const QString& i_logoPath);
         [[nodiscard]] QString logoPath() const;
         void setID(int32_t i_id);
         [[nodiscard]] int32_t id() const;
 
-        Company() = default;
-        Company(const QString &i_description, const QString &i_headquarters, const QString &i_homepage,
-                const QString &i_name, const QString &i_originCountry, const QString &i_parentCompany,
-                const QString &i_logoPath, int32_t i_id);
+        Company();
         Company(const QString& i_access_token, int32_t i_companyID);
-        ~Company() = default;
-        explicit Company(const QJsonObject &i_json);
+        ~Company() override = default;
 
-        static Company getCompany(const QString& i_access_token, int32_t i_companyID);
+        static Company* fromJSON(const QJsonObject& i_json, const QString& i_access_token);
+
+    public slots:
+        void loadCompany(int32_t i_companyID);
+
+    private slots:
+        void startedLoadingCompanyReceived();
+        void finishedLoadingCompanyReceived(void* i_data);
+
+    signals:
+        void startedLoadingCompany();
+        void finishedLoadingCompany(tmdb::ASync::Company* i_company);
 
     protected:
+        aQtmdb m_q;
         QString m_description;
         QString m_headquarters;
         QString m_homepage;
         QString m_name;
-        QString m_originCountry;
+        config::country m_originCountry;
         QString m_parentCompany;
         QString m_logoPath;
         int32_t m_id = 0;
