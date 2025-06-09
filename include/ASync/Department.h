@@ -7,6 +7,8 @@
 #include <QJsonObject>
 #include <QString>
 
+#include "QTMDB.h"
+
 namespace tmdb::ASync
 {
     class Department : public QObject
@@ -23,7 +25,7 @@ namespace tmdb::ASync
         Department(const QString& i_access_token, const QString& i_deptName);
         ~Department() override = default;
 
-        static Department* fromJSON(const QJsonObject& i_json);
+        Department* fromJSON(const QJsonObject& i_json);
 
     public slots:
         void loadDepartment(const QString& i_deptName);
@@ -46,6 +48,7 @@ namespace tmdb::ASync
     protected:
         QString m_deptName;
         std::vector<QString> m_jobTitles;
+        aQtmdb m_q;
     };
 }
 

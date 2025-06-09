@@ -100,6 +100,10 @@ set(PROJECT_SOURCES
         src/ASync/Country.cpp
         include/ASync/Department.h
         src/ASync/Department.cpp
+        include/ASync/Language.h
+        src/ASync/Language.cpp
+        include/ASync/Image.h
+        src/ASync/Image.cpp
 )
 
 set(QT_MODULES_NEEDED
