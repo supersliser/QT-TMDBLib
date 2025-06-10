@@ -2,14 +2,14 @@
 // Created by t on 31/05/25.
 //
 
-#include "Sync/Season.h"
-#include "Sync/Episode.h"
+#include "ASync/Season.h"
+#include "ASync/Episode.h"
 #include <QJsonArray>
 #include <QJsonObject>
 
-#include "Sync/QTMDB.h"
+#include "ASync/QTMDB.h"
 
-using namespace tmdb::TV;
+using namespace tmdb::ASync::TV;
 
 void Season::setAirDate(const QDate &i_airDate) {
     m_airDate = i_airDate;
@@ -67,36 +67,76 @@ float Season::voteAverage() const {
     return m_voteAverage;
 }
 
-Season::Season(const QString& i_access_token, int32_t i_seriesID, int32_t i_seasonNumber) {
-    *this = getSeason(i_access_token, i_seriesID, i_seasonNumber);
+Season::Season(const QString& i_access_token, int32_t i_seriesID, int32_t i_seasonNumber) : m_q(i_access_token.toStdString()) {
+    m_q.setParent(this);
+    loadSeason(i_seriesID, i_seasonNumber);
 }
 
-Season::Season(const QJsonObject &i_json) {
-    setAirDate(QDate::fromString(i_json["air_date"].toString(), Qt::ISODate));
-    setName(i_json["name"].toString());
-    setOverview(i_json["overview"].toString());
-    setId(i_json["id"].toInt());
-    setPosterPath(i_json["poster_path"].toString());
-    setSeasonNumber(i_json["season_number"].toInt());
-    setVoteAverage(static_cast<float>(i_json["vote_average"].toDouble()));
+Season::Season() : m_q("") {
+    m_q.setParent(this);
+}
 
-    QJsonArray episodesArray = i_json["episodes"].toArray();
-    std::vector<Episode> episodes;
-    for (const auto &episodeValue : episodesArray) {
-        episodes.emplace_back(episodeValue.toObject());
+Season* Season::fromJSON(const QJsonObject& i_json) {
+    auto* season = new Season();
+    season->setId(i_json["id"].toInt());
+    season->setName(i_json["name"].toString());
+    season->setOverview(i_json["overview"].toString());
+    season->setPosterPath(i_json["poster_path"].toString());
+    season->setSeasonNumber(i_json["season_number"].toInt());
+    season->setVoteAverage(i_json["vote_average"].toDouble());
+
+    if (i_json.contains("air_date")) {
+        season->setAirDate(QDate::fromString(i_json["air_date"].toString(), Qt::ISODate));
     }
-    setEpisodes(episodes);
+
+    if (i_json.contains("episodes")) {
+        QJsonArray episodesArray = i_json["episodes"].toArray();
+        std::vector<Episode> episodes;
+        for (const auto& episodeValue : episodesArray) {
+            QJsonObject episodeObject = episodeValue.toObject();
+            episodes.push_back(*Episode::fromJSON(episodeObject));
+        }
+        season->setEpisodes(episodes);
+    }
+
+    return season;
 }
 
-Season::Season(const QDate &i_airDate, const std::vector<Episode> &i_episodes, const QString &i_name,
-               const QString &i_overview, int i_id, const QString &i_posterPath, int i_seasonNumber,
-               float i_voteAverage)
-    : m_airDate(i_airDate), m_episodes(i_episodes), m_name(i_name), m_overview(i_overview), m_id(i_id),
-      m_posterPath(i_posterPath), m_seasonNumber(i_seasonNumber), m_voteAverage(i_voteAverage) {}
+void Season::loadSeason(int32_t i_seriesID, int32_t i_seasonNumber) {
+    connect(&m_q, &aQtmdb::startedLoadingData, this, &Season::startedLoadingSeasonReceived);
+    connect(&m_q, &aQtmdb::finishedLoadingData, this, &Season::finishedLoadingSeasonReceived);
+    m_q.tv_seasons_details(i_seriesID, i_seasonNumber);
+}
+void Season::startedLoadingSeasonReceived() {
+    emit startedLoadingSeason();
+}
+void Season::finishedLoadingSeasonReceived(void* i_data) {
+    auto json = static_cast<QJsonObject*>(i_data);
+    Season* season = fromJSON(*json);
+    emit finishedLoadingSeason(season);
+    disconnect(&m_q, &aQtmdb::startedLoadingData, this, &Season::startedLoadingSeasonReceived);
+    disconnect(&m_q, &aQtmdb::finishedLoadingData, this, &Season::finishedLoadingSeasonReceived);
+}
 
-Season Season::getSeason(const QString& i_access_token, int32_t i_seriesID, int32_t i_seasonNumber)
-{
-    Qtmdb q(i_access_token.toStdString());
-    QJsonObject json = q.tv_seasons_details(i_seriesID, i_seasonNumber);
-    return Season(json);
+void Season::loadEpisodesForSeason(int32_t i_seriesID, int32_t i_seasonNumber) {
+    connect(&m_q, &aQtmdb::startedLoadingData, this, &Season::startedLoadingSeasonEpisodesReceived);
+    connect(&m_q, &aQtmdb::finishedLoadingData, this, &Season::finishedLoadingSeasonEpisodesReceived);
+    m_q.tv_seasons_details(i_seriesID, i_seasonNumber);
+}
+void Season::startedLoadingSeasonEpisodesReceived() {
+    emit startedLoadingSeasonEpisodes();
+}
+void Season::finishedLoadingSeasonEpisodesReceived(void* i_data) {
+    auto json = static_cast<QJsonObject*>(i_data);
+    std::vector<Episode> episodes;
+    if (json->contains("episodes")) {
+        QJsonArray episodesArray = (*json)["episodes"].toArray();
+        for (const auto& episodeValue : episodesArray) {
+            QJsonObject episodeObject = episodeValue.toObject();
+            episodes.push_back(*Episode::fromJSON(episodeObject));
+        }
+    }
+    emit finishedLoadingSeasonEpisodes(episodes);
+    disconnect(&m_q, &aQtmdb::startedLoadingData, this, &Season::startedLoadingSeasonEpisodesReceived);
+    disconnect(&m_q, &aQtmdb::finishedLoadingData, this, &Season::finishedLoadingSeasonEpisodesReceived);
 }

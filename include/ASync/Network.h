@@ -4,48 +4,56 @@
 
 #ifndef ASYNC_NETWORK_H
 #define ASYNC_NETWORK_H
-#include "Config.h"
 
-namespace tmdb
+#include "Country.h"
+
+
+namespace tmdb::ASync::TV
 {
-    namespace TV
+    class Network : public QObject
     {
-        class Network
-        {
-        public:
-            void setHeadquarters(const QString &i_headquarters);
-            [[nodiscard]] QString headquarters() const;
-            void setHomepage(const QString &i_homepage);
-            [[nodiscard]] QString homepage() const;
-            void setId(int i_id);
-            [[nodiscard]] int id() const;
-            void setLogoPath(const QString &i_logoPath);
-            [[nodiscard]] QString logoPath() const;
-            void setName(const QString &i_name);
-            [[nodiscard]] QString name() const;
-            void setOriginCountry(const tmdb::config::country &i_originCountry);
-            [[nodiscard]] tmdb::config::country originCountry() const;
+        Q_OBJECT
 
-            Network() = default;
-            Network(const QString &i_headquarters, const QString &i_homepage, int id,
-                    const QString &i_logoPath, const QString &i_name,
-                    const tmdb::config::country &i_originCountry);
-            Network(const QString& i_access_token, int32_t i_networkID);
-            explicit Network(const QJsonObject &i_json, const QString& i_accessToken);
-            ~Network() = default;
+    public:
+        void setHeadquarters(const QString& i_headquarters);
+        [[nodiscard]] QString headquarters() const;
+        void setHomepage(const QString& i_homepage);
+        [[nodiscard]] QString homepage() const;
+        void setId(int i_id);
+        [[nodiscard]] int id() const;
+        void setLogoPath(const QString& i_logoPath);
+        [[nodiscard]] QString logoPath() const;
+        void setName(const QString& i_name);
+        [[nodiscard]] QString name() const;
+        void setOriginCountry( tmdb::ASync::Country* i_originCountry);
+        [[nodiscard]] tmdb::ASync::Country* originCountry() const;
 
-            static Network getNetwork(const QString& i_access_token, int32_t i_networkID);
+        Network();
+        explicit Network(const QString& i_access_token, int32_t i_networkID);
+        ~Network() override = default;
+        static Network* fromJSON(const QJsonObject& i_json);
 
+    public slots:
+        void loadNetwork(int32_t i_networkID);
 
-        protected:
-            QString m_headquarters;
-            QString m_homepage;
-            int m_id = 0;
-            QString m_logoPath;
-            QString m_name;
-            tmdb::config::country m_originCountry;
-        };
-    }
+    private slots:
+        void startedLoadingNetworkReceived();
+        void finishedLoadingNetworkReceived(void* i_data);
+
+    signals:
+        void startedLoadingNetwork();
+        void finishedLoadingNetwork(tmdb::ASync::TV::Network* i_network);
+
+    protected:
+        aQtmdb m_q;
+        QString m_headquarters;
+        QString m_homepage;
+        int m_id = 0;
+        QString m_logoPath;
+        QString m_name;
+        tmdb::ASync::Country* m_originCountry = nullptr;
+    };
 }
 
-#endif //NETWORK_H
+
+#endif //ASYNC_NETWORK_H

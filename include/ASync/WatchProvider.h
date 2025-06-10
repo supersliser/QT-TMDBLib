@@ -7,10 +7,11 @@
 #include <QJsonObject>
 #include <QString>
 #include <QUrl>
+#include "ASync/Language.h"
 
 #include "Config.h"
 
-namespace tmdb
+namespace tmdb::ASync
 {
     enum ProviderType
     {
@@ -20,8 +21,10 @@ namespace tmdb
         rent
     };
 
-    class WatchProvider
+    class WatchProvider : public QObject
     {
+        Q_OBJECT
+
     public:
         void setType(ProviderType i_type);
         [[nodiscard]] ProviderType type() const;
@@ -34,30 +37,59 @@ namespace tmdb
         void setLink(const QUrl& i_link);
         [[nodiscard]] QUrl link() const;
 
-        WatchProvider() = default;
-        WatchProvider(ProviderType i_type, QString i_logoPath, int i_providerID, QString i_providerName, QUrl i_link);
+        WatchProvider();
         WatchProvider(const QString& i_access_token, int i_providerID);
-        explicit WatchProvider(const QJsonObject& i_json);
 
-        static WatchProvider getWatchProvider(const QString& i_access_token, int i_providerID);
-        static std::vector<WatchProvider> getAllWatchProviders(const QString& i_access_token,
-                                                               ProviderType i_type = unset,
-                                                               config::language i_language = {"en-US", "United States", "United States"});
-        static std::vector<WatchProvider> getAllMovieProviders(const QString& i_access_token,
-                                                               config::language i_language = {"en-US", "United States", "United States"});
-        static std::vector<WatchProvider> getAllTVProviders(const QString& i_access_token,
-                                                            const config::language& = {"en-US", "United States", "United States"});
-        static std::vector<WatchProvider> getWatchProvidersForMovie(const QString& i_access_token,
-                                                                    const QString& i_language, int i_movieID);
-        static std::vector<WatchProvider> getWatchProvidersForTV(const QString& i_access_token,
-                                                                 const QString& i_language, int i_seriesID);
+        static WatchProvider* fromJSON(const QJsonObject& i_json);
+
+        ~WatchProvider() override = default;
+
+    public slots:
+        void loadWatchProvider(int i_providerID);
+        void loadAllWatchProviders(Language* i_language);
+        void loadAllMovieProviders(Language i_language);
+        void loadAllTVProviders(Language i_language);
+        void loadWatchProvidersForMovie(const QString& i_language, int i_movieID);
+        void loadWatchProvidersForTV(const QString& i_language, int i_seriesID);
+
+    private slots:
+        void startedLoadingWatchProviderReceived();
+        void finishedLoadingWatchProviderReceived(void* i_data);
+        void startedLoadingAllWatchProvidersReceived();
+        void finishedLoadingAllWatchProvidersReceived(void* i_data);
+        void startedLoadingAllMovieProvidersReceived();
+        void finishedLoadingAllMovieProvidersReceived(void* i_data);
+        void startedLoadingAllTVProvidersReceived();
+        void finishedLoadingAllTVProvidersReceived(void* i_data);
+        void startedLoadingWatchProvidersForMovieReceived();
+        void finishedLoadingWatchProvidersForMovieReceived(void* i_data);
+        void startedLoadingWatchProvidersForTVReceived();
+        void finishedLoadingWatchProvidersForTVReceived(void* i_data);
+
+    signals:
+        void startedLoadingWatchProvider();
+        void finishedLoadingWatchProvider(tmdb::ASync::WatchProvider* i_watchProvider);
+        void startedLoadingAllWatchProviders();
+        void finishedLoadingAllWatchProviders(std::vector<tmdb::ASync::WatchProvider>* i_watchProviders);
+        void startedLoadingAllMovieProviders();
+        void finishedLoadingAllMovieProviders(std::vector<tmdb::ASync::WatchProvider>* i_watchProviders);
+        void startedLoadingAllTVProviders();
+        void finishedLoadingAllTVProviders(std::vector<tmdb::ASync::WatchProvider>* i_watchProviders);
+        void startedLoadingWatchProvidersForMovie();
+        void finishedLoadingWatchProvidersForMovie(std::vector<tmdb::ASync::WatchProvider>* i_watchProviders);
+        void startedLoadingWatchProvidersForTV();
+        void finishedLoadingWatchProvidersForTV(std::vector<tmdb::ASync::WatchProvider>* i_watchProviders);
 
     protected:
+        aQtmdb m_q;
         ProviderType m_type = unset;
         QString m_logoPath;
         int m_providerID = 0;
         QString m_providerName;
         QUrl m_link;
+
+        QJsonObject* m_tempData = nullptr;
+        Language* m_tempLanguage = nullptr;
     };
 }
 

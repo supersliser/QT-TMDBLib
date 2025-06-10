@@ -4,12 +4,9 @@
 
 #ifndef ASYNC_PERSON_H
 #define ASYNC_PERSON_H
-#include <QDate>
-#include <QString>
-
 #include "Config.h"
 
-namespace tmdb
+namespace tmdb::ASync
 {
     enum Gender
     {
@@ -19,8 +16,10 @@ namespace tmdb
         nonBinary,
     };
 
-    class Person
+    class Person : public QObject
     {
+        Q_OBJECT
+
     public:
         void setId(int i_id);
         [[nodiscard]] int id() const;
@@ -49,18 +48,25 @@ namespace tmdb
         void setProfilePath(const QString& i_profilePath);
         [[nodiscard]] QString profilePath() const;
 
-        Person() = default;
-        Person(int i_id, QString i_name, std::vector<QString> i_alsoKnownAs,
-               QString i_biography, QDate i_birthday, QDate i_death, Gender i_gender, QString i_homepage,
-               QString i_imdb_id,
-               QString i_knownFor, QString i_placeOfBirth, float i_popularity, QString i_profilePath);
+        Person();
         Person(const QString& i_access_token, int32_t i_personID);
-        explicit Person(const QJsonObject& i_json);
-        ~Person() = default;
+        ~Person() override = default;
 
-        static Person getPerson(const QString& i_access_token, int32_t i_genreID);
+        static Person* fromJSON(const QJsonObject& i_json);
+
+    public slots:
+        void loadPerson(int32_t i_personID);
+
+    private slots:
+        void startedLoadingPersonReceived();
+        void finishedLoadingPersonReceived(void* i_data);
+
+    signals:
+        void startedLoadingPerson();
+        void finishedLoadingPerson(tmdb::ASync::Person* i_person);
 
     protected:
+        aQtmdb m_q;
         bool m_idAdult = true;
         std::vector<QString> m_alsoKnownAs;
         QString m_biography;
@@ -82,14 +88,13 @@ namespace tmdb
     protected:
         QString m_character;
         QString m_creditID;
+
     public:
         void setCharacter(const QString& i_character);
         [[nodiscard]] QString character() const;
         void setCreditID(const QString& i_creditID);
         [[nodiscard]] QString creditID() const;
-
-        explicit Credit(const QJsonObject& i_json);
     };
 }
 
-#endif //PERSON_H
+#endif //ASYNC_PERSON_H

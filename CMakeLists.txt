@@ -104,6 +104,14 @@ set(PROJECT_SOURCES
         src/ASync/Language.cpp
         include/ASync/Image.h
         src/ASync/Image.cpp
+        src/ASync/Episode.cpp
+        src/ASync/Genre.cpp
+        src/ASync/Movie.cpp
+        src/ASync/Network.cpp
+        src/ASync/Person.cpp
+        src/ASync/Season.cpp
+        src/ASync/Series.cpp
+        src/ASync/WatchProvider.cpp
 )
 
 set(QT_MODULES_NEEDED

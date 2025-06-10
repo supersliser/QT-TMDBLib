@@ -2,503 +2,636 @@
 // Created by t on 26/05/25.
 //
 
-#include "Sync/Movie.h"
-#include "Sync/Account.h"
-#include "Sync/QTMDB.h"
+#include "ASync/Movie.h"
+#include "ASync/Account.h"
+#include "ASync/Image.h"
+#include "ASync/QTMDB.h"
 
-tmdb::Movie::Movie(const QString& i_access_token, int32_t i_movieID)
+tmdb::ASync::Movie::Movie() : m_q("")
 {
-    Qtmdb q(i_access_token.toStdString());
-    QJsonObject response = q.movie_details(i_movieID);
-    *this = Movie(response, i_access_token);
+    m_q.setParent(this);
 }
 
-tmdb::Movie::Movie(const QJsonObject& i_json, const QString& i_access_token)
+tmdb::ASync::Movie::Movie(const QString& i_access_token, int32_t i_movieID) : m_q(i_access_token.toStdString())
 {
-    if (i_json.contains("adult")) { setAdult(i_json["adult"].toBool()); }
-    else { setAdult(false); }
-    if (i_json.contains("backdrop_path")) { setBackdropPath(i_json["backdrop_path"].toString()); }
-    else { setBackdropPath(""); }
-    if (i_json.contains("belongs_to_collection"))
-    {
-        setBelongsToCollection(i_json["belongs_to_collection"].toObject().value("id").toString());
-    }
-    else { setBelongsToCollection(""); }
-    if (i_json.contains("budget")) { setBudget(i_json["budget"].toInt()); }
-    else { setBudget(0); }
-
-    if (i_json.contains("genres"))
-    {
-        QJsonArray genresArray = i_json["genres"].toArray();
-        std::vector<Genre> genres;
-        for (const auto& genre : genresArray)
-        {
-            genres.emplace_back(genre.toObject());
-        }
-        setGenres(genres);
-    }
-    else if (i_json.contains("genre_ids"))
-    {
-        QJsonArray genreIdsArray = i_json["genre_ids"].toArray();
-        std::vector<Genre> genres;
-        for (const auto& genreId : genreIdsArray)
-        {
-            genres.emplace_back(Genre::getGenre(i_access_token, genreId.toInt()));
-        }
-        setGenres(genres);
-    }
-    else { setGenres({}); }
-    if (i_json.contains("homepage")) { setHomepage(i_json["homepage"].toString()); }
-    else { setHomepage(""); }
-    setId(i_json["id"].toInt());
-    if (i_json.contains("imdb_id")) { setImdbID(i_json["imdb_id"].toString()); }
-    else { setImdbID(""); }
-
-    if (i_json.contains("original_language"))
-    {
-        QString originalLanguageStr = i_json["original_language"].toString();
-        setOriginalLanguage(config::getLanguage(originalLanguageStr, i_access_token));
-    }
-    else
-    {
-        setOriginalLanguage(config::language());
-    }
-
-    if (i_json.contains("original_title"))
-    {
-        setOriginalTitle(i_json["original_title"].toString());
-    }
-    else
-    {
-        setOriginalTitle("");
-    }
-
-    if (i_json.contains("overview")) { setOverview(i_json["overview"].toString()); }
-    else { setOverview(""); }
-    if (i_json.contains("popularity"))
-    {
-        setPopularity(static_cast<float>(i_json["popularity"].toDouble()));
-    }
-    else
-    {
-        setPopularity(0.0f);
-    }
-    if (i_json.contains("poster_path")) { setPosterPath(i_json["poster_path"].toString()); }
-    else { setPosterPath(""); }
-
-    if (i_json.contains("production_companies"))
-    {
-        QJsonArray productionCompaniesArray = i_json["production_companies"].toArray();
-        std::vector<Company> productionCompanies;
-        for (const auto& company : productionCompaniesArray)
-        {
-            productionCompanies.emplace_back(company.toObject());
-        }
-        setProductionCompanies(productionCompanies);
-    }
-    else
-    {
-        setProductionCompanies({});
-    }
-
-    if (i_json.contains("production_countries"))
-    {
-        QJsonArray countriesArray = i_json["production_countries"].toArray();
-        std::vector<config::country> countries;
-        for (const auto& country : countriesArray)
-        {
-            countries.emplace_back(config::getCountry(country.toObject()));
-        }
-        setCountries(countries);
-    }
-    else
-    {
-        setCountries({});
-    }
-    if (i_json.contains("release_date"))
-    {
-        QString releaseDateStr = i_json["release_date"].toString();
-        if (!releaseDateStr.isEmpty())
-        {
-            QDate releaseDate = QDate::fromString(releaseDateStr, Qt::ISODate);
-            setReleaseDate(releaseDate);
-        }
-    }
-    else
-    {
-        setReleaseDate(QDate());
-    }
-    if (i_json.contains("revenue")) { setRevenue(i_json["revenue"].toInt()); }
-    else { setRevenue(0); }
-    if (i_json.contains("runtime")) { setRuntime(i_json["runtime"].toInt()); }
-    else { setRuntime(0); }
-    if (i_json.contains("spoken_languages"))
-    {
-        QJsonArray languagesArray = i_json["spoken_languages"].toArray();
-        std::vector<config::language> languages;
-        for (const auto& language : languagesArray)
-        {
-            languages.emplace_back(config::getLanguage(language.toObject()["iso_639_1"].toString(), i_access_token));
-        }
-        setLanguages(languages);
-    }
-    else
-    {
-        setLanguages({});
-    }
-    if (i_json.contains("status")) { setStatus(i_json["status"].toString()); }
-    else { setStatus(""); }
-    if (i_json.contains("tagline")) { setTagline(i_json["tagline"].toString()); }
-    else { setTagline(""); }
-    if (i_json.contains("title")) { setTitle(i_json["title"].toString()); }
-    else { setTitle(""); }
-    if (i_json.contains("video")) { setVideo(i_json["video"].toBool()); }
-    else { setVideo(false); }
-    if (i_json.contains("vote_average"))
-    {
-        setVoteAverage(static_cast<float>(i_json["vote_average"].toDouble()));
-    }
-    else
-    {
-        setVoteAverage(0.0f);
-    }
-    if (i_json.contains("vote_count")) { setVoteCount(i_json["vote_count"].toInt()); }
-    else { setVoteCount(0); }
+    m_q.setParent(this);
+    loadMovie(i_movieID);
 }
 
-tmdb::Movie tmdb::Movie::getMovie(const QString& i_access_token, int32_t i_movieID)
-{
-    return Movie(i_access_token, i_movieID);
-}
+void tmdb::ASync::Movie::setAdult(bool i_adult) { m_adult = i_adult; }
+bool tmdb::ASync::Movie::adult() const { return m_adult; }
 
-std::vector<tmdb::Movie> tmdb::Movie::searchForMovies(const QString& i_access_token, const QString& i_query,
-                                                      int32_t i_page, int32_t i_year, int32_t i_primaryReleaseYear,
-                                                      bool i_includeAdult,
-                                                      const QString& i_country,
-                                                      const QString& i_language)
-{
-    Qtmdb q(i_access_token.toStdString());
-    auto response = q.get_movie(i_query.toStdString(), i_includeAdult, i_language.toStdString(),
-                                i_primaryReleaseYear == 0 ? "" : std::to_string(i_primaryReleaseYear), i_page,
-                                i_country.toStdString(),
-                                i_year == 0 ? "" : std::to_string(i_year));
-    std::vector<Movie> movies;
-    for (const auto& item : response["results"].toArray())
-    {
-        movies.emplace_back(q.movie_details(item.toObject()["id"].toInt()), i_access_token);
-    }
-    return movies;
-}
+void tmdb::ASync::Movie::setBackdropPath(const QString& i_backdropPath) { m_backdropPath = i_backdropPath; }
+QString tmdb::ASync::Movie::backdropPath() const { return m_backdropPath; }
 
-void tmdb::Movie::setAdult(bool i_adult) { m_adult = i_adult; }
-bool tmdb::Movie::adult() const { return m_adult; }
-
-void tmdb::Movie::setBackdropPath(const QString& i_backdropPath) { m_backdropPath = i_backdropPath; }
-QString tmdb::Movie::backdropPath() const { return m_backdropPath; }
-
-void tmdb::Movie::setBelongsToCollection(const QString& i_belongsToCollection)
+void tmdb::ASync::Movie::setBelongsToCollection(const QString& i_belongsToCollection)
 {
     m_belongsToCollection = i_belongsToCollection;
 }
 
-QString tmdb::Movie::belongsToCollection() const { return m_belongsToCollection; }
+QString tmdb::ASync::Movie::belongsToCollection() const { return m_belongsToCollection; }
 
-void tmdb::Movie::setBudget(int i_budget) { m_budget = i_budget; }
-int tmdb::Movie::budget() const { return m_budget; }
+void tmdb::ASync::Movie::setBudget(int i_budget) { m_budget = i_budget; }
+int tmdb::ASync::Movie::budget() const { return m_budget; }
 
-void tmdb::Movie::setGenres(const std::vector<Genre>& i_genres) { m_genres = i_genres; }
-std::vector<tmdb::Genre> tmdb::Movie::genres() const { return m_genres; }
+void tmdb::ASync::Movie::setGenres(const std::vector<Genre>& i_genres) { m_genres = i_genres; }
+std::vector<tmdb::ASync::Genre> tmdb::ASync::Movie::genres() const { return m_genres; }
 
-void tmdb::Movie::setHomepage(const QString& i_homepage) { m_homepage = i_homepage; }
-QString tmdb::Movie::homepage() const { return m_homepage; }
+void tmdb::ASync::Movie::setHomepage(const QString& i_homepage) { m_homepage = i_homepage; }
+QString tmdb::ASync::Movie::homepage() const { return m_homepage; }
 
-void tmdb::Movie::setId(int i_id) { m_id = i_id; }
-int tmdb::Movie::id() const { return m_id; }
+void tmdb::ASync::Movie::setId(int i_id) { m_id = i_id; }
+int tmdb::ASync::Movie::id() const { return m_id; }
 
-void tmdb::Movie::setImdbID(const QString& i_imdbID) { m_imdbID = i_imdbID; }
-QString tmdb::Movie::imdbID() const { return m_imdbID; }
+void tmdb::ASync::Movie::setImdbID(const QString& i_imdbID) { m_imdbID = i_imdbID; }
+QString tmdb::ASync::Movie::imdbID() const { return m_imdbID; }
 
-void tmdb::Movie::setOriginalLanguage(const tmdb::config::language& i_originalLanguage)
+void tmdb::ASync::Movie::setOriginalLanguage(Language* i_originalLanguage)
 {
     m_originalLanguage = i_originalLanguage;
 }
 
-tmdb::config::language tmdb::Movie::originalLanguage() const { return m_originalLanguage; }
+tmdb::ASync::Language* tmdb::ASync::Movie::originalLanguage() const { return m_originalLanguage; }
 
-void tmdb::Movie::setOriginalTitle(const QString& i_originalTitle) { m_originalTitle = i_originalTitle; }
-QString tmdb::Movie::originalTitle() const { return m_originalTitle; }
+void tmdb::ASync::Movie::setOriginalTitle(const QString& i_originalTitle) { m_originalTitle = i_originalTitle; }
+QString tmdb::ASync::Movie::originalTitle() const { return m_originalTitle; }
 
-void tmdb::Movie::setOverview(const QString& i_overview) { m_overview = i_overview; }
-QString tmdb::Movie::overview() const { return m_overview; }
+void tmdb::ASync::Movie::setOverview(const QString& i_overview) { m_overview = i_overview; }
+QString tmdb::ASync::Movie::overview() const { return m_overview; }
 
-void tmdb::Movie::setPopularity(float i_popularity) { m_popularity = i_popularity; }
-float tmdb::Movie::popularity() const { return m_popularity; }
+void tmdb::ASync::Movie::setPopularity(float i_popularity) { m_popularity = i_popularity; }
+float tmdb::ASync::Movie::popularity() const { return m_popularity; }
 
-void tmdb::Movie::setPosterPath(const QString& i_posterPath) { m_posterPath = i_posterPath; }
-QString tmdb::Movie::posterPath() const { return m_posterPath; }
+void tmdb::ASync::Movie::setPosterPath(const QString& i_posterPath) { m_posterPath = i_posterPath; }
+QString tmdb::ASync::Movie::posterPath() const { return m_posterPath; }
 
-void tmdb::Movie::setProductionCompanies(const std::vector<Company>& i_productionCompanies)
+void tmdb::ASync::Movie::setProductionCompanies(const std::vector<Company>& i_productionCompanies)
 {
     m_productionCompanies = i_productionCompanies;
 }
 
-std::vector<tmdb::Company> tmdb::Movie::productionCompanies() const { return m_productionCompanies; }
+std::vector<tmdb::ASync::Company> tmdb::ASync::Movie::productionCompanies() const { return m_productionCompanies; }
 
-void tmdb::Movie::setCountries(const std::vector<config::country>& i_countries) { m_countries = i_countries; }
-std::vector<tmdb::config::country> tmdb::Movie::countries() const { return m_countries; }
+void tmdb::ASync::Movie::setCountries(const std::vector<Country>& i_countries) { m_countries = i_countries; }
+std::vector<tmdb::ASync::Country> tmdb::ASync::Movie::countries() const { return m_countries; }
 
-void tmdb::Movie::setReleaseDate(const QDate& i_releaseDate) { m_releaseDate = i_releaseDate; }
-QDate tmdb::Movie::releaseDate() const { return m_releaseDate; }
+void tmdb::ASync::Movie::setReleaseDate(const QDate& i_releaseDate) { m_releaseDate = i_releaseDate; }
+QDate tmdb::ASync::Movie::releaseDate() const { return m_releaseDate; }
 
-void tmdb::Movie::setRevenue(int i_revenue) { m_revenue = i_revenue; }
-int tmdb::Movie::revenue() const { return m_revenue; }
+void tmdb::ASync::Movie::setRevenue(int i_revenue) { m_revenue = i_revenue; }
+int tmdb::ASync::Movie::revenue() const { return m_revenue; }
 
-void tmdb::Movie::setRuntime(int i_runtime) { m_runtime = i_runtime; }
-int tmdb::Movie::runtime() const { return m_runtime; }
+void tmdb::ASync::Movie::setRuntime(int i_runtime) { m_runtime = i_runtime; }
+int tmdb::ASync::Movie::runtime() const { return m_runtime; }
 
-void tmdb::Movie::setLanguages(const std::vector<config::language>& i_languages) { m_languages = i_languages; }
-std::vector<tmdb::config::language> tmdb::Movie::languages() const { return m_languages; }
+void tmdb::ASync::Movie::setLanguages(const std::vector<Language>& i_languages) { m_languages = i_languages; }
+std::vector<tmdb::ASync::Language> tmdb::ASync::Movie::languages() const { return m_languages; }
 
-void tmdb::Movie::setStatus(const QString& i_status) { m_status = i_status; }
-QString tmdb::Movie::status() const { return m_status; }
+void tmdb::ASync::Movie::setStatus(const QString& i_status) { m_status = i_status; }
+QString tmdb::ASync::Movie::status() const { return m_status; }
 
-void tmdb::Movie::setTagline(const QString& i_tagline) { m_tagline = i_tagline; }
-QString tmdb::Movie::tagline() const { return m_tagline; }
+void tmdb::ASync::Movie::setTagline(const QString& i_tagline) { m_tagline = i_tagline; }
+QString tmdb::ASync::Movie::tagline() const { return m_tagline; }
 
-void tmdb::Movie::setTitle(const QString& i_title) { m_title = i_title; }
-QString tmdb::Movie::title() const { return m_title; }
+void tmdb::ASync::Movie::setTitle(const QString& i_title) { m_title = i_title; }
+QString tmdb::ASync::Movie::title() const { return m_title; }
 
-void tmdb::Movie::setVideo(bool i_video) { m_video = i_video; }
-bool tmdb::Movie::video() const { return m_video; }
+void tmdb::ASync::Movie::setVideo(bool i_video) { m_video = i_video; }
+bool tmdb::ASync::Movie::video() const { return m_video; }
 
-void tmdb::Movie::setVoteAverage(float i_voteAverage) { m_voteAverage = i_voteAverage; }
-float tmdb::Movie::voteAverage() const { return m_voteAverage; }
+void tmdb::ASync::Movie::setVoteAverage(float i_voteAverage) { m_voteAverage = i_voteAverage; }
+float tmdb::ASync::Movie::voteAverage() const { return m_voteAverage; }
 
-void tmdb::Movie::setVoteCount(int i_voteCount) { m_voteCount = i_voteCount; }
-int tmdb::Movie::voteCount() const { return m_voteCount; }
+void tmdb::ASync::Movie::setVoteCount(int i_voteCount) { m_voteCount = i_voteCount; }
+int tmdb::ASync::Movie::voteCount() const { return m_voteCount; }
 
-std::vector<tmdb::Movie> tmdb::Movie::getNowPlaying(const QString& i_access_token,
-                                                    const config::language& i_language,
-                                                    int32_t i_page, const config::country& i_region)
+tmdb::ASync::Movie* tmdb::ASync::Movie::fromJSON(const QJsonObject& i_json)
 {
-    std::vector<tmdb::Movie> movies;
-    Qtmdb q(i_access_token.toStdString());
-    auto response = q.movieList_nowPlaying(i_region.iso_3166_1.toStdString(), i_language.iso_639_1.toStdString(),
-                                           i_page);
-    for (const auto& movie : response["results"].toArray())
+    auto o = new Movie();
+    o->setAdult(i_json["adult"].toBool());
+    o->setBackdropPath(i_json["backdrop_path"].toString());
+    o->setBelongsToCollection(i_json["belongs_to_collection"].toString());
+    o->setBudget(i_json["budget"].toInt());
+    auto genresArray = std::vector<Genre>();
+    for (const auto& genre : i_json["genres"].toArray())
     {
-        movies.emplace_back(q.movie_details(movie.toObject()["id"].toInt()), i_access_token);
+        Genre* g = new Genre();
+        g = g->fromJSON(genre.toObject());
+        genresArray.push_back(*g);
     }
-    return movies;
+    o->setGenres(genresArray);
+    o->setHomepage(i_json["homepage"].toString());
+    o->setId(i_json["id"].toInt());
+    o->setImdbID(i_json["imdb_id"].toString());
+    o->setOriginalLanguage(Language().fromJSON(i_json["original_language"].toObject()));
+    o->setOriginalTitle(i_json["original_title"].toString());
+    o->setOverview(i_json["overview"].toString());
+    o->setPopularity(i_json["popularity"].toDouble());
+    o->setPosterPath(i_json["poster_path"].toString());
+    auto productionCompaniesArray = std::vector<Company>();
+    for (const auto& company : i_json["production_companies"].toArray())
+    {
+        Company* c = new Company();
+        c = c->fromJSON(company.toObject(), m_q.accessToken().c_str());
+        productionCompaniesArray.push_back(*c);
+    }
+    o->setProductionCompanies(productionCompaniesArray);
+    auto countriesArray = std::vector<Country>();
+    for (const auto& country : i_json["production_countries"].toArray())
+    {
+        Country* c = new Country();
+        c = c->fromJSON(country.toObject());
+        countriesArray.push_back(*c);
+    }
+    o->setCountries(countriesArray);
+    o->setReleaseDate(QDate::fromString(i_json["release_date"].toString(), Qt::ISODate));
+    o->setRevenue(i_json["revenue"].toInt());
+    o->setRuntime(i_json["runtime"].toInt());
+    auto languagesArray = std::vector<Language>();
+    for (const auto& language : i_json["spoken_languages"].toArray())
+    {
+        Language* l = new Language();
+        l = l->fromJSON(language.toObject());
+        languagesArray.push_back(*l);
+    }
+    o->setLanguages(languagesArray);
+    o->setStatus(i_json["status"].toString());
+    o->setTagline(i_json["tagline"].toString());
+    o->setTitle(i_json["title"].toString());
+    o->setVideo(i_json["video"].toBool());
+    o->setVoteAverage(i_json["vote_average"].toDouble());
+    o->setVoteCount(i_json["vote_count"].toInt());
+    return o;
 }
 
-std::vector<tmdb::Movie> tmdb::Movie::getPopular(const QString& i_access_token,
-                                                 const tmdb::config::language& i_language,
-                                                 int32_t i_page, const tmdb::config::country& i_region)
+void tmdb::ASync::Movie::loadMovie(int32_t i_movieID)
 {
-    std::vector<tmdb::Movie> movies;
-    Qtmdb q(i_access_token.toStdString());
-    auto response = q.movieList_popular(i_region.iso_3166_1.toStdString(), i_language.iso_639_1.toStdString(),
-                                        i_page);
-    for (const auto& movie : response["results"].toArray())
-    {
-        movies.emplace_back(q.movie_details(movie.toObject()["id"].toInt()), i_access_token);
-    }
-    return movies;
+    connect(&m_q, &aQtmdb::startedLoadingData, this, &Movie::startedLoadingMovieReceived);
+    connect(&m_q, &aQtmdb::finishedLoadingData, this, &Movie::finishedLoadingMovieReceived);
+    m_q.movie_details(i_movieID);
 }
 
-std::vector<tmdb::Movie> tmdb::Movie::getTopRated(const QString& i_access_token,
-                                                 const tmdb::config::language& i_language,
-                                                 int32_t i_page, const tmdb::config::country& i_region)
+void tmdb::ASync::Movie::startedLoadingMovieReceived()
 {
-    std::vector<tmdb::Movie> movies;
-    Qtmdb q(i_access_token.toStdString());
-    auto response = q.movieList_topRated(i_region.iso_3166_1.toStdString(), i_language.iso_639_1.toStdString(),
-                                        i_page);
-    for (const auto& movie : response["results"].toArray())
-    {
-        movies.emplace_back(q.movie_details(movie.toObject()["id"].toInt()), i_access_token);
-    }
-    return movies;
+    emit startedLoadingMovie();
 }
 
-std::vector<tmdb::Movie> tmdb::Movie::getUpcoming(const QString& i_access_token,
-                                                 const tmdb::config::language& i_language,
-                                                 int32_t i_page, const tmdb::config::country& i_region)
+void tmdb::ASync::Movie::finishedLoadingMovieReceived(void data* i_data)
 {
-    std::vector<tmdb::Movie> movies;
-    Qtmdb q(i_access_token.toStdString());
-    auto response = q.movieList_upcoming(i_region.iso_3166_1.toStdString(), i_language.iso_639_1.toStdString(),
-                                        i_page);
-    for (const auto& movie : response["results"].toArray())
-    {
-        movies.emplace_back(q.movie_details(movie.toObject()["id"].toInt()), i_access_token);
-    }
-    return movies;
+    auto temp = fromJSON(*static_cast<QJsonObject*>(i_data));
+    emit finishedLoadingMovie(temp);
+    disconnect(&m_q, &aQtmdb::startedLoadingData, this, &Movie::startedLoadingMovieReceived);
+    disconnect(&m_q, &aQtmdb::finishedLoadingData, this, &Movie::finishedLoadingMovieReceived);
 }
 
-std::vector<tmdb::AlternateTitle> tmdb::Movie::alternateTitles(const QString& i_access_token) const
+void tmdb::ASync::Movie::loadSearchResults(const QString& i_query, int32_t i_page, int32_t i_year,
+                                           int32_t i_primaryReleaseYear, bool i_includeAdult,
+                                           const QString& i_country, const QString& i_language)
 {
-    Qtmdb q(i_access_token.toStdString());
-    auto response = q.movie_alternativeTitles(m_id);
-    std::vector<tmdb::AlternateTitle> titles;
-    for (const auto& item : response["titles"].toArray())
+    connect(&m_q, &aQtmdb::startedLoadingData, this, &Movie::startedLoadingSearchResultsReceived);
+    connect(&m_q, &aQtmdb::finishedLoadingData, this, &Movie::finishedLoadingSearchResultsReceived);
+    m_q.get_movie(i_query.toStdString(), i_includeAdult, i_language.toStdString(), std::to_string(i_primaryReleaseYear),
+                  i_page, i_country.toStdString(), std::to_string(i_year));
+}
+void tmdb::ASync::Movie::startedLoadingSearchResultsReceived()
+{
+    emit startedLoadingSearchResults();
+}
+void tmdb::ASync::Movie::finishedLoadingSearchResultsReceived(void* i_data)
+{
+    auto temp = static_cast<QJsonObject*>(i_data);
+    auto results = std::vector<Movie>();
+    for (const auto& result : temp->value("results").toArray())
     {
-        QJsonObject titleObj = item.toObject();
-        titles.emplace_back(AlternateTitle{config::getCountry(titleObj["iso_3166_1"].toString(), i_access_token), titleObj["title"].toString(), titleObj["type"].toString()});
+        Movie* m = new Movie();
+        m = m->fromJSON(result.toObject());
+        results.push_back(*m);
     }
-    return titles;
+    emit finishedLoadingSearchResults(results);
+    disconnect(&m_q, &aQtmdb::startedLoadingData, this, &Movie::startedLoadingSearchResultsReceived);
+    disconnect(&m_q, &aQtmdb::finishedLoadingData, this, &Movie::finishedLoadingSearchResultsReceived);
 }
 
-std::array<QString, 5> tmdb::Movie::externalIDs(const QString& i_access_token) const
+void tmdb::ASync::Movie::loadNowPlaying()
 {
-    Qtmdb q(i_access_token.toStdString());
-    auto response = q.movie_externalIDs(m_id);
-    std::array<QString, 5> externalIDs = {
-        response["imdb_id"].toString(),
-        response["wikidata_id"].toString(),
-        response["facebook_id"].toString(),
-        response["instagram_id"].toString(),
-        response["twitter_id"].toString(),
-    };
-    return externalIDs;
+    connect(&m_q, &aQtmdb::startedLoadingData, this, &Movie::startedLoadingNowPlayingReceived);
+    connect(&m_q, &aQtmdb::finishedLoadingData, this, &Movie::finishedLoadingNowPlayingReceived);
+    m_q.movieList_nowPlaying("GB");
+}
+void tmdb::ASync::Movie::startedLoadingNowPlayingReceived()
+{
+    emit startedLoadingNowPlaying();
+}
+void tmdb::ASync::Movie::finishedLoadingNowPlayingReceived(void* i_data)
+{
+    auto temp = static_cast<QJsonObject*>(i_data);
+    auto results = std::vector<Movie>();
+    for (const auto& result : temp->value("results").toArray())
+    {
+        Movie* m = new Movie();
+        m = m->fromJSON(result.toObject());
+        results.push_back(*m);
+        delete m; // Clean up the dynamically allocated Movie object
+    }
+    emit finishedLoadingNowPlaying(results);
+    disconnect(&m_q, &aQtmdb::startedLoadingData, this, &Movie::startedLoadingNowPlayingReceived);
+    disconnect(&m_q, &aQtmdb::finishedLoadingData, this, &Movie::finishedLoadingNowPlayingReceived);
 }
 
-std::vector<QPixmap> tmdb::Movie::backdrops(const QString& i_access_token, const QString& i_size) const
+void tmdb::ASync::Movie::loadPopular()
 {
-    Qtmdb q(i_access_token.toStdString());
-    auto response = q.movie_images(m_id, "en");
-    std::vector<QPixmap> backdrops;
-    for (const auto& item : response["backdrops"].toArray())
+    connect(&m_q, &aQtmdb::startedLoadingData, this, &Movie::startedLoadingPopularReceived);
+    connect(&m_q, &aQtmdb::finishedLoadingData, this, &Movie::finishedLoadingPopularReceived);
+    m_q.movieList_popular("GB");
+}
+void tmdb::ASync::Movie::startedLoadingPopularReceived()
+{
+    emit startedLoadingPopular();
+}
+void tmdb::ASync::Movie::finishedLoadingPopularReceived(void* i_data)
+{
+    auto temp = static_cast<QJsonObject*>(i_data);
+    auto results = std::vector<Movie>();
+    for (const auto& result : temp->value("results").toArray())
     {
-        QJsonObject backdropObj = item.toObject();
-        QString filePath = backdropObj["file_path"].toString();
-        backdrops.emplace_back(config::getPixmapFromUrl(QUrl(q.getImageURL(filePath.toStdString(), i_size.toStdString()).c_str())));
+        Movie* m = new Movie();
+        m = m->fromJSON(result.toObject());
+        results.push_back(*m);
+        delete m; // Clean up the dynamically allocated Movie object
     }
-    return backdrops;
+    emit finishedLoadingPopular(results);
+    disconnect(&m_q, &aQtmdb::startedLoadingData, this, &Movie::startedLoadingPopularReceived);
+    disconnect(&m_q, &aQtmdb::finishedLoadingData, this, &Movie::finishedLoadingPopularReceived);
 }
 
-QPixmap tmdb::Movie::backdrop(const QString& i_access_token, int i_index, const QString& i_size) const
+void tmdb::ASync::Movie::loadTopRated()
 {
-    Qtmdb q(i_access_token.toStdString());
-    auto response = q.movie_images(m_id, "en");
-    if (i_index < 0 || i_index >= response["backdrops"].toArray().size())
+    connect(&m_q, &aQtmdb::startedLoadingData, this, &Movie::startedLoadingTopRatedReceived);
+    connect(&m_q, &aQtmdb::finishedLoadingData, this, &Movie::finishedLoadingTopRatedReceived);
+    m_q.movieList_topRated("GB");
+}
+void tmdb::ASync::Movie::startedLoadingTopRatedReceived()
+{
+    emit startedLoadingTopRated();
+}
+void tmdb::ASync::Movie::finishedLoadingTopRatedReceived(void* i_data)
+{
+    auto temp = static_cast<QJsonObject*>(i_data);
+    auto results = std::vector<Movie>();
+    for (const auto& result : temp->value("results").toArray())
     {
-        return QPixmap();
+        Movie* m = new Movie();
+        m = m->fromJSON(result.toObject());
+        results.push_back(*m);
+        delete m; // Clean up the dynamically allocated Movie object
     }
-    QJsonObject backdropObj = response["backdrops"].toArray()[i_index].toObject();
-    QString filePath = backdropObj["file_path"].toString();
-    return config::getPixmapFromUrl(QUrl(q.getImageURL(filePath.toStdString(), i_size.toStdString()).c_str()));
+    emit finishedLoadingTopRated(results);
+    disconnect(&m_q, &aQtmdb::startedLoadingData, this, &Movie::startedLoadingTopRatedReceived);
+    disconnect(&m_q, &aQtmdb::finishedLoadingData, this, &Movie::finishedLoadingTopRatedReceived);
 }
 
-std::vector<QPixmap> tmdb::Movie::posters(const QString& i_access_token, const QString& i_size) const
+void tmdb::ASync::Movie::loadUpcoming()
 {
-    Qtmdb q(i_access_token.toStdString());
-    auto response = q.movie_images(m_id, "en");
-    std::vector<QPixmap> posters;
-    for (const auto& item : response["posters"].toArray())
+    connect(&m_q, &aQtmdb::startedLoadingData, this, &Movie::startedLoadingUpcomingReceived);
+    connect(&m_q, &aQtmdb::finishedLoadingData, this, &Movie::finishedLoadingUpcomingReceived);
+    m_q.movieList_upcoming("GB");
+}
+void tmdb::ASync::Movie::startedLoadingUpcomingReceived()
+{
+    emit startedLoadingUpcoming();
+}
+void tmdb::ASync::Movie::finishedLoadingUpcomingReceived(void* i_data)
+{
+    auto temp = static_cast<QJsonObject*>(i_data);
+    auto results = std::vector<Movie>();
+    for (const auto& result : temp->value("results").toArray())
     {
-        QJsonObject backdropObj = item.toObject();
-        QString filePath = backdropObj["file_path"].toString();
-        posters.emplace_back(config::getPixmapFromUrl(QUrl(q.getImageURL(filePath.toStdString(), i_size.toStdString()).c_str())));
+        Movie* m = new Movie();
+        m = m->fromJSON(result.toObject());
+        results.push_back(*m);
+        delete m; // Clean up the dynamically allocated Movie object
     }
-    return posters;
+    emit finishedLoadingUpcoming(results);
+    disconnect(&m_q, &aQtmdb::startedLoadingData, this, &Movie::startedLoadingUpcomingReceived);
+    disconnect(&m_q, &aQtmdb::finishedLoadingData, this, &Movie::finishedLoadingUpcomingReceived);
 }
 
-QPixmap tmdb::Movie::poster(const QString& i_access_token, int i_index, const QString& i_size) const
+void tmdb::ASync::Movie::loadRecommendations(int32_t i_page)
 {
-    Qtmdb q(i_access_token.toStdString());
-    auto response = q.movie_images(m_id, "en");
-    if (i_index < 0 || i_index >= response["posters"].toArray().size())
+    connect(&m_q, &aQtmdb::startedLoadingData, this, &Movie::startedLoadingRecommendationsReceived);
+    connect(&m_q, &aQtmdb::finishedLoadingData, this, &Movie::finishedLoadingRecommendationsReceived);
+    m_q.movie_recommendations(m_id, "en-US", i_page);
+}
+void tmdb::ASync::Movie::startedLoadingRecommendationsReceived()
+{
+    emit startedLoadingRecommendations();
+}
+void tmdb::ASync::Movie::finishedLoadingRecommendationsReceived(void* i_data)
+{
+    auto temp = static_cast<QJsonObject*>(i_data);
+    auto results = std::vector<Movie>();
+    for (const auto& result : temp->value("results").toArray())
     {
-        return QPixmap();
+        Movie* m = new Movie();
+        m = m->fromJSON(result.toObject());
+        results.push_back(*m);
+        delete m; // Clean up the dynamically allocated Movie object
     }
-    QJsonObject backdropObj = response["posters"].toArray()[i_index].toObject();
-    QString filePath = backdropObj["file_path"].toString();
-    return config::getPixmapFromUrl(QUrl(q.getImageURL(filePath.toStdString(), i_size.toStdString()).c_str()));
+    emit finishedLoadingRecommendations(results);
+    disconnect(&m_q, &aQtmdb::startedLoadingData, this, &Movie::startedLoadingRecommendationsReceived);
+    disconnect(&m_q, &aQtmdb::finishedLoadingData, this, &Movie::finishedLoadingRecommendationsReceived);
 }
 
-std::vector<QPixmap> tmdb::Movie::logos(const QString& i_access_token, const QString& i_size) const
+void tmdb::ASync::Movie::loadSimilar(int32_t i_page)
 {
-    Qtmdb q(i_access_token.toStdString());
-    auto response = q.movie_images(m_id, "en");
-    std::vector<QPixmap> logos;
-    for (const auto& item : response["logos"].toArray())
+    connect(&m_q, &aQtmdb::startedLoadingData, this, &Movie::startedLoadingSimilarReceived);
+    connect(&m_q, &aQtmdb::finishedLoadingData, this, &Movie::finishedLoadingSimilarReceived);
+    m_q.movie_similar(m_id, "en-US", i_page);
+}
+void tmdb::ASync::Movie::startedLoadingSimilarReceived()
+{
+    emit startedLoadingSimilar();
+}
+void tmdb::ASync::Movie::finishedLoadingSimilarReceived(void* i_data)
+{
+    auto temp = static_cast<QJsonObject*>(i_data);
+    auto results = std::vector<Movie>();
+    for (const auto& result : temp->value("results").toArray())
     {
-        QJsonObject backdropObj = item.toObject();
-        QString filePath = backdropObj["file_path"].toString();
-        logos.emplace_back(config::getPixmapFromUrl(QUrl(q.getImageURL(filePath.toStdString(), i_size.toStdString()).c_str())));
+        Movie* m = new Movie();
+        m = m->fromJSON(result.toObject());
+        results.push_back(*m);
+        delete m; // Clean up the dynamically allocated Movie object
     }
-    return logos;
+    emit finishedLoadingSimilar(results);
+    disconnect(&m_q, &aQtmdb::startedLoadingData, this, &Movie::startedLoadingSimilarReceived);
+    disconnect(&m_q, &aQtmdb::finishedLoadingData, this, &Movie::finishedLoadingSimilarReceived);
 }
 
-QPixmap tmdb::Movie::logo(const QString& i_access_token, int i_index, const QString& i_size) const
+void tmdb::ASync::Movie::loadExternalIDs(int32_t i_movieID)
 {
-    Qtmdb q(i_access_token.toStdString());
-    auto response = q.movie_images(m_id, "en");
-    if (i_index < 0 || i_index >= response["logos"].toArray().size())
-    {
-        return QPixmap();
-    }
-    QJsonObject backdropObj = response["logos"].toArray()[i_index].toObject();
-    QString filePath = backdropObj["file_path"].toString();
-    return config::getPixmapFromUrl(QUrl(q.getImageURL(filePath.toStdString(), i_size.toStdString()).c_str()));
+    connect(&m_q, &aQtmdb::startedLoadingData, this, &Movie::startedLoadingExternalIDsReceived);
+    connect(&m_q, &aQtmdb::finishedLoadingData, this, &Movie::finishedLoadingExternalIDsReceived);
+    m_q.movie_externalIDs(i_movieID);
+}
+void tmdb::ASync::Movie::startedLoadingExternalIDsReceived()
+{
+    emit startedLoadingExternalIDs();
+}
+void tmdb::ASync::Movie::finishedLoadingExternalIDsReceived(void* i_data)
+{
+    auto temp = static_cast<QJsonObject*>(i_data);
+    std::array<QString, 5> externalIDs;
+    externalIDs[0] = temp->value("imdb_id").toString();
+    externalIDs[1] = temp->value("facebook_id").toString();
+    externalIDs[2] = temp->value("instagram_id").toString();
+    externalIDs[3] = temp->value("twitter_id").toString();
+    externalIDs[4] = temp->value("tiktok_id").toString();
+    emit finishedLoadingExternalIDs(externalIDs);
+    disconnect(&m_q, &aQtmdb::startedLoadingData, this, &Movie::startedLoadingExternalIDsReceived);
+    disconnect(&m_q, &aQtmdb::finishedLoadingData, this, &Movie::finishedLoadingExternalIDsReceived);
 }
 
-std::map<int, QString> tmdb::Movie::keywords(const QString& i_access_token) const
+void tmdb::ASync::Movie::loadBackdrops(const QString& i_size)
 {
-    Qtmdb q(i_access_token.toStdString());
-    auto response = q.movie_keywords(m_id);
-    std::map<int, QString> keywords;
-    for (const auto& item : response["keywords"].toArray())
+    connect(&m_q, &aQtmdb::startedLoadingData, this, &Movie::startedLoadingBackdropsReceived);
+    connect(&m_q, &aQtmdb::finishedLoadingData, this, &Movie::finishedLoadingBackdropsReceived);
+    m_q.movie_images(m_id, "en-US");
+}
+void tmdb::ASync::Movie::startedLoadingBackdropsReceived()
+{
+    emit startedLoadingBackdrops();
+}
+void tmdb::ASync::Movie::finishedLoadingBackdropsReceived(void* i_data)
+{
+    auto temp = static_cast<QJsonObject*>(i_data);
+    auto results = std::vector<Image>();
+    for (const auto& result : temp->value("backdrops").toArray())
     {
-        QJsonObject keywordObj = item.toObject();
-        keywords[keywordObj["id"].toInt()] = keywordObj["name"].toString();
+        Image* b = new Image();
+        connect(b, &Image::finishedLoadingImage, this, [this, b](void* i_data) {
+            b->setPixmap(*static_cast<QPixmap*>(i_data));
+            emit finishedLoadingBackdrop(b->pixmap());
+        });
+        b->loadImage(result.toObject()["file_path"].toString());
+        results.push_back(*b);
     }
-    return keywords;
+    disconnect(&m_q, &aQtmdb::startedLoadingData, this, &Movie::startedLoadingBackdropsReceived);
+    disconnect(&m_q, &aQtmdb::finishedLoadingData, this, &Movie::finishedLoadingBackdropsReceived);
 }
 
-std::vector<tmdb::Movie> tmdb::Movie::similar(const QString& i_access_token, int32_t i_page) const
+void tmdb::ASync::Movie::loadBackdrop(int i_index, const QString& i_size)
 {
-    Qtmdb q(i_access_token.toStdString());
-    auto response = q.movie_similar(m_id, "en-US", i_page);
-    std::vector<Movie> movies;
-    for (const auto& item : response["results"].toArray())
+    connect(&m_q, &aQtmdb::startedLoadingData, this, &Movie::startedLoadingBackdropReceived);
+    connect(&m_q, &aQtmdb::finishedLoadingData, this, &Movie::finishedLoadingBackdropReceived);
+    m_tempIndex = i_index;
+    m_q.movie_images(m_id, "en-US");
+}
+void tmdb::ASync::Movie::startedLoadingBackdropReceived()
+{
+    emit startedLoadingBackdrop();
+}
+void tmdb::ASync::Movie::finishedLoadingBackdropReceived(void* i_data)
+{
+    auto temp = static_cast<QJsonObject*>(i_data);
+    if (temp->value("backdrops").toArray().isEmpty())
     {
-        movies.emplace_back(q.movie_details(item.toObject()["id"].toInt()), i_access_token);
+        emit finishedLoadingBackdrop(QPixmap());
+        return;
     }
-    return movies;
+    auto result = temp->value("backdrops").toArray().at(m_tempIndex).toObject();
+    Image* b = new Image();
+    connect(b, &Image::finishedLoadingImage, this, [this, b](void* i_data) {
+        b->setPixmap(*static_cast<QPixmap*>(i_data));
+        emit finishedLoadingBackdrop(b->pixmap());
+    });
+    b->loadImage(result["file_path"].toString());
+    disconnect(&m_q, &aQtmdb::startedLoadingData, this, &Movie::startedLoadingBackdropReceived);
+    disconnect(&m_q, &aQtmdb::finishedLoadingData, this, &Movie::finishedLoadingBackdropReceived);
 }
 
-std::vector<tmdb::Movie> tmdb::Movie::recommendations(const QString& i_access_token, int32_t i_page) const
+void tmdb::ASync::Movie::loadPosters(const QString& i_size)
 {
-    Qtmdb q(i_access_token.toStdString());
-    auto response = q.movie_recommendations(m_id, "en-US", i_page);
-    std::vector<Movie> movies;
-    for (const auto& item : response["results"].toArray())
+    connect(&m_q, &aQtmdb::startedLoadingData, this, &Movie::startedLoadingPostersReceived);
+    connect(&m_q, &aQtmdb::finishedLoadingData, this, &Movie::finishedLoadingPostersReceived);
+    m_q.movie_images(m_id, "en-US");
+}
+void tmdb::ASync::Movie::startedLoadingPostersReceived()
+{
+    emit startedLoadingPosters();
+}
+void tmdb::ASync::Movie::finishedLoadingPostersReceived(void* i_data)
+{
+    auto temp = static_cast<QJsonObject*>(i_data);
+    auto results = std::vector<QPixmap>();
+    for (const auto& result : temp->value("posters").toArray())
     {
-        movies.emplace_back(q.movie_details(item.toObject()["id"].toInt()), i_access_token);
+        Image* p = new Image();
+        connect(p, &Image::finishedLoadingImage, this, [this, p](void* i_data) {
+            p->setPixmap(*static_cast<QPixmap*>(i_data));
+        });
+        p->loadImage(result.toObject()["file_path"].toString());
+        results.push_back(p->pixmap());
     }
-    return movies;
+    emit finishedLoadingPosters(results);
+    disconnect(&m_q, &aQtmdb::startedLoadingData, this, &Movie::startedLoadingPostersReceived);
+    disconnect(&m_q, &aQtmdb::finishedLoadingData, this, &Movie::finishedLoadingPostersReceived);
+}
+void tmdb::ASync::Movie::loadPoster(int i_index, const QString& i_size)
+{
+    connect(&m_q, &aQtmdb::startedLoadingData, this, &Movie::startedLoadingPosterReceived);
+    connect(&m_q, &aQtmdb::finishedLoadingData, this, &Movie::finishedLoadingPosterReceived);
+    m_tempIndex = i_index;
+    m_q.movie_images(m_id, "en-US");
+}
+void tmdb::ASync::Movie::startedLoadingPosterReceived()
+{
+    emit startedLoadingPoster();
+}
+void tmdb::ASync::Movie::finishedLoadingPosterReceived(void* i_data)
+{
+    auto temp = static_cast<QJsonObject*>(i_data);
+    if (temp->value("posters").toArray().isEmpty())
+    {
+        emit finishedLoadingPoster(QPixmap());
+        return;
+    }
+    auto result = temp->value("posters").toArray().at(m_tempIndex).toObject();
+    Image* p = new Image();
+    connect(p, &Image::finishedLoadingImage, this, [this, p](void* i_data) {
+        p->setPixmap(*static_cast<QPixmap*>(i_data));
+        emit finishedLoadingPoster(p->pixmap());
+    });
+    p->loadImage(result["file_path"].toString());
+    disconnect(&m_q, &aQtmdb::startedLoadingData, this, &Movie::startedLoadingPosterReceived);
+    disconnect(&m_q, &aQtmdb::finishedLoadingData, this, &Movie::finishedLoadingPosterReceived);
+}
+void tmdb::ASync::Movie::loadLogos(const QString& i_size)
+{
+    connect(&m_q, &aQtmdb::startedLoadingData, this, &Movie::startedLoadingLogosReceived);
+    connect(&m_q, &aQtmdb::finishedLoadingData, this, &Movie::finishedLoadingLogosReceived);
+    m_q.movie_images(m_id, "en-US");
+}
+void tmdb::ASync::Movie::startedLoadingLogosReceived()
+{
+    emit startedLoadingLogos();
+}
+void tmdb::ASync::Movie::finishedLoadingLogosReceived(void* i_data)
+{
+    auto temp = static_cast<QJsonObject*>(i_data);
+    auto results = std::vector<QPixmap>();
+    for (const auto& result : temp->value("logos").toArray())
+    {
+        Image* l = new Image();
+        connect(l, &Image::finishedLoadingImage, this, [this, l](void* i_data) {
+            l->setPixmap(*static_cast<QPixmap*>(i_data));
+        });
+        l->loadImage(result.toObject()["file_path"].toString());
+        results.push_back(l->pixmap());
+    }
+    emit finishedLoadingLogos(results);
+    disconnect(&m_q, &aQtmdb::startedLoadingData, this, &Movie::startedLoadingLogosReceived);
+    disconnect(&m_q, &aQtmdb::finishedLoadingData, this, &Movie::finishedLoadingLogosReceived);
 }
 
-std::vector<tmdb::WatchProvider> tmdb::Movie::watchProviders(const QString& i_access_token, const config::country& i_region) const
+void tmdb::ASync::Movie::loadLogo(int i_index, const QString& i_size)
 {
-    return WatchProvider::getWatchProvidersForMovie(i_access_token, i_region.iso_3166_1, m_id);
+    connect(&m_q, &aQtmdb::startedLoadingData, this, &Movie::startedLoadingLogoReceived);
+    connect(&m_q, &aQtmdb::finishedLoadingData, this, &Movie::finishedLoadingLogoReceived);
+    m_tempIndex = i_index;
+    m_q.movie_images(m_id, "en-US");
+}
+void tmdb::ASync::Movie::startedLoadingLogoReceived()
+{
+    emit startedLoadingLogo();
+}
+void tmdb::ASync::Movie::finishedLoadingLogoReceived(void* i_data)
+{
+    auto temp = static_cast<QJsonObject*>(i_data);
+    if (temp->value("logos").toArray().isEmpty())
+    {
+        emit finishedLoadingLogo(QPixmap());
+        return;
+    }
+    auto result = temp->value("logos").toArray().at(m_tempIndex).toObject();
+    Image* l = new Image();
+    connect(l, &Image::finishedLoadingImage, this, [this, l](void* i_data) {
+        l->setPixmap(*static_cast<QPixmap*>(i_data));
+        emit finishedLoadingLogo(l->pixmap());
+    });
+    l->loadImage(result["file_path"].toString());
+    disconnect(&m_q, &aQtmdb::startedLoadingData, this, &Movie::startedLoadingLogoReceived);
+    disconnect(&m_q, &aQtmdb::finishedLoadingData, this, &Movie::finishedLoadingLogoReceived);
+}
+void tmdb::ASync::Movie::loadWatchProviders(Country* i_region)
+{
+    connect(&m_q, &aQtmdb::startedLoadingData, this, &Movie::startedLoadingWatchProvidersReceived);
+    connect(&m_q, &aQtmdb::finishedLoadingData, this, &Movie::finishedLoadingWatchProvidersReceived);
+    m_region = i_region;
+    m_q.movie_watchProviders(m_id);
+}
+void tmdb::ASync::Movie::startedLoadingWatchProvidersReceived()
+{
+    emit startedLoadingWatchProviders();
+}
+void tmdb::ASync::Movie::finishedLoadingWatchProvidersReceived(void* i_data)
+{
+    auto temp = static_cast<QJsonObject*>(i_data);
+    auto results = std::vector<WatchProvider>();
+    for (const auto& result : temp->value("results").toObject().value(m_region->isoCountryCode()).toArray())
+    {
+        WatchProvider* w = new WatchProvider();
+        results.push_back(*w->fromJSON(result.toObject()));
+    }
+    emit finishedLoadingWatchProviders(results);
+    disconnect(&m_q, &aQtmdb::startedLoadingData, this, &Movie::startedLoadingWatchProvidersReceived);
+    disconnect(&m_q, &aQtmdb::finishedLoadingData, this, &Movie::finishedLoadingWatchProvidersReceived);
 }
 
-std::vector<tmdb::Credit> tmdb::Movie::credits(const QString& i_access_token) const
+void tmdb::ASync::Movie::loadKeywords()
 {
-    Qtmdb q(i_access_token.toStdString());
-    auto response = q.movie_credits(m_id);
-    std::vector<Credit> credits;
-    for (const auto& item : response["cast"].toArray())
+    connect(&m_q, &aQtmdb::startedLoadingData, this, &Movie::startedLoadingKeywordsReceived);
+    connect(&m_q, &aQtmdb::finishedLoadingData, this, &Movie::finishedLoadingKeywordsReceived);
+    m_q.movie_keywords(m_id);
+}
+void tmdb::ASync::Movie::startedLoadingKeywordsReceived()
+{
+    emit startedLoadingKeywords();
+}
+void tmdb::ASync::Movie::finishedLoadingKeywordsReceived(void* i_data)
+{
+    auto temp = static_cast<QJsonObject*>(i_data);
+    auto results = std::map<int, QString>();
+    for (const auto& result : temp->value("keywords").toArray())
     {
-        credits.emplace_back(Credit(item.toObject()));
+        auto keyword = result.toObject();
+        results[keyword["id"].toInt()] = keyword["name"].toString();
     }
-    for (const auto& item : response["crew"].toArray())
+    emit finishedLoadingKeywords(results);
+    disconnect(&m_q, &aQtmdb::startedLoadingData, this, &Movie::startedLoadingKeywordsReceived);
+    disconnect(&m_q, &aQtmdb::finishedLoadingData, this, &Movie::finishedLoadingKeywordsReceived);
+}
+
+void tmdb::ASync::Movie::loadCredits()
+{
+    connect(&m_q, &aQtmdb::startedLoadingData, this, &Movie::startedLoadingCreditsReceived);
+    connect(&m_q, &aQtmdb::finishedLoadingData, this, &Movie::finishedLoadingCreditsReceived);
+    m_q.movie_credits(m_id);
+}
+void tmdb::ASync::Movie::startedLoadingCreditsReceived()
+{
+    emit startedLoadingCredits();
+}
+void tmdb::ASync::Movie::finishedLoadingCreditsReceived(void* i_data)
+{
+    auto temp = static_cast<QJsonObject*>(i_data);
+    auto results = std::vector<Credit>();
+    for (const auto& result : temp->value("cast").toArray())
     {
-        credits.emplace_back(Credit(item.toObject()));
+        Credit* c = new Credit(result.toObject());
+        results.push_back(*c);
     }
-    return credits;
+    emit finishedLoadingCredits(results);
+    disconnect(&m_q, &aQtmdb::startedLoadingData, this, &Movie::startedLoadingCreditsReceived);
+    disconnect(&m_q, &aQtmdb::finishedLoadingData, this, &Movie::finishedLoadingCreditsReceived);
 }

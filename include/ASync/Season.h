@@ -8,41 +8,55 @@
 
 #include "Episode.h"
 
-namespace tmdb
+namespace tmdb::ASync
 {
     namespace TV
     {
-        class Season
+        class Season : public QObject
         {
+            Q_OBJECT
         public:
-            void setAirDate(const QDate &i_airDate);
+            void setAirDate(const QDate& i_airDate);
             QDate airDate() const;
-            void setEpisodes(const std::vector<Episode> &i_episodes);
-            const std::vector<Episode> &episodes() const;
-            void setName(const QString &i_name);
+            void setEpisodes(const std::vector<Episode>& i_episodes);
+            const std::vector<Episode>& episodes() const;
+            void setName(const QString& i_name);
             QString name() const;
-            void setOverview(const QString &i_overview);
+            void setOverview(const QString& i_overview);
             QString overview() const;
             void setId(int i_id);
             int id() const;
-            void setPosterPath(const QString &i_posterPath);
+            void setPosterPath(const QString& i_posterPath);
             QString posterPath() const;
             void setSeasonNumber(int i_seasonNumber);
             int seasonNumber() const;
             void setVoteAverage(float i_voteAverage);
             float voteAverage() const;
 
-            Season() = default;
-            Season(const QString& i_access_token, int32_t i_seriesID, int32_t i_seasonNumber);
-            Season(const QJsonObject &i_json);
-            Season(const QDate &i_airDate, const std::vector<Episode> &i_episodes, const QString &i_name,
-                   const QString &i_overview, int i_id, const QString &i_posterPath, int i_seasonNumber,
-                   float i_voteAverage);
-            ~Season() = default;
+            Season();
+            explicit Season(const QString& i_access_token, int32_t i_seriesID, int32_t i_seasonNumber);
+            ~Season() override = default;
 
-            static Season getSeason(const QString& i_access_token, int32_t i_seriesID, int32_t i_seasonNumber);
+            static Season* fromJSON(const QJsonObject& i_json);
+
+        public slots:
+            void loadSeason(int32_t i_seriesID, int32_t i_seasonNumber);
+            void loadEpisodesForSeason(int32_t i_seriesID, int32_t i_seasonNumber);
+
+        private slots:
+            void startedLoadingSeasonReceived();
+            void finishedLoadingSeasonReceived(void* i_data);
+            void startedLoadingSeasonEpisodesReceived();
+            void finishedLoadingSeasonEpisodesReceived(void* i_data);
+
+        signals:
+            void startedLoadingSeason();
+            void finishedLoadingSeason(tmdb::ASync::TV::Season* i_season);
+            void startedLoadingSeasonEpisodes();
+            void finishedLoadingSeasonEpisodes(std::vector<tmdb::ASync::TV::Episode> i_episodes);
 
         protected:
+            aQtmdb m_q;
             QDate m_airDate;
             std::vector<Episode> m_episodes;
             QString m_name;
@@ -55,4 +69,4 @@ namespace tmdb
     }
 }
 
-#endif //SEASON_H
+#endif //ASYNC_SEASON_H
