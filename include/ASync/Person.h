@@ -94,6 +94,7 @@ namespace tmdb::ASync
         [[nodiscard]] QString character() const;
         void setCreditID(const QString& i_creditID);
         [[nodiscard]] QString creditID() const;
+        static Credit* fromJSON(const QJsonObject& i_json);
     };
 }
 

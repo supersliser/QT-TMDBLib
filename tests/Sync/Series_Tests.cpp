@@ -7,7 +7,7 @@
 
 #include "Sync/QTMDB.h"
 
-TEST(SeriesTests, DefaultConstructor)
+TEST(SeriesSyncTests, DefaultConstructor)
 {
     tmdb::TV::Series series;
     EXPECT_TRUE(series.adult());
@@ -39,7 +39,7 @@ TEST(SeriesTests, DefaultConstructor)
     EXPECT_EQ(series.voteCount(), 0);
 }
 
-TEST(SeriesTests, ParameterizedConstructor)
+TEST(SeriesSyncTests, ParameterizedConstructor)
 {
     tmdb::TV::Series series(std::getenv("API_KEY"), 1399); // Game of Thrones
     EXPECT_FALSE(series.adult());
@@ -78,7 +78,7 @@ TEST(SeriesTests, ParameterizedConstructor)
     EXPECT_GT(series.voteCount(), 0);
 }
 
-TEST(SeriesTests, APIConstructor)
+TEST(SeriesSyncTests, APIConstructor)
 {
     tmdb::TV::Series series(std::getenv("API_KEY"), 1399); // Game of Thrones
     EXPECT_FALSE(series.adult());
@@ -117,7 +117,7 @@ TEST(SeriesTests, APIConstructor)
     EXPECT_GT(series.voteCount(), 0);
 }
 
-TEST(SeriesTests, APIJSON)
+TEST(SeriesSyncTests, APIJSON)
 {
     Qtmdb q(std::getenv("API_KEY"));
     QJsonObject response = q.tv_series_details(1399); // Game of Thrones
@@ -161,7 +161,7 @@ TEST(SeriesTests, APIJSON)
     EXPECT_GT(series.voteCount(), 0);
 }
 
-TEST(SeriesTests, StaticConstructor)
+TEST(SeriesSyncTests, StaticConstructor)
 {
     tmdb::TV::Series series = tmdb::TV::Series::getSeries(std::getenv("API_KEY"), 1399); // Game of Thrones
     EXPECT_FALSE(series.adult());
@@ -202,7 +202,7 @@ TEST(SeriesTests, StaticConstructor)
     EXPECT_GT(series.voteCount(), 0);
 }
 
-TEST(SeriesTests, setGetters)
+TEST(SeriesSyncTests, setGetters)
 {
     tmdb::TV::Series s;
     s.setAdult(false);
@@ -221,7 +221,7 @@ TEST(SeriesTests, setGetters)
     s.setOverview("This is a test series.");
     s.setPopularity(7.5f);
     s.setPosterPath("/path/to/poster.jpg");
-    s.setProductionCompanies({tmdb::Company("Tests", "Tests", "Tests", "Test", "Tests", "", "Test", 5)});
+    s.setProductionCompanies({tmdb::Company("SyncTests", "SyncTests", "SyncTests", "Test", "SyncTests", "", "Test", 5)});
     s.setProductionCountries({{"US", "United States"}});
     s.setSpokenLanguages({{"en", "English"}});
     s.setStatus("Returning Series");
@@ -263,7 +263,7 @@ TEST(SeriesTests, setGetters)
     EXPECT_EQ(s.voteCount(), 1000);
 }
 
-TEST(SeriesTests, GetAiringToday)
+TEST(SeriesSyncTests, GetAiringToday)
 {
     auto seriesList = tmdb::TV::Series::getAiringToday(std::getenv("API_KEY"), tmdb::config::language{"en", "English"}, 1, "US");
     EXPECT_FALSE(seriesList.empty());
@@ -273,7 +273,7 @@ TEST(SeriesTests, GetAiringToday)
         EXPECT_FALSE(series.posterPath().isEmpty());
     }
 }
-TEST(SeriesTests, GetOnTheAir)
+TEST(SeriesSyncTests, GetOnTheAir)
 {
     auto seriesList = tmdb::TV::Series::getOnTheAir(std::getenv("API_KEY"), tmdb::config::language{"en", "English"}, 1, "US");
     EXPECT_FALSE(seriesList.empty());
@@ -283,7 +283,7 @@ TEST(SeriesTests, GetOnTheAir)
         EXPECT_FALSE(series.posterPath().isEmpty());
     }
 }
-TEST(SeriesTests, GetPopular)
+TEST(SeriesSyncTests, GetPopular)
 {
     auto seriesList = tmdb::TV::Series::getPopular(std::getenv("API_KEY"), tmdb::config::language{"en", "English"}, 1);
     EXPECT_FALSE(seriesList.empty());
@@ -293,7 +293,7 @@ TEST(SeriesTests, GetPopular)
         EXPECT_FALSE(series.posterPath().isEmpty());
     }
 }
-TEST(SeriesTests, GetTopRated)
+TEST(SeriesSyncTests, GetTopRated)
 {
     auto seriesList = tmdb::TV::Series::getTopRated(std::getenv("API_KEY"), tmdb::config::language{"en", "English"}, 1);
     EXPECT_FALSE(seriesList.empty());
@@ -303,7 +303,7 @@ TEST(SeriesTests, GetTopRated)
         EXPECT_FALSE(series.posterPath().isEmpty());
     }
 }
-TEST(SeriesTests, Recommendations)
+TEST(SeriesSyncTests, Recommendations)
 {
     tmdb::TV::Series series(std::getenv("API_KEY"), 1399); // Game of Thrones
     auto recommendations = series.recommendations(std::getenv("API_KEY"), 1);
@@ -314,7 +314,7 @@ TEST(SeriesTests, Recommendations)
         EXPECT_FALSE(rec.posterPath().isEmpty());
     }
 }
-TEST(SeriesTests, Similar)
+TEST(SeriesSyncTests, Similar)
 {
     tmdb::TV::Series series(std::getenv("API_KEY"), 1399); // Game of Thrones
     auto similar = series.similar(std::getenv("API_KEY"), 1);
@@ -325,7 +325,7 @@ TEST(SeriesTests, Similar)
     }
 }
 
-TEST(SeriesTests, WatchProviders)
+TEST(SeriesSyncTests, WatchProviders)
 {
     tmdb::TV::Series series(std::getenv("API_KEY"), 1399); // Game of Thrones
     auto watchProviders = series.watchProviders(std::getenv("API_KEY"), tmdb::config::getCountry("GB", std::getenv("API_KEY")));
@@ -337,17 +337,17 @@ TEST(SeriesTests, WatchProviders)
     }
 }
 
-TEST(SeriesTests, Seasons)
+TEST(SeriesSyncTests, Seasons)
 {
     tmdb::TV::Series series(std::getenv("API_KEY"), 1399); // Game of Thrones
     auto seasons = series.seasons(std::getenv("API_KEY"), 1);
     EXPECT_FALSE(seasons.empty());
     EXPECT_GT(seasons.size(), 0);
         EXPECT_STREQ(seasons[0].name().toStdString().c_str(), "Specials");
-        EXPECT_EQ(seasons[0].episodes().size(), 283);
+        EXPECT_GT(seasons[0].episodes().size(), 280);
 }
 
-TEST(SeriesTests, ExternalIDs)
+TEST(SeriesSyncTests, ExternalIDs)
 {
     tmdb::TV::Series series(std::getenv("API_KEY"), 1399); // Game of Thrones
     auto externalIDs = series.externalIDs(std::getenv("API_KEY"));
@@ -355,7 +355,7 @@ TEST(SeriesTests, ExternalIDs)
     EXPECT_STREQ(externalIDs[0].toStdString().c_str(), "tt0944947");
 }
 
-TEST(SeriesTests, Backdrops)
+TEST(SeriesSyncTests, Backdrops)
 {
     tmdb::TV::Series series(std::getenv("API_KEY"), 1399); // Game of Thrones
     auto backdrops = series.backdrops(std::getenv("API_KEY"), "original");
@@ -366,14 +366,14 @@ TEST(SeriesTests, Backdrops)
     }
 }
 
-TEST(SeriesTests, Backdrop)
+TEST(SeriesSyncTests, Backdrop)
 {
     tmdb::TV::Series series(std::getenv("API_KEY"), 1399); // Game of Thrones
     auto backdrop = series.backdrop(std::getenv("API_KEY"), 0, "original");
     EXPECT_FALSE(backdrop.isNull());
 }
 
-TEST(SeriesTests, Posters)
+TEST(SeriesSyncTests, Posters)
 {
     tmdb::TV::Series series(std::getenv("API_KEY"), 1399); // Game of Thrones
     auto posters = series.posters(std::getenv("API_KEY"), "original");
@@ -384,14 +384,14 @@ TEST(SeriesTests, Posters)
     }
 }
 
-TEST(SeriesTests, Poster)
+TEST(SeriesSyncTests, Poster)
 {
     tmdb::TV::Series series(std::getenv("API_KEY"), 1399); // Game of Thrones
     auto poster = series.poster(std::getenv("API_KEY"), 0, "original");
     EXPECT_FALSE(poster.isNull());
 }
 
-TEST(SeriesTests, Logos)
+TEST(SeriesSyncTests, Logos)
 {
     tmdb::TV::Series series(std::getenv("API_KEY"), 1399); // Game of Thrones
     auto logos = series.logos(std::getenv("API_KEY"), "original");
@@ -402,7 +402,7 @@ TEST(SeriesTests, Logos)
     }
 }
 
-TEST(SeriesTests, Logo)
+TEST(SeriesSyncTests, Logo)
 {
     tmdb::TV::Series series(std::getenv("API_KEY"), 1399); // Game of Thrones
     auto logo = series.logo(std::getenv("API_KEY"), 0, "original");

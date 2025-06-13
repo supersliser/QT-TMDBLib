@@ -94,11 +94,11 @@ void tmdb::ASync::Department::startedLoadingAllDepartmentsReceived()
 
 void tmdb::ASync::Department::finishedLoadingAllDepartmentsReceived(void* i_data)
 {
-    QJsonArray jsonArray = QJsonArray::fromVariantList(*static_cast<QVariantList*>(i_data));
-    std::vector<tmdb::ASync::Department> departments;
-    for (const auto& item : jsonArray)
+    auto jsonArray = static_cast<QJsonArray*>(i_data);
+    std::vector<tmdb::ASync::Department*> departments;
+    for (const auto& item : *jsonArray)
     {
-        departments.push_back(*fromJSON(item.toObject()));
+        departments.push_back(fromJSON(item.toObject()));
     }
     emit finishedLoadingAllDepartments(departments);
 }

@@ -7,7 +7,7 @@
 
 #include "Sync/QTMDB.h"
 
-TEST(NetworkTests, DefaultConstructor)
+TEST(NetworkSyncTests, DefaultConstructor)
 {
     tmdb::TV::Network network;
     EXPECT_EQ(network.id(), 0);
@@ -18,7 +18,7 @@ TEST(NetworkTests, DefaultConstructor)
     EXPECT_STREQ(network.originCountry().english_name.toStdString().c_str(), "");
 }
 
-TEST(NetworkTests, ParameterizedConstructor) {
+TEST(NetworkSyncTests, ParameterizedConstructor) {
     tmdb::TV::Network network("Los Angeles", "http://example.com", 1, "/logo.png", "Example Network",
                                tmdb::config::getCountry("US", std::getenv("API_KEY")));
     EXPECT_EQ(network.id(), 1);
@@ -29,7 +29,7 @@ TEST(NetworkTests, ParameterizedConstructor) {
     EXPECT_STREQ(network.originCountry().iso_3166_1.toStdString().c_str(),"US");
 }
 
-TEST(NetworkTests, APIConstructor)
+TEST(NetworkSyncTests, APIConstructor)
 {
     tmdb::TV::Network network(std::getenv("API_KEY"), 49);
     EXPECT_EQ(network.id(), 49);
@@ -40,7 +40,7 @@ TEST(NetworkTests, APIConstructor)
     EXPECT_STREQ(network.originCountry().iso_3166_1.toStdString().c_str(),"US");
 }
 
-TEST(NetworkTests, APIJSON) {
+TEST(NetworkSyncTests, APIJSON) {
     Qtmdb q(std::getenv("API_KEY"));
     QJsonObject response = q.network_details(49);
     EXPECT_FALSE(response.isEmpty());
@@ -53,7 +53,7 @@ TEST(NetworkTests, APIJSON) {
     EXPECT_STREQ(network.originCountry().iso_3166_1.toStdString().c_str(), "US");
 }
 
-TEST(NetworkTests, StaticConstructor) {
+TEST(NetworkSyncTests, StaticConstructor) {
     tmdb::TV::Network network = tmdb::TV::Network::getNetwork(std::getenv("API_KEY"), 49);
     EXPECT_EQ(network.id(), 49);
     EXPECT_STREQ(network.name().toStdString().c_str(), "HBO");
@@ -63,7 +63,7 @@ TEST(NetworkTests, StaticConstructor) {
     EXPECT_STREQ(network.originCountry().iso_3166_1.toStdString().c_str(), "US");
 }
 
-TEST(NetworkTests, setGetters)
+TEST(NetworkSyncTests, setGetters)
 {
     tmdb::TV::Network n;
     n.setHeadquarters("Los Angeles");

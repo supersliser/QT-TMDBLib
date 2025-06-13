@@ -8,7 +8,7 @@
 
 #include "Sync/QTMDB.h"
 
-TEST(AccountTests, DefaultConstructor)
+TEST(AccountSyncTests, DefaultConstructor)
 {
     tmdb::Account account;
     EXPECT_EQ(account.id(), 0);
@@ -19,7 +19,7 @@ TEST(AccountTests, DefaultConstructor)
     EXPECT_TRUE(account.includeAdult());
 }
 
-TEST(AccountTests, ParameterizedConstructor) {
+TEST(AccountSyncTests, ParameterizedConstructor) {
     tmdb::Account account(1, "en", "US", "Test User", "testuser", false);
     EXPECT_EQ(account.id(), 1);
     EXPECT_STREQ(account.iso6391().toStdString().c_str(), "en");
@@ -29,7 +29,7 @@ TEST(AccountTests, ParameterizedConstructor) {
     EXPECT_FALSE(account.includeAdult());
 }
 
-TEST(AccountTests, APIGetter)
+TEST(AccountSyncTests, APIGetter)
 {
     tmdb::Account a(std::getenv("API_KEY"), 22023427);
     EXPECT_EQ(a.id(), 22023427);
@@ -41,7 +41,7 @@ TEST(AccountTests, APIGetter)
     EXPECT_STREQ(a.avatar()->gravatar().hash().toStdString().c_str(), "467183536659af2a02f4b2dbf0901aea");
 }
 
-TEST(AccountTests, APIJSON)
+TEST(AccountSyncTests, APIJSON)
 {
     Qtmdb q(std::getenv("API_KEY"));
     QJsonObject response = q.account_details(22023427);
@@ -56,7 +56,7 @@ TEST(AccountTests, APIJSON)
     EXPECT_STREQ(a.avatar()->gravatar().hash().toStdString().c_str(), "467183536659af2a02f4b2dbf0901aea");
 }
 
-TEST(AccountTests, StaticConstructor)
+TEST(AccountSyncTests, StaticConstructor)
 {
     tmdb::Account account = tmdb::Account::getAccount(std::getenv("API_KEY"), 22023427);
     EXPECT_EQ(account.id(), 22023427);
@@ -68,7 +68,7 @@ TEST(AccountTests, StaticConstructor)
     EXPECT_STREQ(account.avatar()->gravatar().hash().toStdString().c_str(), "467183536659af2a02f4b2dbf0901aea");
 }
 
-TEST(AccountTests, setAvatar)
+TEST(AccountSyncTests, setAvatar)
 {
     tmdb::Account a;
     tmdb::Avatar* avatar = new tmdb::Avatar("testhash", "testpath");
@@ -77,7 +77,7 @@ TEST(AccountTests, setAvatar)
     EXPECT_STREQ(a.avatar()->tmdb().avatarPath().toStdString().c_str(), "testpath");
 }
 
-TEST(AccountTests, setGetters)
+TEST(AccountSyncTests, setGetters)
 {
     tmdb::Account a;
     a.setID(12345);

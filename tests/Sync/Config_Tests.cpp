@@ -6,7 +6,7 @@
 #include "Sync/QTMDB.h"
 #include <gtest/gtest.h>
 
-TEST(ConfigTests, SupportedCountries) {
+TEST(ConfigSyncTests, SupportedCountries) {
     auto countries = tmdb::config::getSupportedCountries(std::getenv("API_KEY"));
     ASSERT_FALSE(countries.empty());
     bool passed = false;
@@ -19,7 +19,7 @@ TEST(ConfigTests, SupportedCountries) {
     ASSERT_TRUE(passed);
 }
 
-TEST(ConfigTests, GetCountry) {
+TEST(ConfigSyncTests, GetCountry) {
     auto country = tmdb::config::getCountry("GB", std::getenv("API_KEY"));
     ASSERT_STREQ(country.english_name.toStdString().c_str(), "United Kingdom");
     ASSERT_STREQ(country.iso_3166_1.toStdString().c_str(), "GB");
@@ -30,7 +30,7 @@ TEST(ConfigTests, GetCountry) {
     ASSERT_TRUE(invalidCountry.iso_3166_1.isEmpty());
 }
 
-TEST(ConfigTests, GetCountryFromJson) {
+TEST(ConfigSyncTests, GetCountryFromJson) {
     QJsonObject countryJson;
     countryJson["native_name"] = "United Kingdom";
     countryJson["english_name"] = "United Kingdom";
@@ -41,7 +41,7 @@ TEST(ConfigTests, GetCountryFromJson) {
     ASSERT_STREQ(country.iso_3166_1.toStdString().c_str(), "GB");
 }
 
-TEST(ConfigTests, SupportedJobs) {
+TEST(ConfigSyncTests, SupportedJobs) {
     auto jobs = tmdb::config::getSupportedJobs(std::getenv("API_KEY"));
     ASSERT_FALSE(jobs.empty());
     bool passed = false;
@@ -54,7 +54,7 @@ TEST(ConfigTests, SupportedJobs) {
     ASSERT_TRUE(passed);
 }
 
-TEST(ConfigTests, SupportedLanguages) {
+TEST(ConfigSyncTests, SupportedLanguages) {
     auto languages = tmdb::config::getSupportedLanguages(std::getenv("API_KEY"));
     ASSERT_FALSE(languages.empty());
     bool passed = false;
@@ -67,7 +67,7 @@ TEST(ConfigTests, SupportedLanguages) {
     ASSERT_TRUE(passed);
 }
 
-TEST(ConfigTests, getLanguage)
+TEST(ConfigSyncTests, getLanguage)
 {
     auto language = tmdb::config::getLanguage("en", std::getenv("API_KEY"));
     ASSERT_STREQ(language.english_name.toStdString().c_str(), "English");
@@ -79,7 +79,7 @@ TEST(ConfigTests, getLanguage)
     ASSERT_STREQ(invalidLanguage.iso_639_1.toStdString().c_str(), "xx");
 }
 
-TEST(ConfigTests, SupportedTranslations) {
+TEST(ConfigSyncTests, SupportedTranslations) {
     auto translations = tmdb::config::getSupportedTranslations(std::getenv("API_KEY"));
     ASSERT_FALSE(translations.empty());
     bool passed = false;
@@ -92,7 +92,7 @@ TEST(ConfigTests, SupportedTranslations) {
     ASSERT_TRUE(passed);
 }
 
-TEST(ConfigTests, SupportedTimezones) {
+TEST(ConfigSyncTests, SupportedTimezones) {
     auto timezones = tmdb::config::getSupportedTimezones(std::getenv("API_KEY"));
     ASSERT_FALSE(timezones.empty());
     bool passed = false;

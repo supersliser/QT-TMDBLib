@@ -6,7 +6,7 @@
 #include <gtest/gtest.h>
 #include "Sync/QTMDB.h"
 
-TEST(EpisodeTests, DefaultConstructor)
+TEST(EpisodeSyncTests, DefaultConstructor)
 {
     tmdb::TV::Episode episode;
     EXPECT_EQ(episode.id(), 0);
@@ -18,7 +18,7 @@ TEST(EpisodeTests, DefaultConstructor)
     EXPECT_TRUE(episode.stillPath().isEmpty());
 }
 
-TEST(EpisodeTests, ParameterizedConstructor)
+TEST(EpisodeSyncTests, ParameterizedConstructor)
 {
     tmdb::TV::Episode episode(QDate(2023, 1, 1), {}, 1, {}, "Test Episode", "This is a test episode overview", 1, "code", 1, 1, "/path/to/still.jpg", 8.5f, 1 );
     EXPECT_EQ(episode.airDate(), QDate(2023, 1, 1));
@@ -36,7 +36,7 @@ TEST(EpisodeTests, ParameterizedConstructor)
     EXPECT_EQ(episode.voteCount(), 1);
 }
 
-TEST(EpisodeTests, APIConstructor)
+TEST(EpisodeSyncTests, APIConstructor)
 {
     tmdb::TV::Episode episode(std::getenv("API_KEY"), 1399, 1, 1);
     EXPECT_EQ(episode.airDate(), QDate(2011, 4, 17));
@@ -56,7 +56,7 @@ TEST(EpisodeTests, APIConstructor)
     EXPECT_GT(episode.voteCount(), 300);
 }
 
-TEST(EpisodeTests, APIJSON)
+TEST(EpisodeSyncTests, APIJSON)
 {
     Qtmdb q(std::getenv("API_KEY"));
     auto response = q.tv_episodes_details(1399, 1, 1);
@@ -78,7 +78,7 @@ TEST(EpisodeTests, APIJSON)
     EXPECT_GT(episode.voteCount(), 300);
 }
 
-TEST(EpisodeTests, StaticConstructor)
+TEST(EpisodeSyncTests, StaticConstructor)
 {
     tmdb::TV::Episode episode = tmdb::TV::Episode::getEpisode(std::getenv("API_KEY"), 1399, 1, 1);
     EXPECT_EQ(episode.airDate(), QDate(2011, 4, 17));
@@ -98,7 +98,7 @@ TEST(EpisodeTests, StaticConstructor)
     EXPECT_GT(episode.voteCount(), 300);
 }
 
-TEST(EpisodeTests, setGetters)
+TEST(EpisodeSyncTests, setGetters)
 {
     tmdb::TV::Episode e;
     e.setAirDate(QDate(2023, 1, 1));

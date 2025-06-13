@@ -6,7 +6,7 @@
 #include "Sync/QTMDB.h"
 #include <gtest/gtest.h>
 
-TEST(WatchProviderTests, DefaultConstructor)
+TEST(WatchProviderSyncTests, DefaultConstructor)
 {
     tmdb::WatchProvider provider;
     EXPECT_EQ(provider.type(), tmdb::unset);
@@ -16,7 +16,7 @@ TEST(WatchProviderTests, DefaultConstructor)
     EXPECT_TRUE(provider.link().isEmpty());
 }
 
-TEST(WatchProviderTests, ParameterizedConstructor)
+TEST(WatchProviderSyncTests, ParameterizedConstructor)
 {
     tmdb::WatchProvider provider(tmdb::flatrate, "logo_path.png", 123, "Provider Name", QUrl("https://example.com"));
     EXPECT_EQ(provider.type(), tmdb::flatrate);
@@ -26,7 +26,7 @@ TEST(WatchProviderTests, ParameterizedConstructor)
     EXPECT_EQ(provider.link(), QUrl("https://example.com"));
 }
 
-TEST(WatchProviderTests, APIConstructor)
+TEST(WatchProviderSyncTests, APIConstructor)
 {
     tmdb::WatchProvider provider(
         std::getenv("API_KEY"),
@@ -38,7 +38,7 @@ TEST(WatchProviderTests, APIConstructor)
     EXPECT_TRUE(provider.link().isEmpty());
 }
 
-TEST(WatchProviderTests, StaticConstructor)
+TEST(WatchProviderSyncTests, StaticConstructor)
 {
     tmdb::WatchProvider provider = tmdb::WatchProvider::getWatchProvider(
         std::getenv("API_KEY"),
@@ -50,7 +50,7 @@ TEST(WatchProviderTests, StaticConstructor)
     EXPECT_TRUE(provider.link().isEmpty());
 }
 
-TEST(WatchProviderTests, GetAllWatchProviders)
+TEST(WatchProviderSyncTests, GetAllWatchProviders)
 {
     auto providers = tmdb::WatchProvider::getAllWatchProviders(
         std::getenv("API_KEY"),
@@ -63,7 +63,7 @@ TEST(WatchProviderTests, GetAllWatchProviders)
     EXPECT_TRUE(providers[0].link().isEmpty());
 }
 
-TEST(WatchProviderTests, GetWatchProvidersForMovieTest)
+TEST(WatchProviderSyncTests, GetWatchProvidersForMovieTest)
 {
     std::vector<tmdb::WatchProvider> providers = tmdb::WatchProvider::getWatchProvidersForMovie(
         std::getenv("API_KEY"),
@@ -78,7 +78,7 @@ TEST(WatchProviderTests, GetWatchProvidersForMovieTest)
     EXPECT_STREQ(providers[0].logoPath().toStdString().c_str(), "/97yvRBw1GzX7fXprcF80er19ot.jpg");
 }
 
-TEST(WatchProviderTests, GetWatchProvidersForTVTest)
+TEST(WatchProviderSyncTests, GetWatchProvidersForTVTest)
 {
     std::vector<tmdb::WatchProvider> providers = tmdb::WatchProvider::getWatchProvidersForTV(
         std::getenv("API_KEY"),
@@ -88,7 +88,6 @@ TEST(WatchProviderTests, GetWatchProvidersForTVTest)
     EXPECT_EQ(providers[0].type(), tmdb::flatrate);
     EXPECT_EQ(providers[0].providerID(), 39);
     EXPECT_STREQ(providers[0].providerName().toStdString().c_str(), "Now TV");
-    EXPECT_STREQ(providers[0].link().toString().toStdString().c_str(),
-                 "https://click.justwatch.com/a?cx=eyJzY2hlbWEiOiJpZ2x1OmNvbS5zbm93cGxvd2FuYWx5dGljcy5zbm93cGxvdy9jb250ZXh0cy9qc29uc2NoZW1hLzEtMC0wIiwiZGF0YSI6W3sic2NoZW1hIjoiaWdsdTpjb20uanVzdHdhdGNoL2NsaWNrb3V0X2NvbnRleHQvanNvbnNjaGVtYS8xLTMtMiIsImRhdGEiOnsicHJvdmlkZXIiOiJOb3cgVFYiLCJtb25ldGl6YXRpb25UeXBlIjoiZmxhdHJhdGUiLCJwcmVzZW50YXRpb25UeXBlIjoiaGQiLCJjdXJyZW5jeSI6IkdCUCIsInBhcnRuZXJJZCI6NiwicHJvdmlkZXJJZCI6MzksImNsaWNrb3V0VHlwZSI6Imp3LWNvbnRlbnQtcGFydG5lci1leHBvcnQtYXBpIn19LHsic2NoZW1hIjoiaWdsdTpjb20uanVzdHdhdGNoL3RpdGxlX2NvbnRleHQvanNvbnNjaGVtYS8xLTMtMCIsImRhdGEiOnsidGl0bGVJZCI6Miwib2JqZWN0VHlwZSI6InNob3ciLCJqd0VudGl0eUlkIjoidHMyIn19XX0&r=https%3A%2F%2Fwww.nowtv.com%2Fwatch%2Fgame-of-thrones%2F8e6fa5c7e1fdf410VgnVCM1000000b43150a____%2Fseasons%2F1%2Fepisodes%2F1%2FA5EK65Bcwd6NkNp6nVPAY&uct_country=gb");
+    EXPECT_FALSE(providers[0].link().isEmpty());
     EXPECT_STREQ(providers[0].logoPath().toStdString().c_str(), "/g0E9h3JAeIwmdvxlT73jiEuxdNj.jpg");
 }

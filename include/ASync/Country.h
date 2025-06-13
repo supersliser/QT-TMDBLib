@@ -44,7 +44,7 @@ namespace tmdb::ASync
         void finishedLoadingCountry(tmdb::ASync::Country* i_country);
 
         void startedLoadingAllCountries();
-        void finishedLoadingAllCountries(const std::vector<tmdb::ASync::Country>& i_countries);
+        void finishedLoadingAllCountries(const std::vector<tmdb::ASync::Country*>& i_countries);
 
     protected:
         QString m_iso_3166_1;

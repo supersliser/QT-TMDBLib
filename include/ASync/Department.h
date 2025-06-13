@@ -43,7 +43,7 @@ namespace tmdb::ASync
         void finishedLoadingDepartment(tmdb::ASync::Department* i_department);
 
         void startedLoadingAllDepartments();
-        void finishedLoadingAllDepartments(const std::vector<tmdb::ASync::Department>& i_departments);
+        void finishedLoadingAllDepartments(std::vector<tmdb::ASync::Department*> i_departments);
 
     protected:
         QString m_deptName;

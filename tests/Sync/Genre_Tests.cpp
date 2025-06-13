@@ -6,21 +6,21 @@
 #include "Sync/QTMDB.h"
 #include <gtest/gtest.h>
 
-TEST(GenreTests, DefaultConstructor)
+TEST(GenreSyncTests, DefaultConstructor)
 {
     tmdb::Genre genre;
     EXPECT_EQ(genre.id(), 0);
     EXPECT_TRUE(genre.name().isEmpty());
 }
 
-TEST(GenreTests, ParameterizedConstructor)
+TEST(GenreSyncTests, ParameterizedConstructor)
 {
     tmdb::Genre genre(1, "Action");
     EXPECT_EQ(genre.id(), 1);
     EXPECT_STREQ(genre.name().toStdString().c_str(), "Action");
 }
 
-TEST(GenreTests, APIConstructor)
+TEST(GenreSyncTests, APIConstructor)
 {
     tmdb::Genre genre(std::getenv("API_KEY"), 28);
     EXPECT_EQ(genre.id(), 28);
@@ -28,7 +28,7 @@ TEST(GenreTests, APIConstructor)
 }
 
 
-TEST(GenreTests, APIJSON)
+TEST(GenreSyncTests, APIJSON)
 {
     Qtmdb q(std::getenv("API_KEY"));
     QJsonObject response = q.genres_movie();
@@ -38,14 +38,14 @@ TEST(GenreTests, APIJSON)
     EXPECT_STREQ(genre.name().toStdString().c_str(), "Action");
 }
 
-TEST(GenreTests, StaticConstructor)
+TEST(GenreSyncTests, StaticConstructor)
 {
     tmdb::Genre genre = tmdb::Genre::getGenre(std::getenv("API_KEY"), 28);
     EXPECT_EQ(genre.id(), 28);
     EXPECT_STREQ(genre.name().toStdString().c_str(), "Action");
 }
 
-TEST(GenreTests, GetAllGenres)
+TEST(GenreSyncTests, GetAllGenres)
 {
     auto genres = tmdb::Genre::getAllGenres(std::getenv("API_KEY"));
     EXPECT_FALSE(genres.empty());
@@ -53,7 +53,7 @@ TEST(GenreTests, GetAllGenres)
     EXPECT_STREQ(genres[0].name().toStdString().c_str(), "Action");
 }
 
-TEST(GenreTests, GetMovieGenres)
+TEST(GenreSyncTests, GetMovieGenres)
 {
     auto genres = tmdb::Genre::getMovieGenres(std::getenv("API_KEY"));
     EXPECT_FALSE(genres.empty());
@@ -61,7 +61,7 @@ TEST(GenreTests, GetMovieGenres)
     EXPECT_EQ(genres[0].name(), "Action");
 }
 
-TEST(GenreTests, GetTvGenres)
+TEST(GenreSyncTests, GetTvGenres)
 {
     auto genres = tmdb::Genre::getTvGenres(std::getenv("API_KEY"));
     EXPECT_FALSE(genres.empty());
@@ -69,7 +69,7 @@ TEST(GenreTests, GetTvGenres)
     EXPECT_STREQ(genres[0].name().toStdString().c_str(), "Action & Adventure");
 }
 
-TEST(GenreTests, setGetters)
+TEST(GenreSyncTests, setGetters)
 {
     tmdb::Genre genre;
     genre.setID(1);

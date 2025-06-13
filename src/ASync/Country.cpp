@@ -94,10 +94,10 @@ void tmdb::ASync::Country::startedLoadingAllCountriesReceived()
 
 void tmdb::ASync::Country::finishedLoadingAllCountriesReceived(void* i_data)
 {
-    QJsonArray jsonArray = QJsonArray::fromVariantList(*static_cast<QVariantList*>(i_data));
-    std::vector<Country> countries;
-    for (const auto& item : jsonArray) {
-        countries.push_back(*fromJSON(item.toObject()));
+    auto jsonArray = static_cast<QJsonArray*>(i_data);
+    std::vector<Country*> countries;
+    for (const auto& item : *jsonArray) {
+        countries.push_back(fromJSON(item.toObject()));
     }
     emit finishedLoadingAllCountries(countries);
     disconnect(&m_q, &aQtmdb::startedLoadingData, this, &Country::startedLoadingAllCountriesReceived);

@@ -23,11 +23,11 @@ QString Series::backdropPath() const {
     return m_backdropPath;
 }
 
-void Series::setCreatedBy(const std::vector<Person> &i_createdBy) {
+void Series::setCreatedBy(const std::vector<Person*> &i_createdBy) {
     m_createdBy = i_createdBy;
 }
 
-std::vector<tmdb::ASync::Person> Series::createdBy() const {
+std::vector<tmdb::ASync::Person*> Series::createdBy() const {
     return m_createdBy;
 }
 
@@ -45,10 +45,10 @@ QDate Series::firstAirDate() const {
     return m_firstAirDate;
 }
 
-void Series::setGenres(const std::vector<Genre> &i_genres) {
+void Series::setGenres(const std::vector<Genre*> &i_genres) {
     m_genres = i_genres;
 }
-std::vector<tmdb::ASync::Genre> Series::genres() const {
+std::vector<tmdb::ASync::Genre*> Series::genres() const {
     return m_genres;
 }
 
@@ -73,10 +73,10 @@ bool Series::inProduction() const {
     return in_production;
 }
 
-void Series::setLanguages(const std::vector<Language> &i_languages) {
+void Series::setLanguages(const std::vector<Language*> &i_languages) {
     m_languages = i_languages;
 }
-std::vector<tmdb::ASync::Language> Series::languages() const {
+std::vector<tmdb::ASync::Language*> Series::languages() const {
     return m_languages;
 }
 
@@ -94,17 +94,17 @@ QString Series::name() const {
     return m_name;
 }
 
-void Series::setNetworks(const std::vector<Network> &i_networks) {
+void Series::setNetworks(const std::vector<Network*> &i_networks) {
     m_networks = i_networks;
 }
-std::vector<Network> Series::networks() const {
+std::vector<Network*> Series::networks() const {
     return m_networks;
 }
 
-void Series::setOriginCountries(const std::vector<Country> &i_originCountries) {
+void Series::setOriginCountries(const std::vector<Country*> &i_originCountries) {
     m_originCountries = i_originCountries;
 }
-std::vector<tmdb::ASync::Country> Series::originCountries() const {
+std::vector<tmdb::ASync::Country*> Series::originCountries() const {
     return m_originCountries;
 }
 
@@ -136,24 +136,24 @@ QString Series::posterPath() const {
     return m_posterPath;
 }
 
-void Series::setProductionCompanies(const std::vector<Company> &i_productionCompanies) {
+void Series::setProductionCompanies(const std::vector<Company*> &i_productionCompanies) {
     m_productionCompanies = i_productionCompanies;
 }
-std::vector<tmdb::ASync::Company> Series::productionCompanies() const {
+std::vector<tmdb::ASync::Company*> Series::productionCompanies() const {
     return m_productionCompanies;
 }
 
-void Series::setProductionCountries(const std::vector<Country> &i_productionCountries) {
+void Series::setProductionCountries(const std::vector<Country*> &i_productionCountries) {
     m_productionCountries = i_productionCountries;
 }
-std::vector<tmdb::ASync::Country> Series::productionCountries() const {
+std::vector<tmdb::ASync::Country*> Series::productionCountries() const {
     return m_productionCountries;
 }
 
-void Series::setSeasons(const std::vector<Season> &i_seasons) {
+void Series::setSeasons(const std::vector<Season*> &i_seasons) {
     m_seasons = i_seasons;
 }
-std::vector<tmdb::ASync::TV::Season> Series::seasons() const {
+std::vector<tmdb::ASync::TV::Season*> Series::seasons() const {
     return m_seasons;
 }
 
@@ -164,10 +164,10 @@ QString Series::status() const {
     return m_status;
 }
 
-void Series::setSpokenLanguages(const std::vector<Language> &i_spokenLanguages) {
+void Series::setSpokenLanguages(const std::vector<Language*> &i_spokenLanguages) {
     m_spokenLanguages = i_spokenLanguages;
 }
-std::vector<tmdb::ASync::Language> Series::spokenLanguages() const {
+std::vector<tmdb::ASync::Language*> Series::spokenLanguages() const {
     return m_spokenLanguages;
 }
 
@@ -209,9 +209,9 @@ Series* Series::fromJSON(const QJsonObject &i_json) {
     auto *s = new Series();
     s->m_adult = i_json["adult"].toBool();
     s->m_backdropPath = i_json["backdrop_path"].toString();
-    std::vector<tmdb::ASync::Person> createdByArray;
+    std::vector<tmdb::ASync::Person*> createdByArray;
     for (const auto &item : i_json["created_by"].toArray()) {
-        createdByArray.push_back(*Person::fromJSON(item.toObject()));
+        createdByArray.push_back(Person::fromJSON(item.toObject()));
     }
     s->m_createdBy = createdByArray;
     std::vector<int> episodeRunTimeArray;
@@ -220,55 +220,55 @@ Series* Series::fromJSON(const QJsonObject &i_json) {
     }
     s->m_episodeRunTime = episodeRunTimeArray;
     s->m_firstAirDate = QDate::fromString(i_json["first_air_date"].toString(), Qt::ISODate);
-    std::vector<tmdb::ASync::Genre> genreArray;
+    std::vector<tmdb::ASync::Genre*> genreArray;
     for (const auto &item : i_json["genres"].toArray()) {
-        genreArray.push_back(*Genre::fromJSON(item.toObject()));
+        genreArray.push_back(Genre::fromJSON(item.toObject()));
     }
     s->m_genres = genreArray;
     s->m_homepage = i_json["homepage"].toString();
     s->m_id = i_json["id"].toInt();
     s->in_production = i_json["in_production"].toBool();
-    std::vector<Language> languageArray;
+    std::vector<Language*> languageArray;
     for (const auto &item : i_json["languages"].toArray()) {
-        languageArray.emplace_back(m_q.accessToken().c_str(), item.toString());
+        languageArray.push_back(new Language(m_q.accessToken().c_str(), item.toString()));
     }
     s->m_languages = languageArray;
     s->m_lastAirDate = QDate::fromString(i_json["last_air_date"].toString(), Qt::ISODate);
     s->m_name = i_json["name"].toString();
-    std::vector<Network> networkArray;
+    std::vector<Network*> networkArray;
     for (const auto &item : i_json["networks"].toArray()) {
-        networkArray.emplace_back(m_q.accessToken().c_str(), item.toObject()["id"].toInt());
+        networkArray.push_back(new Network(m_q.accessToken().c_str(), item.toObject()["id"].toInt()));
     }
     s->m_networks = networkArray;
     s->m_episodeCount = i_json["number_of_episodes"].toInt();
     s->m_seasonCount = i_json["number_of_seasons"].toInt();
-    std::vector<Country> originCountryArray;
+    std::vector<Country*> originCountryArray;
     for (const auto &item : i_json["origin_country"].toArray()) {
-        originCountryArray.emplace_back(m_q.accessToken().c_str(), item.toString());
+        originCountryArray.push_back(new Country(m_q.accessToken().c_str(), item.toString()));
     }
     s->m_originCountries = originCountryArray;
     s->m_originalLanguage = i_json["original_language"].toString();
     s->m_overview = i_json["overview"].toString();
     s->m_popularity = static_cast<float>(i_json["popularity"].toDouble());
     s->m_posterPath = i_json["poster_path"].toString();
-    std::vector<Company> companyArray;
+    std::vector<Company*> companyArray;
     for (const auto &item : i_json["production_companies"].toArray()) {
-        companyArray.push_back(*Company::fromJSON(item.toObject(), m_q.accessToken().c_str()));
+        companyArray.push_back(Company::fromJSON(item.toObject(), m_q.accessToken().c_str()));
     }
     s->m_productionCompanies = companyArray;
-    std::vector<Country> productionCountryArray;
+    std::vector<Country*> productionCountryArray;
     for (const auto &item : i_json["production_countries"].toArray()) {
-        productionCountryArray.emplace_back(m_q.accessToken().c_str(), item.toObject()["iso_3166_1"].toString());
+        productionCountryArray.push_back(new Country(m_q.accessToken().c_str(), item.toObject()["iso_3166_1"].toString()));
     }
     s->m_productionCountries = productionCountryArray;
-    std::vector<Season> seasonArray;
+    std::vector<Season*> seasonArray;
     for (const auto &item : i_json["seasons"].toArray()) {
-        seasonArray.push_back(*Season::fromJSON(item.toObject()));
+        seasonArray.push_back(Season::fromJSON(item.toObject()));
     }
     s->m_seasons = seasonArray;
-    std::vector<Language> spokenLanguageArray;
+    std::vector<Language*> spokenLanguageArray;
     for (const auto &item : i_json["spoken_languages"].toArray()) {
-        spokenLanguageArray.emplace_back(m_q.accessToken().c_str(), item.toObject()["iso_639_1"].toString());
+        spokenLanguageArray.push_back(new Language(m_q.accessToken().c_str(), item.toObject()["iso_639_1"].toString()));
     }
     s->m_spokenLanguages = spokenLanguageArray;
     s->m_status = i_json["status"].toString();
@@ -299,7 +299,7 @@ void Series::finishedLoadingSeriesReceived(void* i_data) {
     disconnect(&m_q, &aQtmdb::finishedLoadingData, this, &Series::finishedLoadingSeriesReceived);
 }
 
-void Series::loadSearchResults(const QString& i_query, int32_t i_page, const Language& i_language, bool i_includeAdult, int i_year, int i_firstAirYear){
+void Series::loadSearchResults(const QString& i_query, const Language& i_language, int32_t i_page, bool i_includeAdult, int i_year, int i_firstAirYear){
     connect(&m_q, &aQtmdb::startedLoadingData, this, &Series::startedLoadingSearchResultsReceived);
     connect(&m_q, &aQtmdb::finishedLoadingData, this, &Series::finishedLoadingSearchResultsReceived);
     m_q.get_tv(i_query.toStdString(), i_firstAirYear, i_includeAdult, i_language.iso6391().toStdString(), i_page, i_year);
@@ -309,9 +309,9 @@ void Series::startedLoadingSearchResultsReceived() {
 }
 void Series::finishedLoadingSearchResultsReceived(void* i_data) {
     QJsonObject json = *static_cast<QJsonObject*>(i_data);
-    std::vector<Series> seriesList;
+    std::vector<Series*> seriesList;
     for (const auto &item : json["results"].toArray()) {
-        seriesList.emplace_back(m_q.accessToken().c_str(), item.toObject()["id"].toInt());
+        seriesList.push_back(new Series(m_q.accessToken().c_str(), item.toObject()["id"].toInt()));
     }
     emit finishedLoadingSearchResults(seriesList);
     disconnect(&m_q, &aQtmdb::startedLoadingData, this, &Series::startedLoadingSearchResultsReceived);
@@ -328,9 +328,9 @@ void Series::startedLoadingAiringTodayReceived() {
 }
 void Series::finishedLoadingAiringTodayReceived(void* i_data) {
     QJsonObject json = *static_cast<QJsonObject*>(i_data);
-    std::vector<Series> seriesList;
+    std::vector<Series*> seriesList;
     for (const auto &item : json["results"].toArray()) {
-        seriesList.emplace_back(m_q.accessToken().c_str(), item.toObject()["id"].toInt());
+        seriesList.push_back(new Series(m_q.accessToken().c_str(), item.toObject()["id"].toInt()));
     }
     emit finishedLoadingAiringToday(seriesList);
     disconnect(&m_q, &aQtmdb::startedLoadingData, this, &Series::startedLoadingAiringTodayReceived);
@@ -347,9 +347,9 @@ void Series::startedLoadingOnTheAirReceived() {
 }
 void Series::finishedLoadingOnTheAirReceived(void* i_data) {
     QJsonObject json = *static_cast<QJsonObject*>(i_data);
-    std::vector<Series> seriesList;
+    std::vector<Series*> seriesList;
     for (const auto &item : json["results"].toArray()) {
-        seriesList.emplace_back(m_q.accessToken().c_str(), item.toObject()["id"].toInt());
+        seriesList.push_back(new Series(m_q.accessToken().c_str(), item.toObject()["id"].toInt()));
     }
     emit finishedLoadingOnTheAir(seriesList);
     disconnect(&m_q, &aQtmdb::startedLoadingData, this, &Series::startedLoadingOnTheAirReceived);
@@ -366,9 +366,9 @@ void Series::startedLoadingPopularReceived() {
 }
 void Series::finishedLoadingPopularReceived(void* i_data) {
     QJsonObject json = *static_cast<QJsonObject*>(i_data);
-    std::vector<Series> seriesList;
+    std::vector<Series*> seriesList;
     for (const auto &item : json["results"].toArray()) {
-        seriesList.emplace_back(m_q.accessToken().c_str(), item.toObject()["id"].toInt());
+        seriesList.push_back(new Series(m_q.accessToken().c_str(), item.toObject()["id"].toInt()));
     }
     emit finishedLoadingPopular(seriesList);
     disconnect(&m_q, &aQtmdb::startedLoadingData, this, &Series::startedLoadingPopularReceived);
@@ -385,9 +385,9 @@ void Series::startedLoadingTopRatedReceived() {
 }
 void Series::finishedLoadingTopRatedReceived(void* i_data) {
     QJsonObject json = *static_cast<QJsonObject*>(i_data);
-    std::vector<Series> seriesList;
+    std::vector<Series*> seriesList;
     for (const auto &item : json["results"].toArray()) {
-        seriesList.emplace_back(m_q.accessToken().c_str(), item.toObject()["id"].toInt());
+        seriesList.push_back(new Series(m_q.accessToken().c_str(), item.toObject()["id"].toInt()));
     }
     emit finishedLoadingTopRated(seriesList);
     disconnect(&m_q, &aQtmdb::startedLoadingData, this, &Series::startedLoadingTopRatedReceived);
@@ -404,9 +404,9 @@ void Series::startedLoadingRecommendationsReceived() {
 }
 void Series::finishedLoadingRecommendationsReceived(void* i_data) {
     QJsonObject json = *static_cast<QJsonObject*>(i_data);
-    std::vector<Series> seriesList;
+    std::vector<Series*> seriesList;
     for (const auto &item : json["results"].toArray()) {
-        seriesList.emplace_back(m_q.accessToken().c_str(), item.toObject()["id"].toInt());
+        seriesList.push_back(new Series(m_q.accessToken().c_str(), item.toObject()["id"].toInt()));
     }
     emit finishedLoadingRecommendations(seriesList);
     disconnect(&m_q, &aQtmdb::startedLoadingData, this, &Series::startedLoadingRecommendationsReceived);
@@ -423,9 +423,9 @@ void Series::startedLoadingSimilarReceived() {
 }
 void Series::finishedLoadingSimilarReceived(void* i_data) {
     QJsonObject json = *static_cast<QJsonObject*>(i_data);
-    std::vector<Series> seriesList;
+    std::vector<Series*> seriesList;
     for (const auto &item : json["results"].toArray()) {
-        seriesList.emplace_back(m_q.accessToken().c_str(), item.toObject()["id"].toInt());
+        seriesList.push_back(new Series(m_q.accessToken().c_str(), item.toObject()["id"].toInt()));
     }
     emit finishedLoadingSimilar(seriesList);
     disconnect(&m_q, &aQtmdb::startedLoadingData, this, &Series::startedLoadingSimilarReceived);
@@ -443,9 +443,9 @@ void Series::startedLoadingWatchProvidersReceived() {
 }
 void Series::finishedLoadingWatchProvidersReceived(void* i_data) {
     QJsonObject json = *static_cast<QJsonObject*>(i_data);
-    std::vector<tmdb::ASync::WatchProvider> watchProviders;
+    std::vector<tmdb::ASync::WatchProvider*> watchProviders;
     for (const auto &item : json["results"].toObject()) {
-        watchProviders.push_back(*tmdb::ASync::WatchProvider::fromJSON(item.toObject()));
+        watchProviders.push_back(tmdb::ASync::WatchProvider::fromJSON(item.toObject()));
     }
     emit finishedLoadingWatchProviders(watchProviders);
     disconnect(&m_q, &aQtmdb::startedLoadingData, this, &Series::startedLoadingWatchProvidersReceived);
@@ -488,7 +488,6 @@ void Series::startedLoadingBackdropsReceived() {
 }
 void Series::finishedLoadingBackdropsReceived(void* i_data) {
     auto temp = static_cast<QJsonObject*>(i_data);
-    auto results = std::vector<Image>();
     for (const auto& result : temp->value("backdrops").toArray())
     {
         Image* b = new Image();
@@ -497,7 +496,6 @@ void Series::finishedLoadingBackdropsReceived(void* i_data) {
             emit finishedLoadingBackdrop(b->pixmap());
         });
         b->loadImage(result.toObject()["file_path"].toString());
-        results.push_back(*b);
     }
     disconnect(&m_q, &aQtmdb::startedLoadingData, this, &Series::startedLoadingBackdropsReceived);
     disconnect(&m_q, &aQtmdb::finishedLoadingData, this, &Series::finishedLoadingBackdropsReceived);
@@ -513,7 +511,6 @@ void Series::startedLoadingBackdropReceived() {
 }
 void Series::finishedLoadingBackdropReceived(void* i_data) {
     auto temp = static_cast<QJsonObject*>(i_data);
-    auto results = std::vector<Image>();
     for (const auto& result : temp->value("backdrops").toArray())
     {
         Image* b = new Image();
@@ -522,7 +519,6 @@ void Series::finishedLoadingBackdropReceived(void* i_data) {
             emit finishedLoadingBackdrop(b->pixmap());
         });
         b->loadImage(result.toObject()["file_path"].toString());
-        results.push_back(*b);
     }
     disconnect(&m_q, &aQtmdb::startedLoadingData, this, &Series::startedLoadingBackdropsReceived);
     disconnect(&m_q, &aQtmdb::finishedLoadingData, this, &Series::finishedLoadingBackdropsReceived);
@@ -538,7 +534,6 @@ void Series::startedLoadingPosterReceived() {
 }
 void Series::finishedLoadingPosterReceived(void* i_data) {
     auto temp = static_cast<QJsonObject*>(i_data);
-    auto results = std::vector<Image>();
     for (const auto& result : temp->value("posters").toArray())
     {
         Image* p = new Image();
@@ -547,7 +542,6 @@ void Series::finishedLoadingPosterReceived(void* i_data) {
             emit finishedLoadingPoster(p->pixmap());
         });
         p->loadImage(result.toObject()["file_path"].toString());
-        results.push_back(*p);
     }
     disconnect(&m_q, &aQtmdb::startedLoadingData, this, &Series::startedLoadingPosterReceived);
     disconnect(&m_q, &aQtmdb::finishedLoadingData, this, &Series::finishedLoadingPosterReceived);
@@ -563,7 +557,6 @@ void Series::startedLoadingPostersReceived() {
 }
 void Series::finishedLoadingPostersReceived(void* i_data) {
     auto temp = static_cast<QJsonObject*>(i_data);
-    auto results = std::vector<Image>();
     for (const auto& result : temp->value("posters").toArray())
     {
         Image* p = new Image();
@@ -572,7 +565,6 @@ void Series::finishedLoadingPostersReceived(void* i_data) {
             emit finishedLoadingPoster(p->pixmap());
         });
         p->loadImage(result.toObject()["file_path"].toString());
-        results.push_back(*p);
     }
     disconnect(&m_q, &aQtmdb::startedLoadingData, this, &Series::startedLoadingPostersReceived);
     disconnect(&m_q, &aQtmdb::finishedLoadingData, this, &Series::finishedLoadingPostersReceived);
@@ -588,7 +580,6 @@ void Series::startedLoadingLogosReceived() {
 }
 void Series::finishedLoadingLogosReceived(void* i_data) {
     auto temp = static_cast<QJsonObject*>(i_data);
-    auto results = std::vector<Image>();
     for (const auto& result : temp->value("logos").toArray())
     {
         Image* l = new Image();
@@ -597,7 +588,6 @@ void Series::finishedLoadingLogosReceived(void* i_data) {
             emit finishedLoadingLogo(l->pixmap());
         });
         l->loadImage(result.toObject()["file_path"].toString());
-        results.push_back(*l);
     }
     disconnect(&m_q, &aQtmdb::startedLoadingData, this, &Series::startedLoadingLogosReceived);
     disconnect(&m_q, &aQtmdb::finishedLoadingData, this, &Series::finishedLoadingLogosReceived);
@@ -613,7 +603,6 @@ void Series::startedLoadingLogoReceived() {
 }
 void Series::finishedLoadingLogoReceived(void* i_data) {
     auto temp = static_cast<QJsonObject*>(i_data);
-    auto results = std::vector<Image>();
     for (const auto& result : temp->value("logos").toArray())
     {
         Image* l = new Image();
@@ -622,7 +611,6 @@ void Series::finishedLoadingLogoReceived(void* i_data) {
             emit finishedLoadingLogo(l->pixmap());
         });
         l->loadImage(result.toObject()["file_path"].toString());
-        results.push_back(*l);
     }
     disconnect(&m_q, &aQtmdb::startedLoadingData, this, &Series::startedLoadingLogoReceived);
     disconnect(&m_q, &aQtmdb::finishedLoadingData, this, &Series::finishedLoadingLogoReceived);
@@ -638,9 +626,9 @@ void Series::startedLoadingSeasonsReceived() {
 }
 void Series::finishedLoadingSeasonsReceived(void* i_data) {
     QJsonObject json = *static_cast<QJsonObject*>(i_data);
-    std::vector<tmdb::ASync::TV::Season> seasons;
+    std::vector<tmdb::ASync::TV::Season*> seasons;
     for (const auto &item : json["seasons"].toArray()) {
-        seasons.push_back(*tmdb::ASync::TV::Season::fromJSON(item.toObject()));
+        seasons.push_back(tmdb::ASync::TV::Season::fromJSON(item.toObject()));
     }
     emit finishedLoadingSeasons(seasons);
     disconnect(&m_q, &aQtmdb::startedLoadingData, this, &Series::startedLoadingSeasonsReceived);

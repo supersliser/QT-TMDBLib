@@ -9,7 +9,7 @@
 
 #include "Sync/QTMDB.h"
 
-TEST(SeasonTests, DefaultConstructor)
+TEST(SeasonSyncTests, DefaultConstructor)
 {
     tmdb::TV::Season season;
     EXPECT_EQ(season.id(), 0);
@@ -20,7 +20,7 @@ TEST(SeasonTests, DefaultConstructor)
     EXPECT_TRUE(season.posterPath().isEmpty());
 }
 
-TEST(SeasonTests, ParameterizedConstructor)
+TEST(SeasonSyncTests, ParameterizedConstructor)
 {
     tmdb::TV::Season season(QDate(2023, 1, 1), {}, "Test Season", "This is a test season overview", 1, "/path/to/poster.jpg", 1, 8.5f);
     EXPECT_EQ(season.id(), 1);
@@ -31,7 +31,7 @@ TEST(SeasonTests, ParameterizedConstructor)
     EXPECT_STREQ(season.posterPath().toStdString().c_str(), "/path/to/poster.jpg");
 }
 
-TEST(SeasonTests, APIConstructor)
+TEST(SeasonSyncTests, APIConstructor)
 {
     tmdb::TV::Season season(std::getenv("API_KEY"), 1399, 1);
     EXPECT_EQ(season.id(), 3624); // Assuming the season ID is 1 for the test series
@@ -42,7 +42,7 @@ TEST(SeasonTests, APIConstructor)
     EXPECT_STREQ(season.posterPath().toStdString().c_str(), "/wgfKiqzuMrFIkU1M68DDDY8kGC1.jpg");
 }
 
-TEST(SeasonTests, APIJSON)
+TEST(SeasonSyncTests, APIJSON)
 {
     Qtmdb q(std::getenv("API_KEY"));
     auto response = q.tv_seasons_details(1399, 1);
@@ -55,7 +55,7 @@ TEST(SeasonTests, APIJSON)
     EXPECT_STREQ(s.posterPath().toStdString().c_str(), "/wgfKiqzuMrFIkU1M68DDDY8kGC1.jpg");
 }
 
-TEST(SeasonTests, StaticConstructor)
+TEST(SeasonSyncTests, StaticConstructor)
 {
     tmdb::TV::Season season = tmdb::TV::Season::getSeason(std::getenv("API_KEY"), 1399, 1);
     EXPECT_EQ(season.id(), 3624); // Assuming the season ID is 1 for the test series
@@ -66,7 +66,7 @@ TEST(SeasonTests, StaticConstructor)
     EXPECT_STREQ(season.posterPath().toStdString().c_str(), "/wgfKiqzuMrFIkU1M68DDDY8kGC1.jpg");
 }
 
-TEST(SeasonTests, setGetters)
+TEST(SeasonSyncTests, setGetters)
 {
     tmdb::TV::Season s;
     s.setAirDate(QDate(2023, 1, 1));

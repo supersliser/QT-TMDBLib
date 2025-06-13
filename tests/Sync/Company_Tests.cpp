@@ -7,7 +7,7 @@
 
 #include "Sync/QTMDB.h"
 
-TEST(CompanyTests, DefaultConstructor)
+TEST(CompanySyncTests, DefaultConstructor)
 {
     tmdb::Company company;
     EXPECT_TRUE(company.description().isEmpty());
@@ -20,7 +20,7 @@ TEST(CompanyTests, DefaultConstructor)
     EXPECT_EQ(company.id(), 0);
 }
 
-TEST(CompanyTests, ParameterizedConstructor)
+TEST(CompanySyncTests, ParameterizedConstructor)
 {
     tmdb::Company company("Test Description", "Test Headquarters", "http://example.com",
                     "Test Company", "US", "Parent Company", "/logo.png", 12345);
@@ -34,7 +34,7 @@ TEST(CompanyTests, ParameterizedConstructor)
     EXPECT_EQ(company.id(), 12345);
 }
 
-TEST(CompanyTests, APIConstructor)
+TEST(CompanySyncTests, APIConstructor)
 {
     tmdb::Company company(std::getenv("API_KEY"), 1);
     EXPECT_EQ(company.id(), 1);
@@ -47,7 +47,7 @@ TEST(CompanyTests, APIConstructor)
     EXPECT_STREQ(company.logoPath().toStdString().c_str(), "/tlVSws0RvvtPBwViUyOFAO0vcQS.png");
 }
 
-TEST(CompanyTests, APIJSON)
+TEST(CompanySyncTests, APIJSON)
 {
     Qtmdb q(std::getenv("API_KEY"));
     QJsonObject response = q.company_details(1);
@@ -63,7 +63,7 @@ TEST(CompanyTests, APIJSON)
     EXPECT_STREQ(company.logoPath().toStdString().c_str(), "/tlVSws0RvvtPBwViUyOFAO0vcQS.png");
 }
 
-TEST(CompanyTests, StaticConstructor)
+TEST(CompanySyncTests, StaticConstructor)
 {
     tmdb::Company company = tmdb::Company::getCompany(std::getenv("API_KEY"), 1);
     EXPECT_EQ(company.id(), 1);
@@ -76,7 +76,7 @@ TEST(CompanyTests, StaticConstructor)
     EXPECT_STREQ(company.logoPath().toStdString().c_str(), "/tlVSws0RvvtPBwViUyOFAO0vcQS.png");
 }
 
-TEST(CompanyTests, setGetters)
+TEST(CompanySyncTests, setGetters)
 {
     tmdb::Company c;
     c.setDescription("Test Description");

@@ -97,10 +97,10 @@ void tmdb::ASync::Language::startedLoadingAllLanguagesReceived()
 void tmdb::ASync::Language::finishedLoadingAllLanguagesReceived(void* i_data)
 {
     QJsonArray jsonArray = *static_cast<QJsonArray*>(i_data);
-    std::vector<Language> languages;
+    std::vector<Language*> languages;
     for (const QJsonValue& value : jsonArray) {
         QJsonObject json = value.toObject();
-        languages.push_back(*fromJSON(json));
+        languages.push_back(fromJSON(json));
     }
     emit finishedLoadingAllLanguages(languages);
 }

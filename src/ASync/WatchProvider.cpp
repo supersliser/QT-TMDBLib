@@ -172,24 +172,24 @@ void tmdb::ASync::WatchProvider::finishedLoadingAllWatchProvidersReceived(void* 
     {
         auto* data = static_cast<QJsonObject*>(i_data);
         auto results = data->value("results").toArray();
-        std::vector<WatchProvider>* providers = new std::vector<WatchProvider>();
+        auto providers = std::vector<WatchProvider*>();
         for (const auto& result : results)
         {
-            providers->push_back(*fromJSON(result.toObject()));
+            providers.push_back(fromJSON(result.toObject()));
         }
         for (const auto result : m_tempData->value("results").toArray())
         {
-            providers->push_back(*fromJSON(result.toObject()));
+            providers.push_back(fromJSON(result.toObject()));
         }
         emit finishedLoadingAllWatchProviders(providers);
     }
 }
 
-void tmdb::ASync::WatchProvider::loadAllMovieProviders(Language i_language)
+void tmdb::ASync::WatchProvider::loadAllMovieProviders(const Language* i_language)
 {
     connect(&m_q, &aQtmdb::startedLoadingData, this, &WatchProvider::startedLoadingAllMovieProvidersReceived);
     connect(&m_q, &aQtmdb::finishedLoadingData, this, &WatchProvider::finishedLoadingAllMovieProvidersReceived);
-    m_q.watchProviders_movie(i_language.iso6391().toStdString());
+    m_q.watchProviders_movie(i_language->iso6391().toStdString());
 }
 void tmdb::ASync::WatchProvider::startedLoadingAllMovieProvidersReceived()
 {
@@ -202,25 +202,21 @@ void tmdb::ASync::WatchProvider::finishedLoadingAllMovieProvidersReceived(void* 
     if (data->contains("results"))
     {
         auto results = data->value("results").toArray();
-        std::vector<WatchProvider>* providers = new std::vector<WatchProvider>();
-        providers->reserve(results.size());
+        auto providers = std::vector<WatchProvider*>();
+        providers.reserve(results.size());
         for (const auto& result : results)
         {
-            providers->push_back(*fromJSON(result.toObject()));
+            providers.push_back(fromJSON(result.toObject()));
         }
         emit finishedLoadingAllMovieProviders(providers);
     }
-    else
-    {
-        emit finishedLoadingAllMovieProviders(nullptr);
-    }
 }
 
-void tmdb::ASync::WatchProvider::loadAllTVProviders(Language i_language)
+void tmdb::ASync::WatchProvider::loadAllTVProviders(const Language* i_language)
 {
     connect(&m_q, &aQtmdb::startedLoadingData, this, &WatchProvider::startedLoadingAllTVProvidersReceived);
     connect(&m_q, &aQtmdb::finishedLoadingData, this, &WatchProvider::finishedLoadingAllTVProvidersReceived);
-    m_q.watchProviders_tv(i_language.iso6391().toStdString());
+    m_q.watchProviders_tv(i_language->iso6391().toStdString());
 }
 
 void tmdb::ASync::WatchProvider::startedLoadingAllTVProvidersReceived()
@@ -235,17 +231,13 @@ void tmdb::ASync::WatchProvider::finishedLoadingAllTVProvidersReceived(void* i_d
     if (data->contains("results"))
     {
         auto results = data->value("results").toArray();
-        std::vector<WatchProvider>* providers = new std::vector<WatchProvider>();
-        providers->reserve(results.size());
+        auto providers = std::vector<WatchProvider*>();
+        providers.reserve(results.size());
         for (const auto& result : results)
         {
-            providers->push_back(*fromJSON(result.toObject()));
+            providers.push_back(fromJSON(result.toObject()));
         }
         emit finishedLoadingAllTVProviders(providers);
-    }
-    else
-    {
-        emit finishedLoadingAllTVProviders(nullptr);
     }
 }
 
@@ -266,7 +258,7 @@ void tmdb::ASync::WatchProvider::finishedLoadingWatchProvidersForMovieReceived(v
     if (data->contains("results"))
     {
         auto amProviders = data->value("results").toObject();
-        std::vector<WatchProvider>* watchProviders = new std::vector<WatchProvider>();
+        auto watchProviders = std::vector<WatchProvider*>();
         std::vector<config::LinkInfo> possibleLinks = config::extractLinksFromUrl(amProviders["link"].toString());
         for (const auto& provider : amProviders["flatrate"].toArray())
         {
@@ -286,7 +278,7 @@ void tmdb::ASync::WatchProvider::finishedLoadingWatchProvidersForMovieReceived(v
             temp.setProviderID(provider.toObject()["provider_id"].toInt());
             temp.setProviderName(provider.toObject()["provider_name"].toString());
             temp.setLink(link);
-            watchProviders->push_back(temp);
+            watchProviders.push_back(&temp);
         }
         for (const auto& provider : amProviders["buy"].toArray())
         {
@@ -306,7 +298,7 @@ void tmdb::ASync::WatchProvider::finishedLoadingWatchProvidersForMovieReceived(v
             temp.setProviderID(provider.toObject()["provider_id"].toInt());
             temp.setProviderName(provider.toObject()["provider_name"].toString());
             temp.setLink(link);
-            watchProviders->push_back(temp);
+            watchProviders.push_back(&temp);
         }
         for (const auto& provider : amProviders["rent"].toArray())
         {
@@ -326,7 +318,7 @@ void tmdb::ASync::WatchProvider::finishedLoadingWatchProvidersForMovieReceived(v
             temp.setProviderID(provider.toObject()["provider_id"].toInt());
             temp.setProviderName(provider.toObject()["provider_name"].toString());
             temp.setLink(link);
-            watchProviders->push_back(temp);
+            watchProviders.push_back(&temp);
         }
         emit finishedLoadingWatchProvidersForMovie(watchProviders);
         disconnect(&m_q, &aQtmdb::startedLoadingData, this,
@@ -353,7 +345,7 @@ void tmdb::ASync::WatchProvider::finishedLoadingWatchProvidersForTVReceived(void
     if (data->contains("results"))
     {
         auto amProviders = data->value("results").toObject();
-        std::vector<WatchProvider>* watchProviders = new std::vector<WatchProvider>();
+        auto watchProviders = std::vector<WatchProvider*>();
         std::vector<config::LinkInfo> possibleLinks = config::extractLinksFromUrl(amProviders["link"].toString());
         for (const auto& provider : amProviders["flatrate"].toArray())
         {
@@ -373,7 +365,7 @@ void tmdb::ASync::WatchProvider::finishedLoadingWatchProvidersForTVReceived(void
             temp.setProviderID(provider.toObject()["provider_id"].toInt());
             temp.setProviderName(provider.toObject()["provider_name"].toString());
             temp.setLink(link);
-            watchProviders->push_back(temp);
+            watchProviders.push_back(&temp);
         }
         for (const auto& provider : amProviders["buy"].toArray())
         {
@@ -393,7 +385,7 @@ void tmdb::ASync::WatchProvider::finishedLoadingWatchProvidersForTVReceived(void
             temp.setProviderID(provider.toObject()["provider_id"].toInt());
             temp.setProviderName(provider.toObject()["provider_name"].toString());
             temp.setLink(link);
-            watchProviders->push_back(temp);
+            watchProviders.push_back(&temp);
         }
         for (const auto& provider : amProviders["rent"].toArray())
         {
@@ -413,7 +405,7 @@ void tmdb::ASync::WatchProvider::finishedLoadingWatchProvidersForTVReceived(void
             temp.setProviderID(provider.toObject()["provider_id"].toInt());
             temp.setProviderName(provider.toObject()["provider_name"].toString());
             temp.setLink(link);
-            watchProviders->push_back(temp);
+            watchProviders.push_back(&temp);
         }
         emit finishedLoadingWatchProvidersForTV(watchProviders);
         disconnect(&m_q, &aQtmdb::startedLoadingData, this,

@@ -17,12 +17,12 @@ namespace tmdb::ASync
         public:
             void setAirDate(const QDate& i_airDate);
             [[nodiscard]] QDate airDate() const;
-            void setCrew(const std::vector<Credit>& i_crew);
-            [[nodiscard]] std::vector<Credit> crew() const;
+            void setCrew(const std::vector<Credit*>& i_crew);
+            [[nodiscard]] std::vector<Credit*> crew() const;
             void setEpisodeNumber(int i_episodeNumber);
             [[nodiscard]] int episodeNumber() const;
-            void setGuestStars(const std::vector<Credit>& i_guestStars);
-            [[nodiscard]] std::vector<Credit> guestStars() const;
+            void setGuestStars(const std::vector<Credit*>& i_guestStars);
+            [[nodiscard]] std::vector<Credit*> guestStars() const;
             void setName(const QString& i_name);
             [[nodiscard]] QString name() const;
             void setOverview(const QString& i_overview);
@@ -64,13 +64,13 @@ namespace tmdb::ASync
             void startedLoadingEpisode();
             void finishedLoadingEpisode(tmdb::ASync::TV::Episode* i_episode);
             void startedLoadingSeasonEpisodes();
-            void finishedLoadingSeasonEpisodes(const std::vector<tmdb::ASync::TV::Episode>& i_episodes);
+            void finishedLoadingSeasonEpisodes(std::vector<tmdb::ASync::TV::Episode*> i_episodes);
 
         protected:
             QDate m_airDate;
-            std::vector<Credit> m_crew;
+            std::vector<Credit*> m_crew;
             int m_episodeNumber = 0;
-            std::vector<Credit> m_guestStars;
+            std::vector<Credit*> m_guestStars;
             QString m_name;
             QString m_overview;
             int m_id = 0;

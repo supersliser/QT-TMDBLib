@@ -44,7 +44,7 @@ namespace tmdb::ASync
         void finishedLoadingLanguage(tmdb::ASync::Language* i_language);
 
         void startedLoadingAllLanguages();
-        void finishedLoadingAllLanguages(const std::vector<tmdb::ASync::Language>& i_languages);
+        void finishedLoadingAllLanguages(std::vector<tmdb::ASync::Language*> i_languages);
 
     protected:
         QString m_iso_639_1;

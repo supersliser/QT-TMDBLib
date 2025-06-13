@@ -206,3 +206,12 @@ void tmdb::ASync::Person::finishedLoadingPersonReceived(void* i_data)
     auto person = static_cast<QJsonObject*>(i_data);
     emit finishedLoadingPerson(fromJSON(*person));
 }
+
+tmdb::ASync::Credit* tmdb::ASync::Credit::fromJSON(const QJsonObject& i_json)
+{
+    auto* credit = dynamic_cast<Credit*>(Person::fromJSON(i_json));
+    credit->setCreditID(i_json["credit_id"].toString());
+    credit->setCharacter(i_json["character"].toString());
+    return credit;
+
+}

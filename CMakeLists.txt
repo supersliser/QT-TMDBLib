@@ -165,17 +165,17 @@ add_executable(TMDBTests
         tests/JSON/Sync/tvSeasons.cpp
         tests/JSON/Sync/tvEpisodes.cpp
         tests/JSON/Sync/watchProviders.cpp
-        tests/Account_Tests.cpp
-        tests/Company_Tests.cpp
-        tests/Config_Tests.cpp
-        tests/Genre_Tests.cpp
-        tests/Movie_Tests.cpp
-        tests/WatchProvider_Tests.cpp
-        tests/Person_Tests.cpp
-        tests/Network_Tests.cpp
-        tests/Series_Tests.cpp
-        tests/Season_Tests.cpp
-        tests/Episode_Tests.cpp
+        tests/Sync/Account_Tests.cpp
+        tests/Sync/Company_Tests.cpp
+        tests/Sync/Config_Tests.cpp
+        tests/Sync/Genre_Tests.cpp
+        tests/Sync/Movie_Tests.cpp
+        tests/Sync/WatchProvider_Tests.cpp
+        tests/Sync/Person_Tests.cpp
+        tests/Sync/Network_Tests.cpp
+        tests/Sync/Series_Tests.cpp
+        tests/Sync/Season_Tests.cpp
+        tests/Sync/Episode_Tests.cpp
         tests/JSON/ASync/account.cpp
         tests/JSON/ASync/certifications.cpp
         tests/JSON/ASync/changes.cpp
@@ -183,6 +183,19 @@ add_executable(TMDBTests
         tests/JSON/ASync/company.cpp
         tests/JSON/ASync/credits.cpp
         tests/JSON/ASync/config.cpp
+        tests/JSON/ASync/get.cpp
+        tests/JSON/ASync/movie.cpp
+        tests/JSON/Sync/movieList.cpp
+        tests/JSON/Sync/movie.cpp
+        tests/JSON/Sync/networks.cpp
+        tests/JSON/Sync/people.cpp
+        tests/JSON/Sync/reviews.cpp
+        tests/JSON/Sync/get.cpp
+        tests/JSON/Sync/trending.cpp
+        tests/JSON/Sync/tvSeries.cpp
+        tests/JSON/Sync/tvSeasons.cpp
+        tests/JSON/Sync/tvEpisodes.cpp
+        tests/JSON/Sync/watchProviders.cpp
 )
 target_sources(TMDBTests PRIVATE)
 target_link_libraries(TMDBTests PRIVATE GTest::gtest GTest::gtest_main)

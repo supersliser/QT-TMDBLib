@@ -6,7 +6,7 @@
 #include "Sync/QTMDB.h"
 #include <gtest/gtest.h>
 
-TEST(MovieTests, DefaultConstructor)
+TEST(MovieSyncTests, DefaultConstructor)
 {
     tmdb::Movie movie;
     EXPECT_TRUE(movie.adult());
@@ -36,7 +36,7 @@ TEST(MovieTests, DefaultConstructor)
     EXPECT_EQ(movie.voteCount(), 0);
 }
 
-TEST(MovieTests, APIConstructor)
+TEST(MovieSyncTests, APIConstructor)
 {
     tmdb::Movie movie(std::getenv("API_KEY"), 550);
     EXPECT_FALSE(movie.adult());
@@ -69,7 +69,7 @@ TEST(MovieTests, APIConstructor)
 
 }
 
-TEST(MovieTests, StaticConstructor)
+TEST(MovieSyncTests, StaticConstructor)
 {
     tmdb::Movie movie = tmdb::Movie::getMovie(std::getenv("API_KEY"), 550);
     EXPECT_FALSE(movie.adult());
@@ -101,7 +101,7 @@ TEST(MovieTests, StaticConstructor)
     EXPECT_GT(movie.voteCount(), 30292);
 }
 
-TEST(MovieTests, searchForMovies)
+TEST(MovieSyncTests, searchForMovies)
 {
     std::vector<tmdb::Movie> movies = tmdb::Movie::searchForMovies(
         std::getenv("API_KEY"),
@@ -136,7 +136,7 @@ TEST(MovieTests, searchForMovies)
     EXPECT_GT(movies[0].voteCount(), 30292);
 }
 
-TEST(MovieTests, setGetters)
+TEST(MovieSyncTests, setGetters)
 {
     tmdb::Movie movie;
     movie.setAdult(false);
@@ -209,7 +209,7 @@ TEST(MovieTests, setGetters)
     EXPECT_EQ(movie.voteCount(), 10);
 }
 
-TEST(MovieTests, getNowPlaying)
+TEST(MovieSyncTests, getNowPlaying)
 {
     std::vector<tmdb::Movie> movies = tmdb::Movie::getNowPlaying(std::getenv("API_KEY"));
 
@@ -236,7 +236,7 @@ TEST(MovieTests, getNowPlaying)
     }
 }
 
-TEST(MovieTests, getPopular)
+TEST(MovieSyncTests, getPopular)
 {
     std::vector<tmdb::Movie> movies = tmdb::Movie::getPopular(std::getenv("API_KEY"));
 
@@ -260,7 +260,7 @@ TEST(MovieTests, getPopular)
     }
 }
 
-TEST(MovieTests, getTopRated)
+TEST(MovieSyncTests, getTopRated)
 {
     std::vector<tmdb::Movie> movies = tmdb::Movie::getTopRated(std::getenv("API_KEY"));
 
@@ -286,7 +286,7 @@ TEST(MovieTests, getTopRated)
     }
 }
 
-TEST(MovieTests, getUpcoming)
+TEST(MovieSyncTests, getUpcoming)
 {
     std::vector<tmdb::Movie> movies = tmdb::Movie::getUpcoming(std::getenv("API_KEY"));
 
@@ -312,7 +312,7 @@ TEST(MovieTests, getUpcoming)
     }
 }
 
-TEST(MovieTests, getAlternateTitles)
+TEST(MovieSyncTests, getAlternateTitles)
 {
     auto movie = tmdb::Movie::getMovie(std::getenv("API_KEY"), 550);
     auto alternateTitles = movie.alternateTitles(std::getenv("API_KEY"));
@@ -321,7 +321,7 @@ TEST(MovieTests, getAlternateTitles)
     EXPECT_STREQ(alternateTitles[0].type.toStdString().c_str(), "romanization");
 }
 
-TEST(MovieTests, getExternalIDs)
+TEST(MovieSyncTests, getExternalIDs)
 {
     auto movie = tmdb::Movie::getMovie(std::getenv("API_KEY"), 550);
     auto externalIDs = movie.externalIDs(std::getenv("API_KEY"));
@@ -332,7 +332,7 @@ TEST(MovieTests, getExternalIDs)
     EXPECT_STREQ(externalIDs[4].toStdString().c_str(), "");
 }
 
-TEST(MovieTests, getBackdrops)
+TEST(MovieSyncTests, getBackdrops)
 {
     auto movie = tmdb::Movie::getMovie(std::getenv("API_KEY"), 550);
     auto backdrops = movie.backdrops(std::getenv("API_KEY"), "original");
@@ -340,7 +340,7 @@ TEST(MovieTests, getBackdrops)
     EXPECT_EQ(backdrops[0].width(), 1920);
 }
 
-TEST(MovieTests, getBackdrop)
+TEST(MovieSyncTests, getBackdrop)
 {
     auto movie = tmdb::Movie::getMovie(std::getenv("API_KEY"), 550);
     auto backdrop = movie.backdrop(std::getenv("API_KEY"), 0, "original");
@@ -348,7 +348,7 @@ TEST(MovieTests, getBackdrop)
     EXPECT_EQ(backdrop.width(), 1920);
 }
 
-TEST(MovieTests, getLogos)
+TEST(MovieSyncTests, getLogos)
 {
     auto movie = tmdb::Movie::getMovie(std::getenv("API_KEY"), 550);
     auto logos = movie.logos(std::getenv("API_KEY"), "original");
@@ -356,7 +356,7 @@ TEST(MovieTests, getLogos)
     EXPECT_EQ(logos[0].width(), 1804);
 }
 
-TEST(MovieTests, getLogo)
+TEST(MovieSyncTests, getLogo)
 {
     auto movie = tmdb::Movie::getMovie(std::getenv("API_KEY"), 550);
     auto backdrop = movie.logo(std::getenv("API_KEY"), 0, "original");
@@ -364,7 +364,7 @@ TEST(MovieTests, getLogo)
     EXPECT_EQ(backdrop.width(), 1804);
 }
 
-TEST(MovieTests, getPosters)
+TEST(MovieSyncTests, getPosters)
 {
     auto movie = tmdb::Movie::getMovie(std::getenv("API_KEY"), 550);
     auto posters = movie.posters(std::getenv("API_KEY"), "original");
@@ -372,7 +372,7 @@ TEST(MovieTests, getPosters)
     EXPECT_EQ(posters[0].width(), 2000);
 }
 
-TEST(MovieTests, getPoster)
+TEST(MovieSyncTests, getPoster)
 {
     auto movie = tmdb::Movie::getMovie(std::getenv("API_KEY"), 550);
     auto poster = movie.poster(std::getenv("API_KEY"), 0, "original");
@@ -380,7 +380,7 @@ TEST(MovieTests, getPoster)
     EXPECT_EQ(poster.width(), 2000);
 }
 
-TEST(MovieTests, getKeywords)
+TEST(MovieSyncTests, getKeywords)
 {
     auto movie = tmdb::Movie::getMovie(std::getenv("API_KEY"), 550);
     auto keywords = movie.keywords(std::getenv("API_KEY"));
@@ -389,7 +389,7 @@ TEST(MovieTests, getKeywords)
     EXPECT_STREQ(keywords[851].toStdString().c_str(), "dual identity");
 }
 
-TEST(MovieTests, getRecommended)
+TEST(MovieSyncTests, getRecommended)
 {
     auto movie = tmdb::Movie::getMovie(std::getenv("API_KEY"), 550);
     auto recs = movie.recommendations(std::getenv("API_KEY"));
@@ -397,7 +397,7 @@ TEST(MovieTests, getRecommended)
     EXPECT_EQ(recs[0].id(), 680);
 }
 
-TEST(MovieTests, getSimilar)
+TEST(MovieSyncTests, getSimilar)
 {
     auto movie = tmdb::Movie::getMovie(std::getenv("API_KEY"), 550);
     auto similar = movie.similar(std::getenv("API_KEY"));
@@ -405,7 +405,7 @@ TEST(MovieTests, getSimilar)
     EXPECT_TRUE(similar[0].id());
 }
 
-TEST(MovieTests, getWatchProviders)
+TEST(MovieSyncTests, getWatchProviders)
 {
     auto movie = tmdb::Movie::getMovie(std::getenv("API_KEY"), 550);
     auto providers = movie.watchProviders(std::getenv("API_KEY"), tmdb::config::getCountry("GB", std::getenv("API_KEY")));
@@ -418,7 +418,7 @@ TEST(MovieTests, getWatchProviders)
     EXPECT_STREQ(providers[0].logoPath().toStdString().c_str(), "/97yvRBw1GzX7fXprcF80er19ot.jpg");
 }
 
-TEST(MovieTests, getCredits)
+TEST(MovieSyncTests, getCredits)
 {
     auto movie = tmdb::Movie::getMovie(std::getenv("API_KEY"), 550);
     auto credits = movie.credits(std::getenv("API_KEY"));

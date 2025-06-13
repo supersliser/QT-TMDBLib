@@ -18,10 +18,10 @@ QDate Season::airDate() const {
     return m_airDate;
 }
 
-void Season::setEpisodes(const std::vector<Episode> &i_episodes) {
+void Season::setEpisodes(const std::vector<Episode*> &i_episodes) {
     m_episodes = i_episodes;
 }
-const std::vector<Episode> &Season::episodes() const {
+const std::vector<Episode*> &Season::episodes() const {
     return m_episodes;
 }
 
@@ -91,10 +91,10 @@ Season* Season::fromJSON(const QJsonObject& i_json) {
 
     if (i_json.contains("episodes")) {
         QJsonArray episodesArray = i_json["episodes"].toArray();
-        std::vector<Episode> episodes;
+        std::vector<Episode*> episodes;
         for (const auto& episodeValue : episodesArray) {
             QJsonObject episodeObject = episodeValue.toObject();
-            episodes.push_back(*Episode::fromJSON(episodeObject));
+            episodes.push_back(Episode::fromJSON(episodeObject));
         }
         season->setEpisodes(episodes);
     }
@@ -128,12 +128,12 @@ void Season::startedLoadingSeasonEpisodesReceived() {
 }
 void Season::finishedLoadingSeasonEpisodesReceived(void* i_data) {
     auto json = static_cast<QJsonObject*>(i_data);
-    std::vector<Episode> episodes;
+    std::vector<Episode*> episodes;
     if (json->contains("episodes")) {
         QJsonArray episodesArray = (*json)["episodes"].toArray();
         for (const auto& episodeValue : episodesArray) {
             QJsonObject episodeObject = episodeValue.toObject();
-            episodes.push_back(*Episode::fromJSON(episodeObject));
+            episodes.push_back(Episode::fromJSON(episodeObject));
         }
     }
     emit finishedLoadingSeasonEpisodes(episodes);

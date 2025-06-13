@@ -17,21 +17,21 @@ namespace tmdb::ASync
             Q_OBJECT
         public:
             void setAirDate(const QDate& i_airDate);
-            QDate airDate() const;
-            void setEpisodes(const std::vector<Episode>& i_episodes);
-            const std::vector<Episode>& episodes() const;
+            [[nodiscard]] QDate airDate() const;
+            void setEpisodes(const std::vector<Episode*>& i_episodes);
+            [[nodiscard]] const std::vector<Episode*>& episodes() const;
             void setName(const QString& i_name);
-            QString name() const;
+            [[nodiscard]] QString name() const;
             void setOverview(const QString& i_overview);
-            QString overview() const;
+            [[nodiscard]] QString overview() const;
             void setId(int i_id);
-            int id() const;
+            [[nodiscard]] int id() const;
             void setPosterPath(const QString& i_posterPath);
-            QString posterPath() const;
+            [[nodiscard]] QString posterPath() const;
             void setSeasonNumber(int i_seasonNumber);
-            int seasonNumber() const;
+            [[nodiscard]] int seasonNumber() const;
             void setVoteAverage(float i_voteAverage);
-            float voteAverage() const;
+            [[nodiscard]] float voteAverage() const;
 
             Season();
             explicit Season(const QString& i_access_token, int32_t i_seriesID, int32_t i_seasonNumber);
@@ -53,12 +53,12 @@ namespace tmdb::ASync
             void startedLoadingSeason();
             void finishedLoadingSeason(tmdb::ASync::TV::Season* i_season);
             void startedLoadingSeasonEpisodes();
-            void finishedLoadingSeasonEpisodes(std::vector<tmdb::ASync::TV::Episode> i_episodes);
+            void finishedLoadingSeasonEpisodes(std::vector<tmdb::ASync::TV::Episode*> i_episodes);
 
         protected:
             aQtmdb m_q;
             QDate m_airDate;
-            std::vector<Episode> m_episodes;
+            std::vector<Episode*> m_episodes;
             QString m_name;
             QString m_overview;
             int m_id = 0;

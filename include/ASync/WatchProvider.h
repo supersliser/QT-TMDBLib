@@ -47,8 +47,8 @@ namespace tmdb::ASync
     public slots:
         void loadWatchProvider(int i_providerID);
         void loadAllWatchProviders(Language* i_language);
-        void loadAllMovieProviders(Language i_language);
-        void loadAllTVProviders(Language i_language);
+        void loadAllMovieProviders(const Language* i_language);
+        void loadAllTVProviders(const Language* i_language);
         void loadWatchProvidersForMovie(const QString& i_language, int i_movieID);
         void loadWatchProvidersForTV(const QString& i_language, int i_seriesID);
 
@@ -70,15 +70,15 @@ namespace tmdb::ASync
         void startedLoadingWatchProvider();
         void finishedLoadingWatchProvider(tmdb::ASync::WatchProvider* i_watchProvider);
         void startedLoadingAllWatchProviders();
-        void finishedLoadingAllWatchProviders(std::vector<tmdb::ASync::WatchProvider>* i_watchProviders);
+        void finishedLoadingAllWatchProviders(std::vector<tmdb::ASync::WatchProvider*> i_watchProviders);
         void startedLoadingAllMovieProviders();
-        void finishedLoadingAllMovieProviders(std::vector<tmdb::ASync::WatchProvider>* i_watchProviders);
+        void finishedLoadingAllMovieProviders(std::vector<tmdb::ASync::WatchProvider*> i_watchProviders);
         void startedLoadingAllTVProviders();
-        void finishedLoadingAllTVProviders(std::vector<tmdb::ASync::WatchProvider>* i_watchProviders);
+        void finishedLoadingAllTVProviders(std::vector<tmdb::ASync::WatchProvider*> i_watchProviders);
         void startedLoadingWatchProvidersForMovie();
-        void finishedLoadingWatchProvidersForMovie(std::vector<tmdb::ASync::WatchProvider>* i_watchProviders);
+        void finishedLoadingWatchProvidersForMovie(std::vector<tmdb::ASync::WatchProvider*> i_watchProviders);
         void startedLoadingWatchProvidersForTV();
-        void finishedLoadingWatchProvidersForTV(std::vector<tmdb::ASync::WatchProvider>* i_watchProviders);
+        void finishedLoadingWatchProvidersForTV(std::vector<tmdb::ASync::WatchProvider*> i_watchProviders);
 
     protected:
         aQtmdb m_q;

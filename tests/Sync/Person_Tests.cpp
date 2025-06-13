@@ -7,7 +7,7 @@
 
 #include "Sync/QTMDB.h"
 
-TEST(PersonTests, DefaultConstructor)
+TEST(PersonSyncTests, DefaultConstructor)
 {
     tmdb::Person person;
     EXPECT_EQ(person.id(), 0);
@@ -25,7 +25,7 @@ TEST(PersonTests, DefaultConstructor)
     EXPECT_TRUE(person.profilePath().isEmpty());
 }
 
-TEST(PersonTests, ParmeterizedConstructor)
+TEST(PersonSyncTests, ParmeterizedConstructor)
 {
     tmdb::Person person(1, "John Doe", {"Johnny", "JD"}, "An actor.", QDate(1980, 1, 1), QDate(2020, 1, 1), tmdb::female,
                         "http://example.com", "tt1234567",
@@ -47,7 +47,7 @@ TEST(PersonTests, ParmeterizedConstructor)
     EXPECT_STREQ(person.profilePath().toStdString().c_str(), "/path/to/profile.jpg");
 }
 
-TEST(PersonTests, APIConstructor)
+TEST(PersonSyncTests, APIConstructor)
 {
     tmdb::Person person(std::getenv("API_KEY"), 31);
     EXPECT_EQ(person.id(), 31);
@@ -65,7 +65,7 @@ TEST(PersonTests, APIConstructor)
     EXPECT_STREQ(person.profilePath().toStdString().c_str(), "/eKF1sGJRrZJbfBG1KirPt1cfNd3.jpg");
 }
 
-TEST(PersonTests, APIJSON)
+TEST(PersonSyncTests, APIJSON)
 {
     Qtmdb q(std::getenv("API_KEY"));
     QJsonObject response = q.people_details(31);
@@ -86,7 +86,7 @@ TEST(PersonTests, APIJSON)
     EXPECT_STREQ(person.profilePath().toStdString().c_str(), "/eKF1sGJRrZJbfBG1KirPt1cfNd3.jpg");
 }
 
-TEST(PersonTests, StaticConstructor)
+TEST(PersonSyncTests, StaticConstructor)
 {
     tmdb::Person person = tmdb::Person::getPerson(std::getenv("API_KEY"), 31);
        EXPECT_EQ(person.id(), 31);
@@ -104,7 +104,7 @@ TEST(PersonTests, StaticConstructor)
     EXPECT_STREQ(person.profilePath().toStdString().c_str(), "/eKF1sGJRrZJbfBG1KirPt1cfNd3.jpg");
 }
 
-TEST(PersonTests, setGetters)
+TEST(PersonSyncTests, setGetters)
 {
     tmdb::Person person;
     person.setId(1);
