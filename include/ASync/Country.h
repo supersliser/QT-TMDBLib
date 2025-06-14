@@ -16,18 +16,20 @@ namespace tmdb::ASync
 
     public:
         void setISOCountryCode(const QString& i_isoCountryCode);
-        QString isoCountryCode() const;
+        [[nodiscard]] QString isoCountryCode() const;
         void setNativeName(const QString& i_nativeName);
-        QString nativeName() const;
+        [[nodiscard]] QString nativeName() const;
         void setEnglishName(const QString& i_englishName);
-        QString englishName() const;
+        [[nodiscard]] QString englishName() const;
 
         Country();
+        explicit Country(const QString& i_access_token);
         Country(const QString& i_access_token, const QString& i_iso_3166_1);
         ~Country() override = default;
 
-        static Country* fromJSON(const QJsonObject& i_json);
-
+        Country(const QJsonObject& i_json, const QString& i_access_token);
+    protected:
+        void parseJson(const QJsonObject& i_json, const QString& i_access_token);
     public slots:
         void loadCountry(const QString& i_iso_3166_1);
         void loadAllCountries();

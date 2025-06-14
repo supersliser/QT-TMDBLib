@@ -32,10 +32,14 @@ namespace tmdb::ASync
         [[nodiscard]] bool includeAdult() const;
 
         Account();
-        explicit Account(const QString& i_access_token, int32_t i_accountID);
+        explicit Account(const QString& i_access_token);
+        Account(const QJsonObject& i_json, const QString& i_access_token);
+        Account(const QString& i_access_token, int32_t i_accountID);
 
-        static Account* fromJSON(const QJsonObject& i_json);
+
         ~Account() override = default;
+    protected:
+        void parseJson(const QJsonObject& i_json, const QString& i_access_token);
 
     public slots:
         void loadAccount(int32_t i_accountID);

@@ -9,7 +9,7 @@ set(CMAKE_AUTORCC ON)
 set(CMAKE_CXX_STANDARD 17)
 set(CMAKE_CXX_STANDARD_REQUIRED ON)
 
-find_package(Qt6 REQUIRED COMPONENTS Core Network Widgets)
+find_package(Qt6 REQUIRED COMPONENTS Core Network Widgets Concurrent)
 find_package(fmt REQUIRED)
 
 set(PROJECT_SOURCES
@@ -143,6 +143,7 @@ endif ()
 find_package(GTest CONFIG REQUIRED)
 include(GoogleTest)
 enable_testing()
+
 add_executable(TMDBTests
         ${PROJECT_SOURCES}
         tests/main.cpp
@@ -196,7 +197,32 @@ add_executable(TMDBTests
         tests/JSON/Sync/tvSeasons.cpp
         tests/JSON/Sync/tvEpisodes.cpp
         tests/JSON/Sync/watchProviders.cpp
+        tests/ASync/Account_Tests.cpp
+        tests/ASync/Company_Tests.cpp
+        tests/ASync/Config_Tests.cpp
+        tests/ASync/Country_Tests.cpp
+        tests/ASync/Department_Tests.cpp
+        tests/ASync/Episode_Tests.cpp
+        tests/ASync/Genre_Tests.cpp
+        tests/JSON/ASync/genres.cpp
+        tests/JSON/ASync/movieList.cpp
+        tests/JSON/ASync/networks.cpp
+        tests/JSON/ASync/people.cpp
+        tests/JSON/ASync/reviews.cpp
+        tests/JSON/ASync/trending.cpp
+        tests/JSON/ASync/tvEpisodes.cpp
+        tests/JSON/ASync/tvSeasons.cpp
+        tests/JSON/ASync/tvSeries.cpp
+        tests/JSON/ASync/watchProviders.cpp
+        tests/ASync/Language_Tests.cpp
+        tests/ASync/Movie_Tests.cpp
+        tests/ASync/Network_Tests.cpp
+        tests/ASync/Person_Tests.cpp
+        tests/ASync/Season_Tests.cpp
+        tests/ASync/Series_Tests.cpp
+        tests/ASync/WatchProvider_Tests.cpp
 )
+
 target_sources(TMDBTests PRIVATE)
 target_link_libraries(TMDBTests PRIVATE GTest::gtest GTest::gtest_main)
 target_link_libraries(TMDBTests PRIVATE ${QT_MODULES_NEEDED})

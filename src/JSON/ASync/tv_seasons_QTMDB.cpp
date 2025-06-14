@@ -7,7 +7,8 @@
 
 void aQtmdb::tv_seasons_details(int32_t series_id, int32_t season_number, std::string language)
 {
-    std::string request = fmt::format("{}{}{}{}", "tv/", std::to_string(series_id), "/season/", std::to_string(season_number));
+    std::string request = fmt::format("{}{}{}{}", "tv/", std::to_string(series_id), "/season/",
+                                      std::to_string(season_number));
     std::map<std::string, std::string> params = {
         {"language", language}
     };
@@ -16,7 +17,8 @@ void aQtmdb::tv_seasons_details(int32_t series_id, int32_t season_number, std::s
 
 void aQtmdb::tv_seasons_aggregateCredits(int32_t series_id, int32_t season_number, std::string language)
 {
-    std::string request = fmt::format("{}{}{}{}{}", "tv/", std::to_string(series_id), "/season/", std::to_string(season_number), "/aggregate_credits");
+    std::string request = fmt::format("{}{}{}{}{}", "tv/", std::to_string(series_id), "/season/",
+                                      std::to_string(season_number), "/aggregate_credits");
     std::map<std::string, std::string> params = {
         {"language", language}
     };
@@ -36,7 +38,8 @@ void aQtmdb::tv_seasons_changes(int32_t season_id, QDate start_date, QDate end_d
 
 void aQtmdb::tv_seasons_credits(int32_t series_id, int32_t season_number, std::string language)
 {
-    std::string request = fmt::format("{}{}{}{}{}", "tv/", std::to_string(series_id), "/season/", std::to_string(season_number), "/credits");
+    std::string request = fmt::format("{}{}{}{}{}", "tv/", std::to_string(series_id), "/season/",
+                                      std::to_string(season_number), "/credits");
     std::map<std::string, std::string> params = {
         {"language", language}
     };
@@ -45,13 +48,15 @@ void aQtmdb::tv_seasons_credits(int32_t series_id, int32_t season_number, std::s
 
 void aQtmdb::tv_seasons_externalIDs(int32_t series_id, int32_t season_number)
 {
-    std::string request = fmt::format("{}{}{}{}{}", "tv/", std::to_string(series_id), "/season/", std::to_string(season_number), "/external_ids");
+    std::string request = fmt::format("{}{}{}{}{}", "tv/", std::to_string(series_id), "/season/",
+                                      std::to_string(season_number), "/external_ids");
     _runGetRequest(request);
 }
 
 void aQtmdb::tv_seasons_images(int32_t series_id, int32_t season_number, std::string language)
 {
-    std::string request = fmt::format("{}{}{}{}{}", "tv/", std::to_string(series_id), "/season/", std::to_string(season_number), "/images");
+    std::string request = fmt::format("{}{}{}{}{}", "tv/", std::to_string(series_id), "/season/",
+                                      std::to_string(season_number), "/images");
     std::map<std::string, std::string> params = {
         {"language", language}
     };
@@ -60,7 +65,8 @@ void aQtmdb::tv_seasons_images(int32_t series_id, int32_t season_number, std::st
 
 void aQtmdb::tv_seasons_videos(int32_t series_id, int32_t season_number, std::string language)
 {
-    std::string request = fmt::format("{}{}{}{}{}", "tv/", std::to_string(series_id), "/season/", std::to_string(season_number), "/videos");
+    std::string request = fmt::format("{}{}{}{}{}", "tv/", std::to_string(series_id), "/season/",
+                                      std::to_string(season_number), "/videos");
     std::map<std::string, std::string> params = {
         {"language", language}
     };
@@ -69,12 +75,14 @@ void aQtmdb::tv_seasons_videos(int32_t series_id, int32_t season_number, std::st
 
 void aQtmdb::tv_seasons_translations(int32_t series_id, int32_t season_number)
 {
-    std::string request = fmt::format("{}{}{}{}{}", "tv/", std::to_string(series_id), "/season/", std::to_string(season_number), "/translations");
+    std::string request = fmt::format("{}{}{}{}{}", "tv/", std::to_string(series_id), "/season/",
+                                      std::to_string(season_number), "/translations");
     _runGetRequest(request);
 }
 
 void aQtmdb::tv_seasons_watchProviders(int32_t series_id, int32_t season_number)
 {
-    std::string request = fmt::format("{}{}{}{}{}", "tv/", std::to_string(series_id), "/season/", std::to_string(season_number), "/watch/providers");
+    std::string request = fmt::format("{}{}{}{}{}", "tv/", std::to_string(series_id), "/season/",
+                                      std::to_string(season_number), "/watch/providers");
     _runGetRequest(request);
 }

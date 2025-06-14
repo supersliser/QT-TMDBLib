@@ -10,18 +10,26 @@ tmdb::ASync::Country::Country() : m_q("")
     m_q.setParent(this);
 }
 
-tmdb::ASync::Country::Country(const QString& i_access_token, const QString& i_iso_3166_1): m_q(i_access_token.toStdString())
+tmdb::ASync::Country::Country(const QString& i_access_token, const QString& i_iso_3166_1): Country(i_access_token)
 {
     loadCountry(i_iso_3166_1);
 }
 
-tmdb::ASync::Country* tmdb::ASync::Country::fromJSON(const QJsonObject& i_json)
+void tmdb::ASync::Country::parseJson(const QJsonObject& i_json, const QString& i_access_token)
 {
-    auto country = new Country();
-    country->m_iso_3166_1 = i_json.value("iso_3166_1").toString();
-    country->m_native_name = i_json.value("native_name").toString();
-    country->m_english_name = i_json.value("english_name").toString();
-    return country;
+    m_iso_3166_1 = i_json.value("iso_3166_1").toString();
+    m_native_name = i_json.value("native_name").toString();
+    m_english_name = i_json.value("english_name").toString();
+}
+
+tmdb::ASync::Country::Country(const QJsonObject& i_json, const QString& i_access_token) : Country(i_access_token)
+{
+    parseJson(i_json, i_access_token);
+}
+
+tmdb::ASync::Country::Country(const QString& i_access_token) : m_q(i_access_token.toStdString())
+{
+    m_q.setParent(this);
 }
 
 void tmdb::ASync::Country::setISOCountryCode(const QString& i_isoCountryCode)
@@ -67,15 +75,14 @@ void tmdb::ASync::Country::startedLoadingCountryReceived()
 void tmdb::ASync::Country::finishedLoadingCountryReceived(void* i_data)
 {
     QJsonArray json = *static_cast<QJsonArray*>(i_data);
-    auto country = new Country();
     for (int i = 0; i < json.size(); i++)
     {
         if (json[i].toObject().value("iso_3166_1").toString() == m_iso_3166_1) {
-            country = fromJSON(json[i].toObject());
+            parseJson(json[i].toObject(), m_q.accessToken().c_str());
+            emit finishedLoadingCountry(this);
             break;
         }
     }
-    emit finishedLoadingCountry(country);
     disconnect(&m_q, &aQtmdb::startedLoadingData, this, &Country::startedLoadingCountryReceived);
     disconnect(&m_q, &aQtmdb::finishedLoadingData, this, &Country::finishedLoadingCountryReceived);
 }
@@ -97,7 +104,7 @@ void tmdb::ASync::Country::finishedLoadingAllCountriesReceived(void* i_data)
     auto jsonArray = static_cast<QJsonArray*>(i_data);
     std::vector<Country*> countries;
     for (const auto& item : *jsonArray) {
-        countries.push_back(fromJSON(item.toObject()));
+        countries.push_back(new Country(item.toObject(), m_q.accessToken().c_str()));
     }
     emit finishedLoadingAllCountries(countries);
     disconnect(&m_q, &aQtmdb::startedLoadingData, this, &Country::startedLoadingAllCountriesReceived);

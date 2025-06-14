@@ -30,25 +30,32 @@ tmdb::ASync::Department::Department() : m_q("")
     m_q.setParent(this);
 }
 
-tmdb::ASync::Department::Department(const QString& i_access_token, const QString& i_deptName) : m_q(
-    i_access_token.toStdString())
+tmdb::ASync::Department::Department(const QString& i_access_token, const QString& i_deptName) : Department(
+    i_access_token)
 {
     loadDepartment(i_deptName);
 }
 
-tmdb::ASync::Department* tmdb::ASync::Department::fromJSON(const QJsonObject& i_json)
+tmdb::ASync::Department::Department(const QString& i_access_token) : m_q(i_access_token.toStdString())
 {
-    auto* output = new Department();
-    output->setDeptName(i_json.value("dept_name").toString());
+    m_q.setParent(this);
+}
+
+void tmdb::ASync::Department::parseJson(const QJsonObject& i_json, const QString& i_access_token)
+{
+    m_deptName = i_json.value("dept_name").toString();
     QJsonArray jobTitlesArray = i_json.value("job_titles").toArray();
-    std::vector<QString> jobTitles;
     for (const auto& item : jobTitlesArray)
     {
-        jobTitles.push_back(item.toString());
+        m_jobTitles.push_back(item.toString());
     }
-    output->setJobTitles(jobTitles);
-    return output;
 }
+
+tmdb::ASync::Department::Department(const QJsonObject& i_json, const QString& i_access_token) : Department(i_access_token)
+{
+    parseJson(i_json, i_access_token);
+}
+
 
 void tmdb::ASync::Department::loadDepartment(const QString& i_deptName)
 {
@@ -75,16 +82,15 @@ void tmdb::ASync::Department::startedLoadingDepartmentReceived()
 void tmdb::ASync::Department::finishedLoadingDepartmentReceived(void* i_data)
 {
     QJsonArray json = *static_cast<QJsonArray*>(i_data);
-    auto department = new tmdb::ASync::Department();
     for (int i = 0; i < json.count(); i++)
     {
         if (json[i].toObject().value("dept_name").toString() == m_deptName)
         {
-            department = fromJSON(json[i].toObject());
+            parseJson(json[i].toObject(), m_q.accessToken().c_str());
+            emit finishedLoadingDepartment(this);
             break;
         }
     }
-    emit finishedLoadingDepartment(department);
 }
 
 void tmdb::ASync::Department::startedLoadingAllDepartmentsReceived()
@@ -98,7 +104,7 @@ void tmdb::ASync::Department::finishedLoadingAllDepartmentsReceived(void* i_data
     std::vector<tmdb::ASync::Department*> departments;
     for (const auto& item : *jsonArray)
     {
-        departments.push_back(fromJSON(item.toObject()));
+        departments.push_back(new Department(item.toObject(), m_q.accessToken().c_str()));
     }
     emit finishedLoadingAllDepartments(departments);
 }

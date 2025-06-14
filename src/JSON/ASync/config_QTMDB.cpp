@@ -10,6 +10,7 @@ void aQtmdb::config_details()
 {
     std::string request = "configuration";
     _runGetRequest(request);
+
 }
 
 void aQtmdb::config_countries(std::string language)
@@ -25,22 +26,26 @@ void aQtmdb::config_jobs()
 {
     std::string request = "configuration/jobs";
     _runGetRequest(request);
+
 }
 
 void aQtmdb::config_languages()
 {
     std::string request = "configuration/languages";
     _runGetRequest(request);
+
 }
 
 void aQtmdb::config_primaryTranslations()
 {
     std::string request = "configuration/primary_translations";
     _runGetRequest(request);
+
 }
 
 void aQtmdb::config_timezones()
 {
     std::string request = "configuration/timezones";
     _runGetRequest(request);
+
 }

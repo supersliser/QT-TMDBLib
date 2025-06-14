@@ -12,7 +12,7 @@ void aQtmdb::changes_movie(QDate end_date, QDate start_date, int32_t page)
         {"end_date", end_date.toString(Qt::ISODate).toStdString()},
         {"page", std::to_string(page)}
     };
-    return _runGetRequest(request, params);
+_runGetRequest(request, params);
 }
 
 void aQtmdb::changes_people(QDate end_date, QDate start_date, int32_t page)
@@ -23,7 +23,7 @@ void aQtmdb::changes_people(QDate end_date, QDate start_date, int32_t page)
         {"end_date", end_date.toString(Qt::ISODate).toStdString()},
         {"page", std::to_string(page)}
     };
-    _runGetRequest(request, params);
+_runGetRequest(request, params);
 }
 
 void aQtmdb::changes_tv(QDate end_date, QDate start_date, int32_t page)
@@ -34,5 +34,5 @@ void aQtmdb::changes_tv(QDate end_date, QDate start_date, int32_t page)
         {"end_date", end_date.toString(Qt::ISODate).toStdString()},
         {"page", std::to_string(page)}
     };
-    _runGetRequest(request, params);
+_runGetRequest(request, params);
 }

@@ -11,7 +11,7 @@ void aQtmdb::collection_details(int32_t collection_id, std::string language)
     std::map<std::string, std::string> params = {
         {"language", language}
     };
-    _runGetRequest(request, params);
+_runGetRequest(request, params);
 }
 
 void aQtmdb::collection_images(int32_t collection_id, std::string language)
@@ -20,7 +20,7 @@ void aQtmdb::collection_images(int32_t collection_id, std::string language)
     std::map<std::string, std::string> params = {
         {"language", language}
     };
-    _runGetRequest(request, params);
+_runGetRequest(request, params);
 }
 
 void aQtmdb::collection_translations(int32_t collection_id)

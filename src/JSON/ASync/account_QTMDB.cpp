@@ -19,7 +19,7 @@ void aQtmdb::account_favoriteMovies(int32_t account_id, std::string language, in
         {"language", language},
         {"page", std::to_string(page)}
     };
-    _runGetRequest(request, params);
+_runGetRequest(request, params);
 }
 
 void aQtmdb::account_favoriteTV(int32_t account_id, std::string language, int32_t page)

@@ -85,25 +85,20 @@ tmdb::ASync::Account::Account() : m_q("")
     m_q.setParent(this);
 }
 
-tmdb::ASync::Account::Account(const QString& i_access_token, int32_t i_accountID) : m_q(i_access_token.toStdString())
+tmdb::ASync::Account::Account(const QString& i_access_token, int32_t i_accountID) : Account(i_access_token)
 {
-    m_q.setParent(this);
     loadAccount(i_accountID);
 }
 
-tmdb::ASync::Account* tmdb::ASync::Account::fromJSON(const QJsonObject& i_json)
+tmdb::ASync::Account::Account(const QString& i_access_token) : m_q(i_access_token.toStdString())
 {
-    auto *output = new Account();
-    output->setID(i_json.value("id").toInt());
-    output->setISO6391(i_json.value("iso_639_1").toString());
-    output->setISO31661(i_json.value("iso_3166_1").toString());
-    output->setName(i_json.value("name").toString());
-    output->setUsername(i_json.value("username").toString());
-    output->setIncludeAdult(i_json.value("include_adult").toBool());
-    output->setAvatar(new Avatar(
-        Gravatar(i_json.value("avatar").toObject().value("gravatar").toObject().value("hash").toString()),
-        Tmdb(i_json.value("avatar").toObject().value("tmdb").toObject().value("path").toString())));
-    return output;
+    m_q.setParent(this);
+}
+
+
+tmdb::ASync::Account::Account(const QJsonObject& i_json, const QString& i_access_token) : Account(i_access_token)
+{
+    parseJson(i_json, i_access_token);
 }
 
 void tmdb::ASync::Account::startedLoadingAccountReceived()
@@ -111,12 +106,28 @@ void tmdb::ASync::Account::startedLoadingAccountReceived()
     emit startedLoadingAccount();
 }
 
+void tmdb::ASync::Account::parseJson(const QJsonObject& i_json, const QString& i_access_token)
+{
+    setID(i_json.value("id").toInt());
+    setISO6391(i_json.value("iso_639_1").toString());
+    setISO31661(i_json.value("iso_3166_1").toString());
+    setName(i_json.value("name").toString());
+    setUsername(i_json.value("username").toString());
+    setIncludeAdult(i_json.value("include_adult").toBool());
+    setAvatar(new Avatar(
+        Gravatar(i_json.value("avatar").toObject().value("gravatar").toObject().value("hash").toString()),
+        Tmdb(i_json.value("avatar").toObject().value("tmdb").toObject().value("path").toString())));
+}
+
+
 void tmdb::ASync::Account::finishedLoadingAccountReceived(void* i_data)
 {
     auto var = static_cast<QJsonObject*>(i_data);
+    parseJson(*var, m_q.accessToken().c_str());
     emit finishedLoadingAccount(
-        tmdb::ASync::Account::fromJSON(*var)
+        this
     );
+
     disconnect(&m_q, &aQtmdb::startedLoadingData, this, &tmdb::ASync::Account::startedLoadingAccountReceived);
     disconnect(&m_q, &aQtmdb::finishedLoadingData, this, &tmdb::ASync::Account::finishedLoadingAccountReceived);
 }

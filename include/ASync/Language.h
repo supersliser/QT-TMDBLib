@@ -16,18 +16,20 @@ namespace tmdb::ASync
 
     public:
         void setIso6391(const QString& i_iso_639_1);
-        QString iso6391() const;
+        [[nodiscard]] QString iso6391() const;
         void setEnglishName(const QString& i_english_name);
-        QString englishName() const;
+        [[nodiscard]] QString englishName() const;
         void setNativeName(const QString& i_native_name);
-        QString nativeName() const;
+        [[nodiscard]] QString nativeName() const;
 
         Language();
+        explicit Language(const QString& i_access_token);
         Language(const QString& i_access_token, const QString& i_iso_639_1);
         ~Language() override = default;
 
-        Language* fromJSON(const QJsonObject& i_json);
-
+        Language(const QJsonObject& i_json, const QString& i_access_token = "");
+    protected:
+        void parseJson(const QJsonObject& i_json, const QString& i_access_token);
     public slots:
         void loadLanguage(const QString& i_iso_639_1);
         void loadAllLanguages();

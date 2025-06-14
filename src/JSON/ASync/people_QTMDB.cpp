@@ -17,7 +17,7 @@ void aQtmdb::people_popular(std::string language, int32_t page)
 
 void aQtmdb::people_details(int32_t person_id, std::string language)
 {
-    std::string request = fmt::format("{}{}","person/", std::to_string(person_id));
+    std::string request = fmt::format("{}{}", "person/", std::to_string(person_id));
     std::map<std::string, std::string> params = {
         {"language", language}
     };
@@ -26,7 +26,7 @@ void aQtmdb::people_details(int32_t person_id, std::string language)
 
 void aQtmdb::people_changes(int32_t person_id, QDate start_date, QDate end_date, int32_t page)
 {
-    std::string request = fmt::format("{}{}{}","person/", std::to_string(person_id), "/changes");
+    std::string request = fmt::format("{}{}{}", "person/", std::to_string(person_id), "/changes");
     std::map<std::string, std::string> params = {
         {"start_date", start_date.toString(Qt::ISODate).toStdString()},
         {"end_date", end_date.toString(Qt::ISODate).toStdString()},
@@ -37,7 +37,7 @@ void aQtmdb::people_changes(int32_t person_id, QDate start_date, QDate end_date,
 
 void aQtmdb::people_combinedCredits(int32_t person_id, std::string language)
 {
-    std::string request = fmt::format("{}{}{}","person/", std::to_string(person_id), "/combined_credits");
+    std::string request = fmt::format("{}{}{}", "person/", std::to_string(person_id), "/combined_credits");
     std::map<std::string, std::string> params = {
         {"language", language}
     };
@@ -46,13 +46,13 @@ void aQtmdb::people_combinedCredits(int32_t person_id, std::string language)
 
 void aQtmdb::people_externalIDs(int32_t person_id)
 {
-    std::string request = fmt::format("{}{}{}","person/", std::to_string(person_id), "/external_ids");
+    std::string request = fmt::format("{}{}{}", "person/", std::to_string(person_id), "/external_ids");
     _runGetRequest(request);
 }
 
 void aQtmdb::people_images(int32_t person_id)
 {
-    std::string request = fmt::format("{}{}{}","person/", std::to_string(person_id), "/images");
+    std::string request = fmt::format("{}{}{}", "person/", std::to_string(person_id), "/images");
     _runGetRequest(request);
 }
 
@@ -64,7 +64,7 @@ void aQtmdb::people_latest()
 
 void aQtmdb::people_movieCredits(int32_t person_id, std::string language)
 {
-    std::string request = fmt::format("{}{}{}","person/", std::to_string(person_id), "/movie_credits");
+    std::string request = fmt::format("{}{}{}", "person/", std::to_string(person_id), "/movie_credits");
     std::map<std::string, std::string> params = {
         {"language", language}
     };
@@ -73,7 +73,7 @@ void aQtmdb::people_movieCredits(int32_t person_id, std::string language)
 
 void aQtmdb::people_tvCredits(int32_t person_id, std::string language)
 {
-    std::string request = fmt::format("{}{}{}","person/", std::to_string(person_id), "/tv_credits");
+    std::string request = fmt::format("{}{}{}", "person/", std::to_string(person_id), "/tv_credits");
     std::map<std::string, std::string> params = {
         {"language", language}
     };
@@ -82,6 +82,6 @@ void aQtmdb::people_tvCredits(int32_t person_id, std::string language)
 
 void aQtmdb::people_translations(int32_t person_id)
 {
-    std::string request = fmt::format("{}{}{}","person/", std::to_string(person_id), "/translations");
+    std::string request = fmt::format("{}{}{}", "person/", std::to_string(person_id), "/translations");
     _runGetRequest(request);
 }

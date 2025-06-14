@@ -140,9 +140,13 @@ tmdb::ASync::Person::Person() : m_q("")
     m_q.setParent(this);
 }
 
-tmdb::ASync::Person::Person(const QString& i_access_token, int32_t i_personID) : m_q(i_access_token.toStdString())
+tmdb::ASync::Person::Person(const QString& i_access_token) : m_q(i_access_token.toStdString())
 {
     m_q.setParent(this);
+}
+
+tmdb::ASync::Person::Person(const QString& i_access_token, int32_t i_personID) : Person(i_access_token)
+{
     loadPerson(i_personID);
 }
 
@@ -166,27 +170,30 @@ QString tmdb::ASync::Credit::creditID() const
     return m_creditID;
 }
 
-tmdb::ASync::Person* tmdb::ASync::Person::fromJSON(const QJsonObject& i_json)
+tmdb::ASync::Person::Person(const QJsonObject& i_json, const QString& i_access_token) : Person(i_access_token)
 {
-    auto person = new Person();
-    person->setId(i_json["id"].toInt());
-    person->setName(i_json["name"].toString());
+    parseJson(i_json, i_access_token);
+}
+
+void tmdb::ASync::Person::parseJson(const QJsonObject& i_json, const QString& i_access_token)
+{
+    setId(i_json["id"].toInt());
+    setName(i_json["name"].toString());
     std::vector<QString> i_alsoKnownAs;
     for (const auto& name : i_json["also_known_as"].toArray()) {
         i_alsoKnownAs.push_back(name.toString());
     }
-    person->setAlsoKnownAs(i_alsoKnownAs);
-    person->setBiography(i_json["biography"].toString());
-    person->setBirthday(QDate::fromString(i_json["birthday"].toString(), Qt::ISODate));
-    person->setDeathday(QDate::fromString(i_json["deathday"].toString(), Qt::ISODate));
-    person->setGender(static_cast<Gender>(i_json["gender"].toInt()));
-    person->setHomepage(i_json["homepage"].toString());
-    person->setImdbId(i_json["imdb_id"].toString());
-    person->setKnownFor(i_json["known_for_department"].toString());
-    person->setPlaceOfBirth(i_json["place_of_birth"].toString());
-    person->setPopularity(i_json["popularity"].toDouble());
-    person->setProfilePath(i_json["profile_path"].toString());
-    return person;
+    setAlsoKnownAs(i_alsoKnownAs);
+    setBiography(i_json["biography"].toString());
+    setBirthday(QDate::fromString(i_json["birthday"].toString(), Qt::ISODate));
+    setDeathday(QDate::fromString(i_json["deathday"].toString(), Qt::ISODate));
+    setGender(static_cast<Gender>(i_json["gender"].toInt()));
+    setHomepage(i_json["homepage"].toString());
+    setImdbId(i_json["imdb_id"].toString());
+    setKnownFor(i_json["known_for_department"].toString());
+    setPlaceOfBirth(i_json["place_of_birth"].toString());
+    setPopularity(i_json["popularity"].toDouble());
+    setProfilePath(i_json["profile_path"].toString());
 }
 
 void tmdb::ASync::Person::loadPerson(int32_t i_personID)
@@ -203,15 +210,12 @@ void tmdb::ASync::Person::startedLoadingPersonReceived()
 
 void tmdb::ASync::Person::finishedLoadingPersonReceived(void* i_data)
 {
-    auto person = static_cast<QJsonObject*>(i_data);
-    emit finishedLoadingPerson(fromJSON(*person));
+    parseJson(*static_cast<QJsonObject*>(i_data), m_q.accessToken().c_str());
+    emit finishedLoadingPerson(this);
 }
 
-tmdb::ASync::Credit* tmdb::ASync::Credit::fromJSON(const QJsonObject& i_json)
+tmdb::ASync::Credit::Credit(const QJsonObject& i_json, const QString& i_access_token) : Person(i_access_token)
 {
-    auto* credit = dynamic_cast<Credit*>(Person::fromJSON(i_json));
-    credit->setCreditID(i_json["credit_id"].toString());
-    credit->setCharacter(i_json["character"].toString());
-    return credit;
-
+    setCreditID(i_json["credit_id"].toString());
+    setCharacter(i_json["character"].toString());
 }

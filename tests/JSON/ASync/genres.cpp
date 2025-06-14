@@ -10,26 +10,38 @@
 
 TEST(aQtmdb_JSON_Genres_Test, movie)
 {
+    bool finished = false;
     aQtmdb aQtmdb(std::getenv("API_KEY"));
-    aQtmdb.genres_movie();
-    QObject::connect(&aQtmdb, &aQtmdb::finishedLoadingData, [&aQtmdb](void* response)
+    QObject::connect(&aQtmdb, &aQtmdb::finishedLoadingData, [&finished](void* response)
     {
         QJsonObject data = *static_cast<QJsonObject*>(response);
         EXPECT_FALSE(data.isEmpty());
         EXPECT_STREQ(data.value("genres").toArray()[0].toObject().value("name").toString().toStdString().c_str(),
                      "Action");
+        finished = true;
     });
+    aQtmdb.genres_movie();
+    while (!finished)
+    {
+        QApplication::processEvents();
+    }
 }
 
 TEST(aQtmdb_JSON_Genres_Test, tv)
 {
+    bool finished = false;
     aQtmdb aQtmdb(std::getenv("API_KEY"));
-    aQtmdb.genres_tv();
-    QObject::connect(&aQtmdb, &aQtmdb::finishedLoadingData, [&aQtmdb](void* response)
+    QObject::connect(&aQtmdb, &aQtmdb::finishedLoadingData, [&finished](void* response)
     {
         QJsonObject data = *static_cast<QJsonObject*>(response);
         EXPECT_FALSE(data.isEmpty());
         EXPECT_STREQ(data.value("genres").toArray()[0].toObject().value("name").toString().toStdString().c_str(),
                      "Action & Adventure");
+        finished = true;
     });
+    aQtmdb.genres_tv();
+    while (!finished)
+    {
+        QApplication::processEvents();
+    }
 }

@@ -63,20 +63,28 @@ tmdb::ASync::WatchProvider::WatchProvider()
     m_q.setParent(this);
 }
 
-tmdb::ASync::WatchProvider::WatchProvider(const QString& i_access_token, int i_providerID) : m_q(
-    i_access_token.toStdString())
+tmdb::ASync::WatchProvider::WatchProvider(const QString& i_access_token) : m_q(i_access_token.toStdString())
 {
     m_q.setParent(this);
+}
+
+tmdb::ASync::WatchProvider::WatchProvider(const QString& i_access_token, int i_providerID) : WatchProvider(
+    i_access_token)
+{
     loadWatchProvider(i_providerID);
 }
 
-tmdb::ASync::WatchProvider* tmdb::ASync::WatchProvider::fromJSON(const QJsonObject& i_json)
+tmdb::ASync::WatchProvider::WatchProvider(const QJsonObject& i_json, const QString& i_access_token)
+    : WatchProvider(i_access_token)
 {
-    auto* provider = new WatchProvider();
-    provider->setLogoPath(i_json["logo_path"].toString());
-    provider->setProviderID(i_json["provider_id"].toInt());
-    provider->setProviderName(i_json["provider_name"].toString());
-    return provider;
+    parseJson(i_json, i_access_token);
+}
+
+void tmdb::ASync::WatchProvider::parseJson(const QJsonObject& i_json, const QString& i_access_token)
+{
+    setLogoPath(i_json["logo_path"].toString());
+    setProviderID(i_json["provider_id"].toInt());
+    setProviderName(i_json["provider_name"].toString());
 }
 
 void tmdb::ASync::WatchProvider::loadWatchProvider(int i_providerID)
@@ -105,9 +113,7 @@ void tmdb::ASync::WatchProvider::finishedLoadingWatchProviderReceived(void* i_da
                 auto provider = result.toObject();
                 if (provider["provider_id"].toInt() == m_providerID)
                 {
-                    setLogoPath(provider["logo_path"].toString());
-                    setProviderID(provider["provider_id"].toInt());
-                    setProviderName(provider["provider_name"].toString());
+                    parseJson(provider, m_q.accessToken().c_str());
                     emit finishedLoadingWatchProvider(this);
                     disconnect(&m_q, &aQtmdb::startedLoadingData, this,
                                &WatchProvider::startedLoadingWatchProviderReceived);
@@ -175,11 +181,11 @@ void tmdb::ASync::WatchProvider::finishedLoadingAllWatchProvidersReceived(void* 
         auto providers = std::vector<WatchProvider*>();
         for (const auto& result : results)
         {
-            providers.push_back(fromJSON(result.toObject()));
+            providers.push_back(new WatchProvider(result.toObject(), m_q.accessToken().c_str()));
         }
         for (const auto result : m_tempData->value("results").toArray())
         {
-            providers.push_back(fromJSON(result.toObject()));
+            providers.push_back(new WatchProvider(result.toObject(), m_q.accessToken().c_str()));
         }
         emit finishedLoadingAllWatchProviders(providers);
     }
@@ -206,7 +212,7 @@ void tmdb::ASync::WatchProvider::finishedLoadingAllMovieProvidersReceived(void* 
         providers.reserve(results.size());
         for (const auto& result : results)
         {
-            providers.push_back(fromJSON(result.toObject()));
+            providers.push_back(new WatchProvider(result.toObject(), m_q.accessToken().c_str()));
         }
         emit finishedLoadingAllMovieProviders(providers);
     }
@@ -235,7 +241,7 @@ void tmdb::ASync::WatchProvider::finishedLoadingAllTVProvidersReceived(void* i_d
         providers.reserve(results.size());
         for (const auto& result : results)
         {
-            providers.push_back(fromJSON(result.toObject()));
+            providers.push_back(new WatchProvider(result.toObject(), m_q.accessToken().c_str()));
         }
         emit finishedLoadingAllTVProviders(providers);
     }

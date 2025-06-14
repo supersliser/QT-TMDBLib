@@ -43,12 +43,14 @@ namespace tmdb::ASync
             [[nodiscard]] int voteCount() const;
 
             Episode();
-            explicit Episode(const QString& i_access_token, int32_t i_seriesID, int32_t i_seasonNumber,
+            explicit Episode(const QString& i_access_token);
+            Episode(const QString& i_access_token, int32_t i_seriesID, int32_t i_seasonNumber,
                              int32_t i_episodeNumber);
 
-            static Episode* fromJSON(const QJsonObject& i_json);
+            Episode(const QJsonObject& i_json, const QString& i_access_token);
             ~Episode() override = default;
-
+        protected:
+            void parseJson(const QJsonObject& i_json, const QString& i_access_token);
         public slots:
             void loadEpisode(int32_t i_seriesID, int32_t i_seasonNumber, int32_t i_episodeNumber);
             void loadEpisodesForSeason(int32_t i_seriesID, int32_t i_seasonNumber);

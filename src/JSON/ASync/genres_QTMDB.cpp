@@ -12,6 +12,7 @@ void aQtmdb::genres_movie(std::string language)
         {"language", language}
     };
     _runGetRequest(request, params);
+
 }
 
 void aQtmdb::genres_tv(std::string language)
@@ -21,4 +22,5 @@ void aQtmdb::genres_tv(std::string language)
         {"language", language}
     };
     _runGetRequest(request, params);
+
 }

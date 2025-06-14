@@ -49,11 +49,12 @@ namespace tmdb::ASync
         [[nodiscard]] QString profilePath() const;
 
         Person();
+        explicit Person(const QString& i_access_token);
         Person(const QString& i_access_token, int32_t i_personID);
         ~Person() override = default;
-
-        static Person* fromJSON(const QJsonObject& i_json);
-
+        Person(const QJsonObject& i_json, const QString& i_access_token);
+    protected:
+        void parseJson(const QJsonObject& i_json, const QString& i_access_token);
     public slots:
         void loadPerson(int32_t i_personID);
 
@@ -94,7 +95,7 @@ namespace tmdb::ASync
         [[nodiscard]] QString character() const;
         void setCreditID(const QString& i_creditID);
         [[nodiscard]] QString creditID() const;
-        static Credit* fromJSON(const QJsonObject& i_json);
+        Credit(const QJsonObject& i_json, const QString& i_access_token);
     };
 }
 

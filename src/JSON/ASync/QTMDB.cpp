@@ -3,13 +3,13 @@
 //
 
 #include <QJsonObject>
-#include <QNetworkAccessManager>
-#include <QNetworkReply>
 #include "ASync/QTMDB.h"
 
 aQtmdb::aQtmdb(std::string i_accessToken, QObject* parent) : QObject(parent)
 {
     _m_accessToken = i_accessToken;
+    _m_nam = new QNetworkAccessManager(this);
+    connect(_m_nam, &QNetworkAccessManager::finished, this, &aQtmdb::_received);
 }
 
 std::string aQtmdb::accessToken()
@@ -22,6 +22,45 @@ void aQtmdb::setAccessToken(std::string i_accessToken)
     _m_accessToken = i_accessToken;
 }
 
+void aQtmdb::_received(QNetworkReply* reply)
+{
+    if (reply->error() != QNetworkReply::NoError)
+    {
+        qDebug() << "Error: " << reply->errorString();
+        return;
+    }
+    QByteArray response = reply->readAll();
+    QJsonDocument jsonDoc = QJsonDocument::fromJson(response);
+    if (jsonDoc.isNull())
+    {
+        qDebug() << "Error: Null Response";
+        return;
+    }
+    if (!jsonDoc.isObject())
+    {
+        QJsonArray jsonArray = jsonDoc.array();
+        if (jsonArray.isEmpty())
+        {
+            qDebug() << "Error: Empty Response";
+            return;
+        }
+        emit finishedLoadingData(&jsonArray);
+        reply->deleteLater();
+    }
+    else
+    {
+        QJsonObject jsonObj = jsonDoc.object();
+        if (jsonObj.isEmpty())
+        {
+            qDebug() << "Error: Empty Response";
+            return;
+        }
+        emit finishedLoadingData(&jsonObj);
+        reply->deleteLater();
+    }
+}
+
+
 void aQtmdb::_runGetRequest(std::string i_request, std::map<std::string, std::string> i_params)
 {
     emit startedLoadingData();
@@ -33,40 +72,11 @@ void aQtmdb::_runGetRequest(std::string i_request, std::map<std::string, std::st
                                  QUrl::toPercentEncoding(param.first.data()).toStdString(), "=",
                                  QUrl::toPercentEncoding(param.second.data()).toStdString()).c_str());
     }
-
-    QNetworkAccessManager manager;
     QNetworkRequest request(url);
     request.setRawHeader("Authorization", fmt::format("{}{}", "Bearer ", _m_accessToken).data());
     request.setRawHeader("accept", "application/json");
 
-    QNetworkReply* reply = manager.get(request);
-    auto lambda = [this, reply]()
-    {
-        if (reply->error() != QNetworkReply::NoError)
-        {
-            qDebug() << "Error: " << reply->errorString();
-            return;
-        }
-        QByteArray response = reply->readAll();
-        QJsonDocument jsonDoc = QJsonDocument::fromJson(response);
-        if (jsonDoc.isNull())
-        {
-            qDebug() << "Error: Null Response";
-            return;
-        }
-        QJsonObject jsonObj = jsonDoc.object();
-        if (jsonObj.isEmpty())
-        {
-            qDebug() << "Error: Empty Response";
-            return;
-        }
-        emit finishedLoadingData(&jsonObj);
-        QJsonObject data = jsonObj;
-
-        reply->deleteLater();
-        emit finishedLoadingData(&data);
-    };
-    connect(reply, &QNetworkReply::finished, lambda);
+    _m_nam->get(request);
 }
 
 std::string aQtmdb::getImageURL(std::string i_path, std::string i_size)

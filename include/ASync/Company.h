@@ -7,6 +7,7 @@
 #include <QJsonObject>
 #include <QString>
 
+#include "Country.h"
 #include "QTMDB.h"
 #include "Sync/Config.h"
 
@@ -25,8 +26,8 @@ namespace tmdb::ASync
         [[nodiscard]] QString homepage() const;
         void setName(const QString& i_name);
         [[nodiscard]] QString name() const;
-        void setOriginCountry(const config::country& i_originCountry);
-        [[nodiscard]] config::country originCountry() const;
+        void setOriginCountry(Country* i_originCountry);
+        [[nodiscard]] Country* originCountry() const;
         void setParentCompany(const QString& i_parentCompany);
         [[nodiscard]] QString parentCompany() const;
         void setLogoPath(const QString& i_logoPath);
@@ -35,11 +36,13 @@ namespace tmdb::ASync
         [[nodiscard]] int32_t id() const;
 
         Company();
+        explicit Company(const QString& i_access_token);
         Company(const QString& i_access_token, int32_t i_companyID);
         ~Company() override = default;
 
-        static Company* fromJSON(const QJsonObject& i_json, const QString& i_access_token);
-
+        Company(const QJsonObject& i_json, const QString& i_access_token);
+    protected:
+        void parseJson(const QJsonObject& i_json, const QString& i_access_token);
     public slots:
         void loadCompany(int32_t i_companyID);
 
@@ -57,7 +60,7 @@ namespace tmdb::ASync
         QString m_headquarters;
         QString m_homepage;
         QString m_name;
-        config::country m_originCountry;
+        Country* m_originCountry;
         QString m_parentCompany;
         QString m_logoPath;
         int32_t m_id = 0;

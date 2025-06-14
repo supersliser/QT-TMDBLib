@@ -62,26 +62,31 @@ tmdb::ASync::TV::Network::Network() : m_q("")
     m_q.setParent(this);
 }
 
-tmdb::ASync::TV::Network::Network(const QString& i_access_token, int32_t i_networkID) : m_q(i_access_token.toStdString())
+tmdb::ASync::TV::Network::Network(const QString& i_access_token, int32_t i_networkID) : Network(i_access_token)
 {
-    m_q.setParent(this);
     loadNetwork(i_networkID);
 }
 
-tmdb::ASync::TV::Network* tmdb::ASync::TV::Network::fromJSON(const QJsonObject& i_json) {
-    auto* network = new Network();
-    network->setId(i_json["id"].toInt());
-    network->setName(i_json["name"].toString());
-    network->setLogoPath(i_json["logo_path"].toString());
-    network->setHomepage(i_json["homepage"].toString());
-    network->setHeadquarters(i_json["headquarters"].toString());
+tmdb::ASync::TV::Network::Network(const QString& i_access_token) : m_q(i_access_token.toStdString())
+{
+    m_q.setParent(this);
+}
+
+tmdb::ASync::TV::Network::Network(const QJsonObject& i_json, const QString& i_access_token) : Network(i_access_token) {
+    parseJson(i_json, i_access_token);
+}
+
+void tmdb::ASync::TV::Network::parseJson(const QJsonObject& i_json, const QString& i_access_token){
+    setId(i_json["id"].toInt());
+    setName(i_json["name"].toString());
+    setLogoPath(i_json["logo_path"].toString());
+    setHomepage(i_json["homepage"].toString());
+    setHeadquarters(i_json["headquarters"].toString());
 
     if (i_json.contains("origin_country")) {
-        auto* country = tmdb::ASync::Country::fromJSON(i_json["origin_country"].toObject());
-        network->setOriginCountry(country);
+        auto* country = new Country(i_json["origin_country"].toObject(), i_access_token);
+        setOriginCountry(country);
     }
-
-    return network;
 }
 
 void tmdb::ASync::TV::Network::loadNetwork(int32_t i_networkID) {
@@ -93,8 +98,8 @@ void tmdb::ASync::TV::Network::startedLoadingNetworkReceived() {
     emit startedLoadingNetwork();
 }
 void tmdb::ASync::TV::Network::finishedLoadingNetworkReceived(void* i_data) {
-    auto* network = static_cast<QJsonObject*>(i_data);
-    emit finishedLoadingNetwork(fromJSON(*network));
+    parseJson(*static_cast<QJsonObject*>(i_data), m_q.accessToken().c_str());
+    emit finishedLoadingNetwork(this);
     disconnect(&m_q, &aQtmdb::startedLoadingData, this, &tmdb::ASync::TV::Network::startedLoadingNetworkReceived);
     disconnect(&m_q, &aQtmdb::finishedLoadingData, this, &tmdb::ASync::TV::Network::finishedLoadingNetworkReceived);
 }

@@ -67,7 +67,7 @@ float Season::voteAverage() const {
     return m_voteAverage;
 }
 
-Season::Season(const QString& i_access_token, int32_t i_seriesID, int32_t i_seasonNumber) : m_q(i_access_token.toStdString()) {
+Season::Season(const QString& i_access_token, int32_t i_seriesID, int32_t i_seasonNumber) : Season(i_access_token) {
     m_q.setParent(this);
     loadSeason(i_seriesID, i_seasonNumber);
 }
@@ -76,30 +76,35 @@ Season::Season() : m_q("") {
     m_q.setParent(this);
 }
 
-Season* Season::fromJSON(const QJsonObject& i_json) {
-    auto* season = new Season();
-    season->setId(i_json["id"].toInt());
-    season->setName(i_json["name"].toString());
-    season->setOverview(i_json["overview"].toString());
-    season->setPosterPath(i_json["poster_path"].toString());
-    season->setSeasonNumber(i_json["season_number"].toInt());
-    season->setVoteAverage(i_json["vote_average"].toDouble());
+Season::Season(const QString& i_access_token) : m_q(i_access_token.toStdString()) {
+    m_q.setParent(this);
+}
+
+Season::Season(const QJsonObject& i_json, const QString& i_access_token) : Season(i_access_token)
+{
+    parseJson(i_json, i_access_token);
+}
+
+void Season::parseJson(const QJsonObject& i_json, const QString& i_access_token) {
+    setId(i_json["id"].toInt());
+    setName(i_json["name"].toString());
+    setOverview(i_json["overview"].toString());
+    setPosterPath(i_json["poster_path"].toString());
+    setSeasonNumber(i_json["season_number"].toInt());
+    setVoteAverage(i_json["vote_average"].toDouble());
 
     if (i_json.contains("air_date")) {
-        season->setAirDate(QDate::fromString(i_json["air_date"].toString(), Qt::ISODate));
+        setAirDate(QDate::fromString(i_json["air_date"].toString(), Qt::ISODate));
     }
 
     if (i_json.contains("episodes")) {
         QJsonArray episodesArray = i_json["episodes"].toArray();
         std::vector<Episode*> episodes;
         for (const auto& episodeValue : episodesArray) {
-            QJsonObject episodeObject = episodeValue.toObject();
-            episodes.push_back(Episode::fromJSON(episodeObject));
+            episodes.push_back(new Episode(episodeValue.toObject(), i_access_token));
         }
-        season->setEpisodes(episodes);
+        setEpisodes(episodes);
     }
-
-    return season;
 }
 
 void Season::loadSeason(int32_t i_seriesID, int32_t i_seasonNumber) {
@@ -111,9 +116,8 @@ void Season::startedLoadingSeasonReceived() {
     emit startedLoadingSeason();
 }
 void Season::finishedLoadingSeasonReceived(void* i_data) {
-    auto json = static_cast<QJsonObject*>(i_data);
-    Season* season = fromJSON(*json);
-    emit finishedLoadingSeason(season);
+    parseJson(*static_cast<QJsonObject*>(i_data), m_q.accessToken().c_str());
+    emit finishedLoadingSeason(this);
     disconnect(&m_q, &aQtmdb::startedLoadingData, this, &Season::startedLoadingSeasonReceived);
     disconnect(&m_q, &aQtmdb::finishedLoadingData, this, &Season::finishedLoadingSeasonReceived);
 }
@@ -132,8 +136,7 @@ void Season::finishedLoadingSeasonEpisodesReceived(void* i_data) {
     if (json->contains("episodes")) {
         QJsonArray episodesArray = (*json)["episodes"].toArray();
         for (const auto& episodeValue : episodesArray) {
-            QJsonObject episodeObject = episodeValue.toObject();
-            episodes.push_back(Episode::fromJSON(episodeObject));
+            episodes.push_back(new Episode(episodeValue.toObject(), m_q.accessToken().c_str()));
         }
     }
     emit finishedLoadingSeasonEpisodes(episodes);

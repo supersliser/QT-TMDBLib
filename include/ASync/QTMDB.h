@@ -11,7 +11,9 @@
 #include <QJsonDocument>
 #include <fmt/format.h>
 #include <QJsonArray>
-
+#include <QtConcurrent/QtConcurrent>
+#include <QNetworkAccessManager>
+#include <QNetworkReply>
 
 class aQtmdb : public QObject
 {
@@ -20,6 +22,7 @@ private:
     const std::string _m_baseUrl = "https://api.themoviedb.org/3/";
     void _runGetRequest(std::string i_request, std::map<std::string, std::string> i_params = {});
     std::string _m_accessToken;
+    QNetworkAccessManager* _m_nam;
 public:
     /// @brief Default constructor for Qtmdb.
     /// @note For this class to be functional, you must initialise a QApplication object beforehand.
@@ -37,7 +40,8 @@ public:
 
     static std::string getImageURL(std::string i_path, std::string i_size = "original");
     //|-----------------------------------------------------------------------------------------------------|
-
+private slots:
+    void _received(QNetworkReply* i_reply);
     signals:
 
     void startedLoadingData();

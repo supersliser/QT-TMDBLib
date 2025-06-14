@@ -29,10 +29,12 @@ namespace tmdb::ASync::TV
         [[nodiscard]] tmdb::ASync::Country* originCountry() const;
 
         Network();
-        explicit Network(const QString& i_access_token, int32_t i_networkID);
+        explicit Network(const QString& i_access_token);
+        Network(const QString& i_access_token, int32_t i_networkID);
         ~Network() override = default;
-        static Network* fromJSON(const QJsonObject& i_json);
-
+        Network(const QJsonObject& i_json, const QString& i_access_token );
+    protected:
+        void parseJson(const QJsonObject& i_json, const QString& i_access_token);
     public slots:
         void loadNetwork(int32_t i_networkID);
 

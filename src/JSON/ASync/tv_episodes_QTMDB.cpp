@@ -7,7 +7,8 @@
 
 void aQtmdb::tv_episodes_details(int32_t series_id, int32_t season_number, int32_t episode_number, std::string language)
 {
-    std::string request = fmt::format("{}{}{}{}{}{}", "tv/", std::to_string(series_id), "/season/", std::to_string(season_number), "/episode/", std::to_string(episode_number));
+    std::string request = fmt::format("{}{}{}{}{}{}", "tv/", std::to_string(series_id), "/season/",
+                                      std::to_string(season_number), "/episode/", std::to_string(episode_number));
     std::map<std::string, std::string> params = {
         {"language", language}
     };
@@ -27,7 +28,9 @@ void aQtmdb::tv_episodes_changes(int32_t episode_id, QDate start_date, QDate end
 
 void aQtmdb::tv_episodes_credits(int32_t series_id, int32_t season_number, int32_t episode_number, std::string language)
 {
-    std::string request = fmt::format("{}{}{}{}{}{}{}", "tv/", std::to_string(series_id), "/season/", std::to_string(season_number), "/episode/", std::to_string(episode_number), "/credits");
+    std::string request = fmt::format("{}{}{}{}{}{}{}", "tv/", std::to_string(series_id), "/season/",
+                                      std::to_string(season_number), "/episode/", std::to_string(episode_number),
+                                      "/credits");
     std::map<std::string, std::string> params = {
         {"language", language}
     };
@@ -36,13 +39,17 @@ void aQtmdb::tv_episodes_credits(int32_t series_id, int32_t season_number, int32
 
 void aQtmdb::tv_episodes_externalIDs(int32_t series_id, int32_t season_number, int32_t episode_number)
 {
-    std::string request = fmt::format("{}{}{}{}{}{}{}", "tv/", std::to_string(series_id), "/season/", std::to_string(season_number), "/episode/", std::to_string(episode_number), "/external_ids");
+    std::string request = fmt::format("{}{}{}{}{}{}{}", "tv/", std::to_string(series_id), "/season/",
+                                      std::to_string(season_number), "/episode/", std::to_string(episode_number),
+                                      "/external_ids");
     _runGetRequest(request);
 }
 
 void aQtmdb::tv_episodes_images(int32_t series_id, int32_t season_number, int32_t episode_number, std::string language)
 {
-    std::string request = fmt::format("{}{}{}{}{}{}{}", "tv/", std::to_string(series_id), "/season/", std::to_string(season_number), "/episode/", std::to_string(episode_number), "/images");
+    std::string request = fmt::format("{}{}{}{}{}{}{}", "tv/", std::to_string(series_id), "/season/",
+                                      std::to_string(season_number), "/episode/", std::to_string(episode_number),
+                                      "/images");
     std::map<std::string, std::string> params = {
         {"language", language}
     };
@@ -51,13 +58,17 @@ void aQtmdb::tv_episodes_images(int32_t series_id, int32_t season_number, int32_
 
 void aQtmdb::tv_episodes_translations(int32_t series_id, int32_t season_number, int32_t episode_number)
 {
-    std::string request = fmt::format("{}{}{}{}{}{}{}", "tv/", std::to_string(series_id), "/season/", std::to_string(season_number), "/episode/", std::to_string(episode_number), "/translations");
+    std::string request = fmt::format("{}{}{}{}{}{}{}", "tv/", std::to_string(series_id), "/season/",
+                                      std::to_string(season_number), "/episode/", std::to_string(episode_number),
+                                      "/translations");
     _runGetRequest(request);
 }
 
 void aQtmdb::tv_episodes_videos(int32_t series_id, int32_t season_number, int32_t episode_number, std::string language)
 {
-    std::string request = fmt::format("{}{}{}{}{}{}{}", "tv/", std::to_string(series_id), "/season/", std::to_string(season_number), "/episode/", std::to_string(episode_number), "/videos");
+    std::string request = fmt::format("{}{}{}{}{}{}{}", "tv/", std::to_string(series_id), "/season/",
+                                      std::to_string(season_number), "/episode/", std::to_string(episode_number),
+                                      "/videos");
     std::map<std::string, std::string> params = {
         {"language", language}
     };

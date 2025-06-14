@@ -10,12 +10,18 @@
 
 TEST(aQtmdb_JSON_Reviews_Test, details)
 {
+    bool finished = false;
     aQtmdb aQtmdb(std::getenv("API_KEY"));
-    aQtmdb.reviews_details("640b2aeecaaca20079decdcc");
-    QObject::connect(&aQtmdb, &aQtmdb::finishedLoadingData, [&aQtmdb](void* response)
+    QObject::connect(&aQtmdb, &aQtmdb::finishedLoadingData, [&finished](void* response)
     {
         QJsonObject data = *static_cast<QJsonObject*>(response);
         EXPECT_FALSE(data.isEmpty());
         EXPECT_STREQ(data.value("author").toString().toStdString().c_str(), "Ricardo Oliveira");
+        finished = true;
     });
+    aQtmdb.reviews_details("640b2aeecaaca20079decdcc");
+    while (!finished)
+    {
+        QApplication::processEvents();
+    }
 }

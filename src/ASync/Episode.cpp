@@ -97,10 +97,15 @@ int tmdb::ASync::TV::Episode::voteCount() const {
     return m_voteCount;
 }
 
-tmdb::ASync::TV::Episode::Episode(const QString& i_access_token, int32_t i_seriesID, int32_t i_seasonNumber, int32_t i_episodeNumber) : m_q(i_access_token.toStdString())
+tmdb::ASync::TV::Episode::Episode(const QString& i_access_token, int32_t i_seriesID, int32_t i_seasonNumber, int32_t i_episodeNumber) : Episode(i_access_token)
 {
     m_q.setParent(this);
     loadEpisode(i_seriesID, i_seasonNumber, i_episodeNumber);
+}
+
+tmdb::ASync::TV::Episode::Episode(const QString& i_access_token) : m_q(i_access_token.toStdString())
+{
+    m_q.setParent(this);
 }
 
 tmdb::ASync::TV::Episode::Episode() : m_q("")
@@ -108,31 +113,32 @@ tmdb::ASync::TV::Episode::Episode() : m_q("")
     m_q.setParent(this);
 }
 
-tmdb::ASync::TV::Episode* tmdb::ASync::TV::Episode::fromJSON(const QJsonObject& i_json) {
-    auto* episode = new Episode();
-    episode->m_q.setParent(episode);
-    episode->setAirDate(QDate::fromString(i_json["air_date"].toString(), Qt::ISODate));
+tmdb::ASync::TV::Episode::Episode(const QJsonObject& i_json, const QString& i_access_token) : Episode(i_access_token) {
+    parseJson(i_json, i_access_token);
+}
+
+void tmdb::ASync::TV::Episode::parseJson(const QJsonObject& i_json, const QString& i_access_token){
+    setAirDate(QDate::fromString(i_json["air_date"].toString(), Qt::ISODate));
     std::vector<tmdb::ASync::Credit*> crew;
     for (const auto &crewMember : i_json["crew"].toArray()) {
-        crew.push_back(tmdb::ASync::Credit::fromJSON(crewMember.toObject()));
+        crew.push_back(new Credit(crewMember.toObject(), i_access_token));
     }
-    episode->setCrew(crew);
-    episode->setEpisodeNumber(i_json["episode_number"].toInt());
+    setCrew(crew);
+    setEpisodeNumber(i_json["episode_number"].toInt());
     std::vector<tmdb::ASync::Credit*> guestStars;
     for (const auto &guestStar : i_json["guest_stars"].toArray()) {
-        guestStars.push_back(tmdb::ASync::Credit::fromJSON(guestStar.toObject()));
+        guestStars.push_back(new Credit(guestStar.toObject(), i_access_token));
     }
-    episode->setGuestStars(guestStars);
-    episode->setName(i_json["name"].toString());
-    episode->setOverview(i_json["overview"].toString());
-    episode->setId(i_json["id"].toInt());
-    episode->setProductionCode(i_json["production_code"].toString());
-    episode->setRuntime(i_json["runtime"].toInt());
-    episode->setSeasonNumber(i_json["season_number"].toInt());
-    episode->setStillPath(i_json["still_path"].toString());
-    episode->setVoteAverage(i_json["vote_average"].toDouble());
-    episode->setVoteCount(i_json["vote_count"].toInt());
-    return episode;
+    setGuestStars(guestStars);
+    setName(i_json["name"].toString());
+    setOverview(i_json["overview"].toString());
+    setId(i_json["id"].toInt());
+    setProductionCode(i_json["production_code"].toString());
+    setRuntime(i_json["runtime"].toInt());
+    setSeasonNumber(i_json["season_number"].toInt());
+    setStillPath(i_json["still_path"].toString());
+    setVoteAverage(i_json["vote_average"].toDouble());
+    setVoteCount(i_json["vote_count"].toInt());
 }
 
 void tmdb::ASync::TV::Episode::loadEpisode(int32_t i_seriesID, int32_t i_seasonNumber, int32_t i_episodeNumber) {
@@ -147,7 +153,8 @@ void tmdb::ASync::TV::Episode::startedLoadingEpisodeReceived() {
 
 void tmdb::ASync::TV::Episode::finishedLoadingEpisodeReceived(void* i_data) {
     auto episode = *static_cast<QJsonObject*>(i_data);
-    emit finishedLoadingEpisode(fromJSON(episode));
+    parseJson(episode, m_q.accessToken().c_str());
+    emit finishedLoadingEpisode(this);
     disconnect(&m_q, &aQtmdb::startedLoadingData, this, &tmdb::ASync::TV::Episode::startedLoadingEpisodeReceived);
     disconnect(&m_q, &aQtmdb::finishedLoadingData, this, &tmdb::ASync::TV::Episode::finishedLoadingEpisodeReceived);
 }
@@ -166,7 +173,7 @@ void tmdb::ASync::TV::Episode::finishedLoadingSeasonEpisodesReceived(void* i_dat
     auto episodes = *static_cast<QJsonObject*>(i_data);
     std::vector<tmdb::ASync::TV::Episode*> episodeList;
     for (const auto& episode : episodes["episodes"].toArray()) {
-        episodeList.push_back(tmdb::ASync::TV::Episode::fromJSON(episode.toObject()));
+        episodeList.push_back(new Episode(episode.toObject(), m_q.accessToken().c_str()));
     }
     emit finishedLoadingSeasonEpisodes(episodeList);
     disconnect(&m_q, &aQtmdb::startedLoadingData, this, &tmdb::ASync::TV::Episode::startedLoadingSeasonEpisodesReceived);

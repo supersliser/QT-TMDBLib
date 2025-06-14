@@ -18,56 +18,57 @@ namespace tmdb::ASync::TV
     class Series : public QObject
     {
         Q_OBJECT
+
     public:
         void setAdult(bool i_adult);
         [[nodiscard]] bool adult() const;
-        void setBackdropPath(const QString &i_backdropPath);
+        void setBackdropPath(const QString& i_backdropPath);
         [[nodiscard]] QString backdropPath() const;
-        void setCreatedBy(const std::vector<tmdb::ASync::Person*> &i_createdBy);
+        void setCreatedBy(const std::vector<tmdb::ASync::Person*>& i_createdBy);
         [[nodiscard]] std::vector<tmdb::ASync::Person*> createdBy() const;
-        void setEpisodeRunTime(const std::vector<int> &i_episodeRunTime);
+        void setEpisodeRunTime(const std::vector<int>& i_episodeRunTime);
         [[nodiscard]] std::vector<int> episodeRunTime() const;
-        void setFirstAirDate(const QDate &i_firstAirDate);
+        void setFirstAirDate(const QDate& i_firstAirDate);
         [[nodiscard]] QDate firstAirDate() const;
-        void setGenres(const std::vector<tmdb::ASync::Genre*> &i_genres);
+        void setGenres(const std::vector<tmdb::ASync::Genre*>& i_genres);
         [[nodiscard]] std::vector<tmdb::ASync::Genre*> genres() const;
-        void setHomepage(const QString &i_homepage);
+        void setHomepage(const QString& i_homepage);
         [[nodiscard]] QString homepage() const;
         void setId(int i_id);
         [[nodiscard]] int id() const;
         void setInProduction(bool i_inProduction);
         [[nodiscard]] bool inProduction() const;
-        void setLanguages(const std::vector<tmdb::ASync::Language*> &i_languages);
+        void setLanguages(const std::vector<tmdb::ASync::Language*>& i_languages);
         [[nodiscard]] std::vector<tmdb::ASync::Language*> languages() const;
-        void setLastAirDate(const QDate &i_lastAirDate);
+        void setLastAirDate(const QDate& i_lastAirDate);
         [[nodiscard]] QDate lastAirDate() const;
-        void setName(const QString &i_name);
+        void setName(const QString& i_name);
         [[nodiscard]] QString name() const;
-        void setNetworks(const std::vector<tmdb::ASync::TV::Network*> &i_networks);
+        void setNetworks(const std::vector<tmdb::ASync::TV::Network*>& i_networks);
         [[nodiscard]] std::vector<tmdb::ASync::TV::Network*> networks() const;
-        void setOriginCountries(const std::vector<tmdb::ASync::Country*> &i_originCountries);
+        void setOriginCountries(const std::vector<tmdb::ASync::Country*>& i_originCountries);
         [[nodiscard]] std::vector<tmdb::ASync::Country*> originCountries() const;
-        void setOriginalLanguage(const QString &i_originalLanguage);
+        void setOriginalLanguage(const QString& i_originalLanguage);
         [[nodiscard]] QString originalLanguage() const;
-        void setOverview(const QString &i_overview);
+        void setOverview(const QString& i_overview);
         [[nodiscard]] QString overview() const;
         void setPopularity(float i_popularity);
         [[nodiscard]] float popularity() const;
-        void setPosterPath(const QString &i_posterPath);
+        void setPosterPath(const QString& i_posterPath);
         [[nodiscard]] QString posterPath() const;
-        void setProductionCompanies(const std::vector<tmdb::ASync::Company*> &i_productionCompanies);
+        void setProductionCompanies(const std::vector<tmdb::ASync::Company*>& i_productionCompanies);
         [[nodiscard]] std::vector<tmdb::ASync::Company*> productionCompanies() const;
-        void setProductionCountries(const std::vector<tmdb::ASync::Country*> &i_productionCountries);
+        void setProductionCountries(const std::vector<tmdb::ASync::Country*>& i_productionCountries);
         [[nodiscard]] std::vector<tmdb::ASync::Country*> productionCountries() const;
-        void setSeasons(const std::vector<tmdb::ASync::TV::Season*> &i_seasons);
+        void setSeasons(const std::vector<tmdb::ASync::TV::Season*>& i_seasons);
         [[nodiscard]] std::vector<tmdb::ASync::TV::Season*> seasons() const;
-        void setSpokenLanguages(const std::vector<tmdb::ASync::Language*> &i_spokenLanguages);
+        void setSpokenLanguages(const std::vector<tmdb::ASync::Language*>& i_spokenLanguages);
         [[nodiscard]] std::vector<tmdb::ASync::Language*> spokenLanguages() const;
-        void setStatus(const QString &i_status);
+        void setStatus(const QString& i_status);
         [[nodiscard]] QString status() const;
-        void setTagline(const QString &i_tagline);
+        void setTagline(const QString& i_tagline);
         [[nodiscard]] QString tagline() const;
-        void setType(const QString &i_type);
+        void setType(const QString& i_type);
         [[nodiscard]] QString type() const;
         void setVoteAverage(float i_voteAverage);
         [[nodiscard]] float voteAverage() const;
@@ -75,15 +76,19 @@ namespace tmdb::ASync::TV
         [[nodiscard]] int voteCount() const;
 
         Series();
+        explicit Series(const QString& i_access_token);
         Series(const QString& i_access_token, int32_t i_seriesID);
         ~Series() override = default;
 
-        Series* fromJSON(const QJsonObject &i_json);
+        Series(const QJsonObject& i_json, const QString& i_access_token);
 
-public slots:
+    protected:
+        void parseJson(const QJsonObject& i_json, const QString& i_access_token);
+
+    public slots:
         void loadSeries(int32_t i_seriesID);
         void loadSearchResults(const QString& i_query, const Language& i_language, int32_t i_page = 1,
-                              bool i_includeAdult = false, int i_year = 0, int i_firstAirYear = 0);
+                               bool i_includeAdult = false, int i_year = 0, int i_firstAirYear = 0);
 
         void loadAiringToday(const Language& i_language, int32_t i_page = 1,
                              const QString& i_region = "America/New_York");
@@ -93,7 +98,7 @@ public slots:
         void loadTopRated(const Language& i_language, int32_t i_page = 1);
         void loadRecommendations(int32_t i_page = 1);
         void loadSimilar(int32_t i_page = 1);
-        void loadWatchProviders( Country* i_country);
+        void loadWatchProviders(Country* i_country);
         void loadExternalIDs();
         void loadBackdrops(const QString& i_size = "original");
         void loadBackdrop(int i_index, const QString& i_size = "original");
@@ -103,7 +108,7 @@ public slots:
         void loadLogo(int i_index, const QString& i_size = "original");
         void loadSeasons();
 
-        private slots:
+    private slots:
         void startedLoadingSeriesReceived();
         void finishedLoadingSeriesReceived(void* i_data);
         void startedLoadingSearchResultsReceived();
@@ -139,7 +144,7 @@ public slots:
         void startedLoadingSeasonsReceived();
         void finishedLoadingSeasonsReceived(void* i_data);
 
-        signals:
+    signals:
         void startedLoadingSeries();
         void finishedLoadingSeries(tmdb::ASync::TV::Series* i_series);
         void startedLoadingSearchResults();
@@ -171,6 +176,7 @@ public slots:
         void finishedLoadingLogo(QPixmap i_logo);
         void startedLoadingSeasons();
         void finishedLoadingSeasons(std::vector<tmdb::ASync::TV::Season*> i_seasons);
+
     protected:
         aQtmdb m_q;
         bool m_adult = true;
@@ -203,8 +209,8 @@ public slots:
         float m_voteAverage = 0.0f;
         int m_voteCount = 0;
 
-        Country *m_tempCountry;
+        Country* m_tempCountry;
         QString m_tempSize;
-        };
+    };
 }
 #endif //ASYNC_SERIES_H

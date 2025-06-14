@@ -8,7 +8,7 @@ void aQtmdb::trending_movies(tmdb::timeWindow::timeWindow time_window, std::stri
   std::map<std::string, std::string> params = {
     {"language", language}
   };
-   _runGetRequest(request, params);
+    _runGetRequest(request, params);
 }
 
 void aQtmdb::trending_people(tmdb::timeWindow::timeWindow time_window, std::string language)
@@ -17,7 +17,7 @@ void aQtmdb::trending_people(tmdb::timeWindow::timeWindow time_window, std::stri
   std::map<std::string, std::string> params = {
     {"language", language}
   };
-   _runGetRequest(request, params);
+    _runGetRequest(request, params);
 }
 
 void aQtmdb::trending_tv(tmdb::timeWindow::timeWindow time_window, std::string language)
@@ -26,5 +26,5 @@ void aQtmdb::trending_tv(tmdb::timeWindow::timeWindow time_window, std::string l
   std::map<std::string, std::string> params = {
     {"language", language}
   };
-   _runGetRequest(request, params);
+  _runGetRequest(request, params);
 }

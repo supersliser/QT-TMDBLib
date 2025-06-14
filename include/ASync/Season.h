@@ -34,11 +34,13 @@ namespace tmdb::ASync
             [[nodiscard]] float voteAverage() const;
 
             Season();
-            explicit Season(const QString& i_access_token, int32_t i_seriesID, int32_t i_seasonNumber);
+            explicit Season(const QString& i_access_token);
+            Season(const QString& i_access_token, int32_t i_seriesID, int32_t i_seasonNumber);
             ~Season() override = default;
 
-            static Season* fromJSON(const QJsonObject& i_json);
-
+            Season(const QJsonObject& i_json, const QString& i_access_token);
+        protected:
+            void parseJson(const QJsonObject& i_json, const QString& i_access_token);
         public slots:
             void loadSeason(int32_t i_seriesID, int32_t i_seasonNumber);
             void loadEpisodesForSeason(int32_t i_seriesID, int32_t i_seasonNumber);

@@ -81,11 +81,13 @@ namespace tmdb::ASync
         [[nodiscard]] int voteCount() const;
 
         Movie();
+        explicit Movie(const QString& i_access_token);
         ~Movie() override = default;
         explicit Movie(const QString& i_access_token, int32_t i_movieID);
 
-        Movie* fromJSON(const QJsonObject& i_json);
-
+        Movie(const QJsonObject& i_json, const QString& i_access_token);
+    protected:
+        void parseJson(const QJsonObject& i_json, const QString& i_access_token);
     public slots:
         void loadMovie(int32_t i_movieID);
         void loadSearchResults(const QString& i_query,

@@ -10,36 +10,54 @@
 
 TEST(aQtmdb_JSON_Trending_Test, movies)
 {
+    bool finished = false;
     aQtmdb aQtmdb(std::getenv("API_KEY"));
-    aQtmdb.trending_movies(tmdb::timeWindow::timeWindow::day);
-    QObject::connect(&aQtmdb, &aQtmdb::finishedLoadingData, [&aQtmdb](void* response)
+    QObject::connect(&aQtmdb, &aQtmdb::finishedLoadingData, [&finished](void* response)
     {
         QJsonObject data = *static_cast<QJsonObject*>(response);
         EXPECT_FALSE(data.isEmpty());
         EXPECT_TRUE(data.value("results").isArray());
+        finished = true;
     });
+    aQtmdb.trending_movies(tmdb::timeWindow::timeWindow::day);
+    while (!finished)
+    {
+        QApplication::processEvents();
+    }
 }
 
 TEST(aQtmdb_JSON_Trending_Test, people)
 {
+    bool finished = false;
     aQtmdb aQtmdb(std::getenv("API_KEY"));
-    aQtmdb.trending_people(tmdb::timeWindow::timeWindow::day);
-    QObject::connect(&aQtmdb, &aQtmdb::finishedLoadingData, [&aQtmdb](void* response)
+    QObject::connect(&aQtmdb, &aQtmdb::finishedLoadingData, [&finished](void* response)
     {
         QJsonObject data = *static_cast<QJsonObject*>(response);
         EXPECT_FALSE(data.isEmpty());
         EXPECT_TRUE(data.value("results").isArray());
+        finished = true;
     });
+    aQtmdb.trending_people(tmdb::timeWindow::timeWindow::day);
+    while (!finished)
+    {
+        QApplication::processEvents();
+    }
 }
 
 TEST(aQtmdb_JSON_Trending_Test, tv)
 {
+    bool finished = false;
     aQtmdb aQtmdb(std::getenv("API_KEY"));
-    aQtmdb.trending_tv(tmdb::timeWindow::timeWindow::day);
-    QObject::connect(&aQtmdb, &aQtmdb::finishedLoadingData, [&aQtmdb](void* response)
+    QObject::connect(&aQtmdb, &aQtmdb::finishedLoadingData, [&finished](void* response)
     {
         QJsonObject data = *static_cast<QJsonObject*>(response);
         EXPECT_FALSE(data.isEmpty());
         EXPECT_TRUE(data.value("results").isArray());
+        finished = true;
     });
+    aQtmdb.trending_tv(tmdb::timeWindow::timeWindow::day);
+    while (!finished)
+    {
+        QApplication::processEvents();
+    }
 }

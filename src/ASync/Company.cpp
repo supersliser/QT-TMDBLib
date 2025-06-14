@@ -46,12 +46,12 @@ QString tmdb::ASync::Company::name() const
     return m_name;
 }
 
-void tmdb::ASync::Company::setOriginCountry(const config::country& i_originCountry)
+void tmdb::ASync::Company::setOriginCountry(Country* i_originCountry)
 {
     m_originCountry = i_originCountry;
 }
 
-tmdb::config::country tmdb::ASync::Company::originCountry() const
+tmdb::ASync::Country* tmdb::ASync::Company::originCountry() const
 {
     return m_originCountry;
 }
@@ -86,23 +86,31 @@ int32_t tmdb::ASync::Company::id() const
     return m_id;
 }
 
-tmdb::ASync::Company::Company(const QString& i_access_token, int32_t i_companyID) : m_q(i_access_token.toStdString())
+tmdb::ASync::Company::Company(const QString& i_access_token, int32_t i_companyID) : Company(i_access_token)
 {
     loadCompany(i_companyID);
 }
 
-tmdb::ASync::Company* tmdb::ASync::Company::fromJSON(const QJsonObject& i_json, const QString& i_access_token)
+tmdb::ASync::Company::Company(const QString& i_access_token) : m_q(i_access_token.toStdString())
 {
-    auto* output = new Company();
-    output->setDescription(i_json.value("description").toString());
-    output->setHeadquarters(i_json.value("headquarters").toString());
-    output->setHomepage(i_json.value("homepage").toString());
-    output->setName(i_json.value("name").toString());
-    output->setOriginCountry(config::getCountry(i_json.value("origin_country").toString(), ""));
-    output->setParentCompany(i_json.value("parent_company").toObject().value("name").toString());
-    output->setLogoPath(i_json.value("logo_path").toString());
-    output->setID(i_json.value("id").toInt());
-    return output;
+    m_q.setParent(this);
+}
+
+tmdb::ASync::Company::Company(const QJsonObject& i_json, const QString& i_access_token) : Company(i_access_token)
+{
+    parseJson(i_json, i_access_token);
+}
+
+void tmdb::ASync::Company::parseJson(const QJsonObject& i_json, const QString& i_access_token)
+{
+    setDescription(i_json.value("description").toString());
+    setHeadquarters(i_json.value("headquarters").toString());
+    setHomepage(i_json.value("homepage").toString());
+    setName(i_json.value("name").toString());
+    setOriginCountry(new Country(i_access_token, i_json.value("origin_country").toString()));
+    setParentCompany(i_json.value("parent_company").toObject().value("name").toString());
+    setLogoPath(i_json.value("logo_path").toString());
+    setID(i_json.value("id").toInt());
 }
 
 void tmdb::ASync::Company::loadCompany(int32_t i_companyID)
@@ -120,7 +128,8 @@ void tmdb::ASync::Company::startedLoadingCompanyReceived()
 void tmdb::ASync::Company::finishedLoadingCompanyReceived(void* i_data)
 {
     auto var = static_cast<QJsonObject*>(i_data);
-    emit finishedLoadingCompany(tmdb::ASync::Company::fromJSON(*var, QString(m_q.accessToken().c_str())));
+    parseJson(*var, m_q.accessToken().c_str());
+    emit finishedLoadingCompany(this);
     disconnect(&m_q, &aQtmdb::startedLoadingData, this, &tmdb::ASync::Company::startedLoadingCompanyReceived);
     disconnect(&m_q, &aQtmdb::finishedLoadingData, this, &tmdb::ASync::Company::finishedLoadingCompanyReceived);
 }

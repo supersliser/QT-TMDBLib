@@ -22,11 +22,13 @@ namespace tmdb::ASync
         std::vector<QString> jobTitles() const;
 
         Department();
+        explicit Department(const QString& i_access_token);
         Department(const QString& i_access_token, const QString& i_deptName);
         ~Department() override = default;
 
-        Department* fromJSON(const QJsonObject& i_json);
-
+        Department(const QJsonObject& i_json, const QString& i_access_token);
+    protected:
+        void parseJson(const QJsonObject& i_json, const QString& i_access_token);
     public slots:
         void loadDepartment(const QString& i_deptName);
         void loadAllDepartments();

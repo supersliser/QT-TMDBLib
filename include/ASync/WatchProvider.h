@@ -38,12 +38,14 @@ namespace tmdb::ASync
         [[nodiscard]] QUrl link() const;
 
         WatchProvider();
+        explicit WatchProvider(const QString& i_access_token);
         WatchProvider(const QString& i_access_token, int i_providerID);
 
-        static WatchProvider* fromJSON(const QJsonObject& i_json);
+        WatchProvider(const QJsonObject& i_json, const QString& i_access_token);
 
         ~WatchProvider() override = default;
-
+    protected:
+        void parseJson(const QJsonObject& i_json, const QString& i_access_token);
     public slots:
         void loadWatchProvider(int i_providerID);
         void loadAllWatchProviders(Language* i_language);

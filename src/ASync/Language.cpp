@@ -12,10 +12,14 @@ tmdb::ASync::Language::Language()
     m_q.setParent(this);
 }
 
-tmdb::ASync::Language::Language(const QString& i_access_token, const QString& i_iso_639_1)
+tmdb::ASync::Language::Language(const QString& i_access_token)
     : m_q(i_access_token.toStdString())
 {
     m_q.setParent(this);
+}
+
+tmdb::ASync::Language::Language(const QString& i_access_token, const QString& i_iso_639_1):Language(i_access_token)
+{
     loadLanguage(i_iso_639_1);
 }
 
@@ -46,12 +50,17 @@ QString tmdb::ASync::Language::nativeName() const
     return m_native_name;
 }
 
-tmdb::ASync::Language* tmdb::ASync::Language::fromJSON(const QJsonObject& i_json)
+tmdb::ASync::Language::Language(const QJsonObject& i_json, const QString& i_access_token)
+    : Language(i_access_token)
+{
+    parseJson(i_json, i_access_token);
+}
+
+void tmdb::ASync::Language::parseJson(const QJsonObject& i_json, const QString& i_access_token)
 {
     m_iso_639_1 = i_json["iso_639_1"].toString();
     m_english_name = i_json["english_name"].toString();
     m_native_name = i_json["native_name"].toString();
-    return this;
 }
 
 void tmdb::ASync::Language::loadLanguage(const QString& i_iso_639_1)
@@ -77,16 +86,15 @@ void tmdb::ASync::Language::startedLoadingLanguageReceived()
 void tmdb::ASync::Language::finishedLoadingLanguageReceived(void* i_data)
 {
     QJsonArray json = *static_cast<QJsonArray*>(i_data);
-    auto Language = new tmdb::ASync::Language();
     for (int i = 0; i < json.count(); i++)
     {
         if (json[i].toObject()["iso_639_1"].toString() == m_iso_639_1)
         {
-            Language = fromJSON(json[i].toObject());
+            parseJson(json[i].toObject(), m_q.accessToken().c_str());
+            emit finishedLoadingLanguage(this);
             break;
         }
     }
-    emit finishedLoadingLanguage(Language);
 }
 
 void tmdb::ASync::Language::startedLoadingAllLanguagesReceived()
@@ -100,7 +108,7 @@ void tmdb::ASync::Language::finishedLoadingAllLanguagesReceived(void* i_data)
     std::vector<Language*> languages;
     for (const QJsonValue& value : jsonArray) {
         QJsonObject json = value.toObject();
-        languages.push_back(fromJSON(json));
+        languages.push_back(new Language(json, m_q.accessToken().c_str()));
     }
     emit finishedLoadingAllLanguages(languages);
 }

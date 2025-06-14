@@ -18,22 +18,24 @@ namespace tmdb::ASync
     public:
         void setID(int32_t i_id);
         [[nodiscard]] int32_t id() const;
-        void setName(const QString &i_name);
+        void setName(const QString& i_name);
         [[nodiscard]] QString name() const;
 
         Genre();
+        explicit Genre(const QString& i_access_token);
         Genre(const QString& i_access_token, int32_t i_genreID);
         ~Genre() override = default;
 
-        static Genre* fromJSON(const QJsonObject& i_json);
-
-        public slots:
+        Genre(const QJsonObject& i_json, const QString& i_access_token);
+    protected:
+        void parseJson(const QJsonObject& i_json, const QString& i_access_token);
+    public slots:
         void loadGenre(int32_t i_genreID);
         void loadAllGenres();
         void loadMovieGenres();
         void loadTvGenres();
 
-        private slots:
+    private slots:
         void startedLoadingGenreReceived();
         void finishedLoadingGenreReceived(void* i_data);
         void startedLoadingAllGenresReceived();
@@ -43,15 +45,15 @@ namespace tmdb::ASync
         void startedLoadingTvGenresReceived();
         void finishedLoadingTvGenresReceived(void* i_data);
 
-        signals:
+    signals:
         void startedLoadingGenre();
         void finishedLoadingGenre(tmdb::ASync::Genre* i_genre);
         void startedLoadingAllGenres();
-        void finishedLoadingAllGenres(QList<tmdb::ASync::Genre*> i_genres);
+        void finishedLoadingAllGenres(std::vector<tmdb::ASync::Genre*> i_genres);
         void startedLoadingMovieGenres();
-        void finishedLoadingMovieGenres(QList<tmdb::ASync::Genre*> i_genres);
+        void finishedLoadingMovieGenres(std::vector<tmdb::ASync::Genre*> i_genres);
         void startedLoadingTvGenres();
-        void finishedLoadingTvGenres(QList<tmdb::ASync::Genre*> i_genres);
+        void finishedLoadingTvGenres(std::vector<tmdb::ASync::Genre*> i_genres);
 
     protected:
         int32_t m_id = 0;

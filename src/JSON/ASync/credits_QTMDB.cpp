@@ -9,4 +9,5 @@ void aQtmdb::credits_details(std::string credit_id)
 {
     std::string request = fmt::format("{}{}", "credit/", credit_id);
     _runGetRequest(request);
+
 }
