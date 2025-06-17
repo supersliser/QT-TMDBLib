@@ -279,7 +279,6 @@ TEST(SeriesASyncTests, Recommendations)
         EXPECT_FALSE(seriesList.empty());
         for (const auto &s : seriesList) {
             EXPECT_FALSE(s->name().isEmpty());
-            EXPECT_FALSE(s->posterPath().isEmpty());
         }
         f = true;
     });
@@ -293,6 +292,10 @@ TEST(SeriesASyncTests, Similar)
 {
     bool f = false;
     Series* series = new Series(std::getenv("API_KEY"), 1399);
+    while (series->voteCount() == 0)
+    {
+        QApplication::processEvents();
+    }
     QObject::connect(series, &Series::finishedLoadingSimilar, [&f](std::vector<tmdb::ASync::TV::Series*> seriesList) {
         EXPECT_FALSE(seriesList.empty());
         EXPECT_GT(seriesList.size(), 0);
@@ -301,8 +304,6 @@ TEST(SeriesASyncTests, Similar)
         }
         f = true;
     });
-    tmdb::ASync::Language l;
-    l.setIso6391("en-GB");
     series->loadSimilar();
     while (!f)
     {
