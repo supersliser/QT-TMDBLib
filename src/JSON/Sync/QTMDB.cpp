@@ -4,6 +4,7 @@
 #include <QNetworkAccessManager>
 #include <QNetworkReply>
 #include <QJsonArray>
+#include <QJsonDocument>
 
 Qtmdb::Qtmdb(std::string i_accessToken, QObject* parent) : QObject(parent)
 {

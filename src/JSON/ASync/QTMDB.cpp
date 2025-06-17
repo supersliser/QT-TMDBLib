@@ -3,6 +3,7 @@
 //
 
 #include <QJsonObject>
+#include <QJsonDocument>
 #include "ASync/QTMDB.h"
 
 aQtmdb::aQtmdb(std::string i_accessToken, QObject* parent) : QObject(parent)
