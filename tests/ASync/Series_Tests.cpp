@@ -314,6 +314,10 @@ TEST(SeriesASyncTests, Similar)
 TEST(SeriesASyncTests, WatchProviders)
 {
     Series series(std::getenv("API_KEY"), 1399);
+    while (series.voteCount() == 0)
+    {
+        QApplication::processEvents();
+    }
     bool f = false;
     QObject::connect(&series, &Series::finishedLoadingWatchProviders, [&f](std::vector<tmdb::ASync::WatchProvider*> watchProviders) {
         EXPECT_FALSE(watchProviders.empty());
@@ -335,6 +339,10 @@ TEST(SeriesASyncTests, WatchProviders)
 TEST(SeriesASyncTests, Seasons)
 {
     Series series(std::getenv("API_KEY"), 1399);
+    while (series.voteCount() == 0)
+    {
+        QApplication::processEvents();
+    }
     bool f = false;
     QObject::connect(&series, &Series::finishedLoadingSeasons, [&f](std::vector<tmdb::ASync::TV::Season*> watchProviders) {
         EXPECT_FALSE(watchProviders.empty());
@@ -355,6 +363,10 @@ TEST(SeriesASyncTests, Seasons)
 TEST(SeriesASyncTests, ExternalIDs)
 {
     Series series(std::getenv("API_KEY"), 1399); // Game of Thrones
+    while (series.voteCount() == 0)
+    {
+        QApplication::processEvents();
+    }
     bool f = false;
     QObject::connect(&series, &Series::finishedLoadingExternalIDs, [&f](std::array<QString, 9> externalIDs) {
         EXPECT_FALSE(externalIDs.empty());
