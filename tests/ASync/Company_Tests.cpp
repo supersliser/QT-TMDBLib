@@ -14,13 +14,13 @@ using namespace tmdb::ASync;
 TEST(CompanyASyncTests, DefaultConstructor)
 {
     Company company;
-    EXPECT_TRUE(company.description().isEmpty());
-    EXPECT_TRUE(company.headquarters().isEmpty());
-    EXPECT_TRUE(company.homepage().isEmpty());
-    EXPECT_TRUE(company.name().isEmpty());
-    EXPECT_TRUE(company.originCountry()->englishName().isEmpty());
-    EXPECT_TRUE(company.parentCompany().isEmpty());
-    EXPECT_TRUE(company.logoPath().isEmpty());
+    EXPECT_STREQ(company.description().toStdString().c_str(), "BLANK_DESCRIPTION");
+    EXPECT_STREQ(company.headquarters().toStdString().c_str(), "BLANK_HEADQUARTERS");
+    EXPECT_STREQ(company.homepage().toStdString().c_str(), "BLANK_HOMEPAGE");
+    EXPECT_STREQ(company.name().toStdString().c_str(), "BLANK_NAME");
+    EXPECT_STREQ(company.originCountry()->isoCountryCode().toStdString().c_str(), "US");
+    EXPECT_STREQ(company.parentCompany().toStdString().c_str(), "BLANK_PARENT_COMPANY");
+    EXPECT_STREQ(company.logoPath().toStdString().c_str(), "BLANK_LOGO_PATH");
     EXPECT_EQ(company.id(), 0);
 }
 
@@ -35,7 +35,7 @@ TEST(CompanyASyncTests, APIConstructor)
         EXPECT_STREQ(company->headquarters().toStdString().c_str(), "San Francisco, California");
         EXPECT_STREQ(company->homepage().toStdString().c_str(), "https://www.lucasfilm.com");
         EXPECT_STREQ(company->name().toStdString().c_str(), "Lucasfilm Ltd.");
-        EXPECT_STREQ(company->originCountry()->englishName().toStdString().c_str(), "United States");
+    EXPECT_STREQ(company->originCountry()->isoCountryCode().toStdString().c_str(), "US");
         EXPECT_STREQ(company->parentCompany().toStdString().c_str(), "");
         EXPECT_STREQ(company->logoPath().toStdString().c_str(), "/tlVSws0RvvtPBwViUyOFAO0vcQS.png");
         f = true;
@@ -61,7 +61,7 @@ TEST(CompanyASyncTests, APIJSON)
         EXPECT_STREQ(company->headquarters().toStdString().c_str(), "San Francisco, California");
         EXPECT_STREQ(company->homepage().toStdString().c_str(), "https://www.lucasfilm.com");
         EXPECT_STREQ(company->name().toStdString().c_str(), "Lucasfilm Ltd.");
-        EXPECT_STREQ(company->originCountry()->englishName().toStdString().c_str(), "US");
+        EXPECT_STREQ(company->originCountry()->isoCountryCode().toStdString().c_str(), "US");
         EXPECT_STREQ(company->parentCompany().toStdString().c_str(), "");
         EXPECT_STREQ(company->logoPath().toStdString().c_str(), "/tlVSws0RvvtPBwViUyOFAO0vcQS.png");
         f = true;
@@ -80,7 +80,10 @@ TEST(CompanyASyncTests, setGetters)
     c.setHeadquarters("Test Headquarters");
     c.setHomepage("http://example.com");
     c.setName("Test Company");
-    c.setOriginCountry(new Country(std::getenv("API_KEY"), "GB"));
+    auto temp = new Country();
+    temp->setISOCountryCode("GB");
+    temp->setEnglishName("Great Britain");
+    c.setOriginCountry(temp);
     c.setParentCompany("Parent Company");
     c.setLogoPath("/logo.png");
     c.setID(12345);

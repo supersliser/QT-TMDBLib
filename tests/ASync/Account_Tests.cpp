@@ -15,10 +15,10 @@ TEST(AccountASyncTests, DefaultConstructor)
 {
     Account account;
     EXPECT_EQ(account.id(), 0);
-    EXPECT_STREQ(account.iso6391().toStdString().c_str(), QString().toStdString().c_str());
-    EXPECT_STREQ(account.iso31661().toStdString().c_str(), QString().toStdString().c_str());
-    EXPECT_STREQ(account.name().toStdString().c_str(), QString().toStdString().c_str());
-    EXPECT_STREQ(account.username().toStdString().c_str(), QString().toStdString().c_str());
+    EXPECT_STREQ(account.iso6391().toStdString().c_str(), "BLANK_ISO_639_1");
+    EXPECT_STREQ(account.iso31661().toStdString().c_str(), "BLANK_ISO_3166_1");
+    EXPECT_STREQ(account.name().toStdString().c_str(), "BLANK_NAME");
+    EXPECT_STREQ(account.username().toStdString().c_str(), "BLANK_USERNAME");
     EXPECT_TRUE(account.includeAdult());
 }
 

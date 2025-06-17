@@ -59,12 +59,12 @@ namespace tmdb::ASync
 
         protected:
             aQtmdb m_q;
-            QDate m_airDate;
-            std::vector<Episode*> m_episodes;
-            QString m_name;
-            QString m_overview;
+            QDate m_airDate = QDate();
+            std::vector<Episode*> m_episodes = {};
+            QString m_name = "BLANK_NAME";
+            QString m_overview = "BLANK_OVERVIEW";
             int m_id = 0;
-            QString m_posterPath;
+            QString m_posterPath = "BLANK_POSTER_PATH";
             int m_seasonNumber = 0;
             float m_voteAverage = 0.0f;
         };

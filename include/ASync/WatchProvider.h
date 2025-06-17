@@ -85,13 +85,14 @@ namespace tmdb::ASync
     protected:
         aQtmdb m_q;
         ProviderType m_type = unset;
-        QString m_logoPath;
+        QString m_logoPath = "BLANK_LOGO_PATH";
         int m_providerID = 0;
-        QString m_providerName;
-        QUrl m_link;
+        QString m_providerName = "BLANK_PROVIDER_NAME";
+        QUrl m_link = QUrl("https://www.themoviedb.org/");
 
         QJsonObject* m_tempData = nullptr;
         Language* m_tempLanguage = nullptr;
+        QString m_tempLanguageCode;
     };
 }
 

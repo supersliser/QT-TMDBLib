@@ -53,6 +53,10 @@ void tmdb::ASync::Company::setOriginCountry(Country* i_originCountry)
 
 tmdb::ASync::Country* tmdb::ASync::Company::originCountry() const
 {
+    if (m_originCountry == nullptr)
+    {
+        return nullptr;
+    }
     return m_originCountry;
 }
 

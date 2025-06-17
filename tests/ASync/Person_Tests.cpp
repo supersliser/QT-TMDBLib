@@ -14,18 +14,18 @@ TEST(PersonASyncTests, DefaultConstructor)
 {
     Person person;
     EXPECT_EQ(person.id(), 0);
-    EXPECT_TRUE(person.name().isEmpty());
+    EXPECT_STREQ(person.name().toStdString().c_str(), "BLANK_NAME");
     EXPECT_TRUE(person.alsoKnownAs().empty());
-    EXPECT_TRUE(person.biography().isEmpty());
+    EXPECT_STREQ(person.biography().toStdString().c_str(), "BLANK_BIOGRAPHY");
     EXPECT_EQ(person.birthday(), QDate());
     EXPECT_EQ(person.deathday(), QDate());
     EXPECT_EQ(person.gender(), Gender::NA);
-    EXPECT_TRUE(person.homepage().isEmpty());
-    EXPECT_TRUE(person.imdbId().isEmpty());
-    EXPECT_TRUE(person.knownFor().isEmpty());
-    EXPECT_TRUE(person.placeOfBirth().isEmpty());
+    EXPECT_STREQ(person.homepage().toStdString().c_str(), "BLANK_HOMEPAGE");
+    EXPECT_STREQ(person.imdbId().toStdString().c_str(), "BLANK_IMDB_ID");
+    EXPECT_STREQ(person.knownFor().toStdString().c_str(), "BLANK_KNOWN_FOR");
+    EXPECT_STREQ(person.placeOfBirth().toStdString().c_str(), "BLANK_PLACE_OF_BIRTH");
     EXPECT_FLOAT_EQ(person.popularity(), 0.0f);
-    EXPECT_TRUE(person.profilePath().isEmpty());
+    EXPECT_STREQ(person.profilePath().toStdString().c_str(), "BLANK_PROFILE_PATH");
 }
 
 TEST(PersonASyncTests, APIConstructor)
@@ -48,6 +48,7 @@ TEST(PersonASyncTests, APIConstructor)
         EXPECT_STREQ(p->placeOfBirth().toStdString().c_str(), "Concord, California, USA");
         EXPECT_GT(p->popularity(), 0.0f);
         EXPECT_STREQ(p->profilePath().toStdString().c_str(), "/eKF1sGJRrZJbfBG1KirPt1cfNd3.jpg");
+        f = true;
     });
     person->loadPerson(31);
     while (!f)
@@ -79,6 +80,7 @@ TEST(PersonASyncTests, APIJSON)
         EXPECT_STREQ(person->placeOfBirth().toStdString().c_str(), "Concord, California, USA");
         EXPECT_GT(person->popularity(), 0.0f);
         EXPECT_STREQ(person->profilePath().toStdString().c_str(), "/eKF1sGJRrZJbfBG1KirPt1cfNd3.jpg");
+        f = true;
     });
     q.people_details(31);
     while (!f)

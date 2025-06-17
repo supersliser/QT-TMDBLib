@@ -14,7 +14,7 @@ TEST(GenreASyncTests, DefaultConstructor)
 {
     Genre genre;
     EXPECT_EQ(genre.id(), 0);
-    EXPECT_TRUE(genre.name().isEmpty());
+    EXPECT_STREQ(genre.name().toStdString().c_str(), "BLANK_NAME");
 }
 
 TEST(GenreASyncTests, APIConstructor)
@@ -61,8 +61,11 @@ TEST(GenreASyncTests, GetAllGenres)
     QObject::connect(temp, &Genre::finishedLoadingAllGenres, [&f](const std::vector<Genre*>& genres)
     {
         EXPECT_FALSE(genres.empty());
-        EXPECT_EQ(genres[0]->id(), 28); // Action
-        EXPECT_STREQ(genres[0]->name().toStdString().c_str(), "Action");
+        for (const auto& genre : genres)
+        {
+            EXPECT_FALSE(genre->name().isEmpty());
+            EXPECT_NE(genre->id(), 0);
+        }
         f = true;
     });
     temp->loadAllGenres();

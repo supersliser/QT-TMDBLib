@@ -69,17 +69,17 @@ namespace tmdb::ASync
             void finishedLoadingSeasonEpisodes(std::vector<tmdb::ASync::TV::Episode*> i_episodes);
 
         protected:
-            QDate m_airDate;
-            std::vector<Credit*> m_crew;
+            QDate m_airDate = QDate();
+            std::vector<Credit*> m_crew = {};
             int m_episodeNumber = 0;
-            std::vector<Credit*> m_guestStars;
-            QString m_name;
-            QString m_overview;
+            std::vector<Credit*> m_guestStars = {};
+            QString m_name = "BLANK_NAME";
+            QString m_overview = "BLANK_OVERVIEW";
             int m_id = 0;
-            QString m_productionCode;
+            QString m_productionCode = "BLANK_PRODUCTION_CODE";
             int m_runtime = 0;
             int m_seasonNumber = 0;
-            QString m_stillPath;
+            QString m_stillPath = "BLANK_STILL_PATH";
             float m_voteAverage = 0.0f;
             int m_voteCount = 0;
             aQtmdb m_q;

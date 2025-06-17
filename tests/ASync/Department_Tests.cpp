@@ -14,8 +14,8 @@ using namespace tmdb::ASync;
 TEST(DepartmentASyncTests, DefaultConstructor)
 {
     Department department;
-    EXPECT_STREQ(department.deptName().toStdString().c_str(), QString().toStdString().c_str());
-    EXPECT_FALSE(department.jobTitles().empty());
+    EXPECT_STREQ(department.deptName().toStdString().c_str(), "BLANK_DEPARTMENT_NAME");
+    EXPECT_TRUE(department.jobTitles().empty());
 }
 
 TEST(DepartmentASyncTests, APIGetter)
@@ -23,11 +23,11 @@ TEST(DepartmentASyncTests, APIGetter)
     bool f = false;
     Department* department = new Department(std::getenv("API_KEY"));
     QObject::connect(department, &Department::finishedLoadingDepartment, [&f](Department* dep) {
-        EXPECT_STREQ(dep->deptName().toStdString().c_str(), "Production");
+        EXPECT_STREQ(dep->deptName().toStdString().c_str(), "Crew");
         EXPECT_FALSE(dep->jobTitles().empty());
         f = true;
     });
-    department->loadDepartment("Production");
+    department->loadDepartment("Crew");
     while (!f)
     {
         QApplication::processEvents();
@@ -62,9 +62,9 @@ TEST(DepartmentASyncTests, APIJSON)
         for (const QJsonValue& value : data) {
             QJsonObject obj = value.toObject();
             EXPECT_TRUE(obj.contains("department"));
-            EXPECT_TRUE(obj.contains("job"));
-            if (obj["department"].toString() == "Production") {
-                EXPECT_TRUE(obj["job"].toArray().contains("Producer"));
+            EXPECT_TRUE(obj.contains("jobs"));
+            if (obj["department"].toString() == "Crew") {
+                EXPECT_TRUE(obj["jobs"].toArray().contains("Stunts"));
             }
         }
         f = true;

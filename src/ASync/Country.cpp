@@ -110,3 +110,12 @@ void tmdb::ASync::Country::finishedLoadingAllCountriesReceived(void* i_data)
     disconnect(&m_q, &aQtmdb::startedLoadingData, this, &Country::startedLoadingAllCountriesReceived);
     disconnect(&m_q, &aQtmdb::finishedLoadingData, this, &Country::finishedLoadingAllCountriesReceived);
 }
+
+tmdb::ASync::Country* tmdb::ASync::Country::US()
+{
+    static Country* us = new Country();
+    us->setISOCountryCode("US");
+    us->setNativeName("United States");
+    us->setEnglishName("United States");
+    return us;
+}

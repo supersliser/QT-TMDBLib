@@ -56,10 +56,10 @@ namespace tmdb::ASync
         aQtmdb m_q;
         Avatar m_avatar;
         int32_t m_id = 0;
-        QString m_iso_639_1;
-        QString m_iso_3166_1;
-        QString m_name;
-        QString m_username;
+        QString m_iso_639_1 = "BLANK_ISO_639_1";
+        QString m_iso_3166_1 = "BLANK_ISO_3166_1";
+        QString m_name = "BLANK_NAME";
+        QString m_username = "BLANK_USERNAME";
         bool m_include_adult = true;
     };
 }

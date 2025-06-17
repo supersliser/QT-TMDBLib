@@ -28,6 +28,8 @@ namespace tmdb::ASync
         ~Language() override = default;
 
         Language(const QJsonObject& i_json, const QString& i_access_token = "");
+
+        static Language* ENGLISH();
     protected:
         void parseJson(const QJsonObject& i_json, const QString& i_access_token);
     public slots:
@@ -49,9 +51,9 @@ namespace tmdb::ASync
         void finishedLoadingAllLanguages(std::vector<tmdb::ASync::Language*> i_languages);
 
     protected:
-        QString m_iso_639_1;
-        QString m_english_name;
-        QString m_native_name;
+        QString m_iso_639_1 = "BLANK_ISO_639_1";
+        QString m_english_name = "BLANK_ENGLISH_NAME";
+        QString m_native_name = "BLANK_NATIVE_NAME";
         aQtmdb m_q;
     };
 }

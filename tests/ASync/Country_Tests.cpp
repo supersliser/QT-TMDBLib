@@ -14,9 +14,9 @@ using namespace tmdb::ASync;
 TEST(CountryASyncTests, DefaultConstructor)
 {
     Country country;
-    EXPECT_STREQ(country.isoCountryCode().toStdString().c_str(), QString().toStdString().c_str());
-    EXPECT_STREQ(country.englishName().toStdString().c_str(), QString().toStdString().c_str());
-    EXPECT_STREQ(country.nativeName().toStdString().c_str(), QString().toStdString().c_str());
+    EXPECT_STREQ(country.isoCountryCode().toStdString().c_str(), "BLANK_ISO31661");
+    EXPECT_STREQ(country.englishName().toStdString().c_str(), "BLANK_ENGLISH_NAME");
+    EXPECT_STREQ(country.nativeName().toStdString().c_str(), "BLANK_NATIVE_NAME");
 }
 
 TEST(CountryASyncTests, APIGetter)

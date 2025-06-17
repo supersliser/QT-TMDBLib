@@ -91,6 +91,7 @@ void tmdb::ASync::WatchProvider::loadWatchProvider(int i_providerID)
 {
     connect(&m_q, &aQtmdb::startedLoadingData, this, &WatchProvider::startedLoadingWatchProviderReceived);
     connect(&m_q, &aQtmdb::finishedLoadingData, this, &WatchProvider::finishedLoadingWatchProviderReceived);
+    m_providerID = i_providerID;
     m_q.watchProviders_movie();
 }
 
@@ -251,6 +252,7 @@ void tmdb::ASync::WatchProvider::loadWatchProvidersForMovie(const QString& i_lan
 {
     connect(&m_q, &aQtmdb::startedLoadingData, this, &WatchProvider::startedLoadingWatchProvidersForMovieReceived);
     connect(&m_q, &aQtmdb::finishedLoadingData, this, &WatchProvider::finishedLoadingWatchProvidersForMovieReceived);
+    m_tempLanguageCode = i_language;
     m_q.movie_watchProviders(i_movieID);
 }
 void tmdb::ASync::WatchProvider::startedLoadingWatchProvidersForMovieReceived()
@@ -263,7 +265,7 @@ void tmdb::ASync::WatchProvider::finishedLoadingWatchProvidersForMovieReceived(v
     m_tempData = data;
     if (data->contains("results"))
     {
-        auto amProviders = data->value("results").toObject();
+        auto amProviders = data->value("results").toObject()[m_tempLanguageCode].toObject();
         auto watchProviders = std::vector<WatchProvider*>();
         std::vector<config::LinkInfo> possibleLinks = config::extractLinksFromUrl(amProviders["link"].toString());
         for (const auto& provider : amProviders["flatrate"].toArray())
@@ -338,6 +340,7 @@ void tmdb::ASync::WatchProvider::loadWatchProvidersForTV(const QString& i_langua
 {
     connect(&m_q, &aQtmdb::startedLoadingData, this, &WatchProvider::startedLoadingWatchProvidersForTVReceived);
     connect(&m_q, &aQtmdb::finishedLoadingData, this, &WatchProvider::finishedLoadingWatchProvidersForTVReceived);
+    m_tempLanguageCode = i_language;
     m_q.tv_series_watchProviders(i_seriesID);
 }
 void tmdb::ASync::WatchProvider::startedLoadingWatchProvidersForTVReceived()
@@ -350,7 +353,7 @@ void tmdb::ASync::WatchProvider::finishedLoadingWatchProvidersForTVReceived(void
     m_tempData = data;
     if (data->contains("results"))
     {
-        auto amProviders = data->value("results").toObject();
+        auto amProviders = data->value("results").toObject()[m_tempLanguageCode].toObject();
         auto watchProviders = std::vector<WatchProvider*>();
         std::vector<config::LinkInfo> possibleLinks = config::extractLinksFromUrl(amProviders["link"].toString());
         for (const auto& provider : amProviders["flatrate"].toArray())

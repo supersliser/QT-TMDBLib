@@ -14,12 +14,12 @@ TEST(EpisodeASyncTests, DefaultConstructor)
 {
     Episode episode;
     EXPECT_EQ(episode.id(), 0);
-    EXPECT_TRUE(episode.name().isEmpty());
-    EXPECT_TRUE(episode.overview().isEmpty());
+    EXPECT_STREQ(episode.name().toStdString().c_str(), "BLANK_NAME");
+    EXPECT_STREQ(episode.overview().toStdString().c_str(), "BLANK_OVERVIEW");
     EXPECT_EQ(episode.episodeNumber(), 0);
     EXPECT_EQ(episode.seasonNumber(), 0);
     EXPECT_EQ(episode.voteAverage(), 0.0f);
-    EXPECT_TRUE(episode.stillPath().isEmpty());
+    EXPECT_STREQ(episode.stillPath().toStdString().c_str(), "BLANK_STILL_PATH");
 }
 
 TEST(EpisodeASyncTests, APIGetter)

@@ -16,11 +16,11 @@ TEST(SeasonASyncTests, DefaultConstructor)
 {
     Season season;
     EXPECT_EQ(season.id(), 0);
-    EXPECT_TRUE(season.name().isEmpty());
-    EXPECT_TRUE(season.overview().isEmpty());
+    EXPECT_STREQ(season.name().toStdString().c_str(), "BLANK_NAME");
+    EXPECT_STREQ(season.overview().toStdString().c_str(), "BLANK_OVERVIEW");
     EXPECT_EQ(season.seasonNumber(), 0);
     EXPECT_EQ(season.voteAverage(), 0.0f);
-    EXPECT_TRUE(season.posterPath().isEmpty());
+    EXPECT_STREQ(season.posterPath().toStdString().c_str(), "BLANK_POSTER_PATH");
 }
 
 TEST(SeasonASyncTests, APIConstructor)
@@ -92,7 +92,7 @@ TEST(SeasonASyncTests, LoadEpisodesForSeason)
     bool f = false;
     QObject::connect(season, &Season::finishedLoadingSeasonEpisodes, [&f](std::vector<Episode*> episodes) {
         EXPECT_FALSE(episodes.empty());
-        EXPECT_EQ(episodes.size(), 8);
+        EXPECT_EQ(episodes.size(), 10);
         f = true;
     });
     season->loadEpisodesForSeason(1399, 1);

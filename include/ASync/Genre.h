@@ -57,9 +57,9 @@ namespace tmdb::ASync
 
     protected:
         int32_t m_id = 0;
-        QString m_name;
+        QString m_name = "BLANK_NAME";
         aQtmdb m_q;
-        QJsonObject m_tempJson;
+        QJsonObject m_tempJson = {};
     };
 }
 

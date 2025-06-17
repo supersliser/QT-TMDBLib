@@ -14,11 +14,11 @@ TEST(NetworkASyncTests, DefaultConstructor)
 {
     Network network;
     EXPECT_EQ(network.id(), 0);
-    EXPECT_TRUE(network.name().isEmpty());
-    EXPECT_STREQ(network.headquarters().toStdString().c_str(), "");
-    EXPECT_TRUE(network.homepage().isEmpty());
-    EXPECT_TRUE(network.logoPath().isEmpty());
-    EXPECT_STREQ(network.originCountry()->englishName().toStdString().c_str(), "");
+    EXPECT_STREQ(network.name().toStdString().c_str(), "BLANK_NAME");
+    EXPECT_STREQ(network.headquarters().toStdString().c_str(), "BLANK_HEADQUARTERS");
+    EXPECT_STREQ(network.homepage().toStdString().c_str(), "BLANK_HOMEPAGE");
+    EXPECT_STREQ(network.logoPath().toStdString().c_str(), "BLANK_LOGO_PATH");
+    EXPECT_STREQ(network.originCountry()->englishName().toStdString().c_str(), "United States");
 }
 
 TEST(NetworkASyncTests, APIConstructor)
@@ -31,7 +31,7 @@ TEST(NetworkASyncTests, APIConstructor)
         EXPECT_STREQ(n->headquarters().toStdString().c_str(), "New York City, New York");
         EXPECT_STREQ(n->homepage().toStdString().c_str(), "https://www.hbo.com");
         EXPECT_STREQ(n->logoPath().toStdString().c_str(), "/tuomPhY2UtuPTqqFnKMVHvSb724.png");
-        EXPECT_STREQ(n->originCountry()->isoCountryCode().toStdString().c_str(),"US");
+        EXPECT_STREQ(n->originCountry()->isoCountryCode().toStdString().c_str(), "US");
         f = true;
     });
     network.loadNetwork(49);

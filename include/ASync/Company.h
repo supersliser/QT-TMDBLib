@@ -56,13 +56,13 @@ namespace tmdb::ASync
 
     protected:
         aQtmdb m_q;
-        QString m_description;
-        QString m_headquarters;
-        QString m_homepage;
-        QString m_name;
-        Country* m_originCountry;
-        QString m_parentCompany;
-        QString m_logoPath;
+        QString m_description = "BLANK_DESCRIPTION";
+        QString m_headquarters = "BLANK_HEADQUARTERS";
+        QString m_homepage = "BLANK_HOMEPAGE";
+        QString m_name = "BLANK_NAME";
+        Country* m_originCountry = Country::US();
+        QString m_parentCompany = "BLANK_PARENT_COMPANY";
+        QString m_logoPath = "BLANK_LOGO_PATH";
         int32_t m_id = 0;
     };
 }

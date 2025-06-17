@@ -27,7 +27,7 @@ namespace tmdb::ASync
 
         signals:
         void startedLoadingImage();
-        void finishedLoadingImage(tmdb::ASync::Image* i_image);
+        void finishedLoadingImage(QPixmap i_image);
 
 
     protected:

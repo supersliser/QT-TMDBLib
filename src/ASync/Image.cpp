@@ -37,7 +37,7 @@ QPixmap tmdb::ASync::Image::getPixmapFromUrl(const QUrl& url) {
     }
     reply->deleteLater();
     m_pixmap = pixmap;
-    emit finishedLoadingImage(this);
+    emit finishedLoadingImage(pixmap);
     return pixmap;
 }
 

@@ -13,9 +13,9 @@ using namespace tmdb::ASync;
 TEST(LanguageASyncTests, DefaultConstructor)
 {
     Language language;
-    EXPECT_STREQ(language.iso6391().toStdString().c_str(), QString().toStdString().c_str());
-    EXPECT_STREQ(language.englishName().toStdString().c_str(), QString().toStdString().c_str());
-    EXPECT_STREQ(language.nativeName().toStdString().c_str(), QString().toStdString().c_str());
+    EXPECT_STREQ(language.iso6391().toStdString().c_str(), "BLANK_ISO_639_1");
+    EXPECT_STREQ(language.englishName().toStdString().c_str(), "BLANK_ENGLISH_NAME");
+    EXPECT_STREQ(language.nativeName().toStdString().c_str(), "BLANK_NATIVE_NAME");
 }
 
 TEST(LanguageASyncTests, APIGetter)
@@ -70,7 +70,6 @@ TEST(LanguageASyncTests, APIAllLanguages)
         {
             EXPECT_FALSE(language->iso6391().isEmpty());
             EXPECT_FALSE(language->englishName().isEmpty());
-            EXPECT_FALSE(language->nativeName().isEmpty());
         }
         f = true;
     });

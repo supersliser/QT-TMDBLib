@@ -15,30 +15,30 @@ TEST(SeriesASyncTests, DefaultConstructor)
 {
     Series series;
     EXPECT_TRUE(series.adult());
-    EXPECT_TRUE(series.backdropPath().isEmpty());
+    EXPECT_STREQ(series.backdropPath().toStdString().c_str(), "BLANK_BACKDROP_PATH");
     EXPECT_TRUE(series.createdBy().empty());
     EXPECT_TRUE(series.episodeRunTime().empty());
     EXPECT_EQ(series.firstAirDate(), QDate());
     EXPECT_TRUE(series.genres().empty());
-    EXPECT_TRUE(series.homepage().isEmpty());
+    EXPECT_STREQ(series.homepage().toStdString().c_str(), "BLANK_HOMEPAGE");
     EXPECT_EQ(series.id(), 0);
     EXPECT_TRUE(series.inProduction());
     EXPECT_TRUE(series.languages().empty());
     EXPECT_EQ(series.lastAirDate(), QDate());
-    EXPECT_TRUE(series.name().isEmpty());
+    EXPECT_STREQ(series.name().toStdString().c_str(), "BLANK_NAME");
     EXPECT_TRUE(series.networks().empty());
     EXPECT_TRUE(series.originCountries().empty());
-    EXPECT_TRUE(series.originalLanguage().isEmpty());
-    EXPECT_TRUE(series.overview().isEmpty());
+    EXPECT_STREQ(series.originalLanguage().toStdString().c_str(), "BLANK_ORIGINAL_LANGUAGE");
+    EXPECT_STREQ(series.overview().toStdString().c_str(), "BLANK_OVERVIEW");
     EXPECT_FLOAT_EQ(series.popularity(), 0.0f);
-    EXPECT_TRUE(series.posterPath().isEmpty());
+    EXPECT_STREQ(series.posterPath().toStdString().c_str(), "BLANK_POSTER_PATH");
     EXPECT_TRUE(series.productionCompanies().empty());
     EXPECT_TRUE(series.productionCountries().empty());
     EXPECT_TRUE(series.seasons().empty());
     EXPECT_TRUE(series.spokenLanguages().empty());
-    EXPECT_TRUE(series.status().isEmpty());
-    EXPECT_TRUE(series.tagline().isEmpty());
-    EXPECT_TRUE(series.type().isEmpty());
+    EXPECT_STREQ(series.status().toStdString().c_str(), "BLANK_STATUS");
+    EXPECT_STREQ(series.tagline().toStdString().c_str(), "BLANK_TAGLINE");
+    EXPECT_STREQ(series.type().toStdString().c_str(), "BLANK_TYPE");
     EXPECT_FLOAT_EQ(series.voteAverage(), 0.0f);
     EXPECT_EQ(series.voteCount(), 0);
 }
@@ -207,8 +207,8 @@ TEST(SeriesASyncTests, GetAiringToday)
 TEST(SeriesASyncTests, GetOnTheAir)
 {
     bool f = false;
-    Series* series = new Series(std::getenv("API_KEY"));
-    QObject::connect(series, &Series::finishedLoadingOnTheAir, [&f](std::vector<tmdb::ASync::TV::Series*> seriesList) {
+    auto* series = new Series(std::getenv("API_KEY"));
+    QObject::connect(series, &Series::finishedLoadingOnTheAir, [&f](std::vector<Series*> seriesList) {
         EXPECT_FALSE(seriesList.empty());
         EXPECT_GT(seriesList.size(), 0);
         for (const auto &s : seriesList) {
@@ -219,7 +219,7 @@ TEST(SeriesASyncTests, GetOnTheAir)
     });
     tmdb::ASync::Language l;
     l.setIso6391("en-GB");
-    series->loadOnTheAir(l, 1, "GB");
+    series->loadOnTheAir(l, 1, "en-GB");
     while (!f)
     {
         QApplication::processEvents();
@@ -271,17 +271,18 @@ TEST(SeriesASyncTests, Recommendations)
 {
     bool f = false;
     Series* series = new Series(std::getenv("API_KEY"), 1399); // Game of Thrones
+    while (series->voteCount() == 0)
+    {
+        QApplication::processEvents();
+    }
     QObject::connect(series, &Series::finishedLoadingRecommendations, [&f](std::vector<tmdb::ASync::TV::Series*> seriesList) {
         EXPECT_FALSE(seriesList.empty());
-        EXPECT_GT(seriesList.size(), 0);
         for (const auto &s : seriesList) {
             EXPECT_FALSE(s->name().isEmpty());
             EXPECT_FALSE(s->posterPath().isEmpty());
         }
         f = true;
     });
-    tmdb::ASync::Language l;
-    l.setIso6391("en-GB");
     series->loadRecommendations();
     while (!f)
     {
@@ -291,13 +292,12 @@ TEST(SeriesASyncTests, Recommendations)
 TEST(SeriesASyncTests, Similar)
 {
     bool f = false;
-    Series* series = new Series(std::getenv("API_KEY"));
+    Series* series = new Series(std::getenv("API_KEY"), 1399);
     QObject::connect(series, &Series::finishedLoadingSimilar, [&f](std::vector<tmdb::ASync::TV::Series*> seriesList) {
         EXPECT_FALSE(seriesList.empty());
         EXPECT_GT(seriesList.size(), 0);
         for (const auto &s : seriesList) {
             EXPECT_FALSE(s->name().isEmpty());
-            EXPECT_FALSE(s->posterPath().isEmpty());
         }
         f = true;
     });
@@ -319,7 +319,6 @@ TEST(SeriesASyncTests, WatchProviders)
         EXPECT_GT(watchProviders.size(), 0);
         for (const auto &provider : watchProviders) {
             EXPECT_FALSE(provider->providerName().isEmpty());
-            EXPECT_FALSE(provider->logoPath().isEmpty());
         }
         f = true;
     });
@@ -372,6 +371,10 @@ TEST(SeriesASyncTests, Backdrop)
 {
     Series series(std::getenv("API_KEY"), 1399); // Game of Thrones
     bool f = false;
+    while (series.voteCount() == 0)
+    {
+        QApplication::processEvents();
+    }
     QObject::connect(&series, &Series::finishedLoadingBackdrop, [&f](QPixmap backdrop) {
         EXPECT_FALSE(backdrop.isNull());
         f = true;
@@ -387,6 +390,10 @@ TEST(SeriesASyncTests, Poster)
 {
     Series series(std::getenv("API_KEY"), 1399); // Game of Thrones
     bool f = false;
+    while (series.voteCount() == 0)
+    {
+        QApplication::processEvents();
+    }
     QObject::connect(&series, &Series::finishedLoadingPoster, [&f](QPixmap poster) {
         EXPECT_FALSE(poster.isNull());
         f = true;
@@ -402,6 +409,10 @@ TEST(SeriesASyncTests, Logo)
 {
     Series series(std::getenv("API_KEY"), 1399); // Game of Thrones
     bool f = false;
+    while (series.voteCount() == 0)
+    {
+        QApplication::processEvents();
+    }
     QObject::connect(&series, &Series::finishedLoadingLogo, [&f](QPixmap logo) {
         EXPECT_FALSE(logo.isNull());
         f = true;

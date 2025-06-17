@@ -28,6 +28,8 @@ namespace tmdb::ASync
         ~Country() override = default;
 
         Country(const QJsonObject& i_json, const QString& i_access_token);
+
+        static Country* US();
     protected:
         void parseJson(const QJsonObject& i_json, const QString& i_access_token);
     public slots:
@@ -49,9 +51,9 @@ namespace tmdb::ASync
         void finishedLoadingAllCountries(const std::vector<tmdb::ASync::Country*>& i_countries);
 
     protected:
-        QString m_iso_3166_1;
-        QString m_native_name;
-        QString m_english_name;
+        QString m_iso_3166_1 = "BLANK_ISO31661";
+        QString m_native_name = "BLANK_NATIVE_NAME";
+        QString m_english_name = "BLANK_ENGLISH_NAME";
         aQtmdb m_q;
     };
 }

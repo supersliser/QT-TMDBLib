@@ -103,11 +103,8 @@ namespace tmdb::ASync
         void loadRecommendations(int32_t i_page = 1);
         void loadSimilar(int32_t i_page = 1);
         void loadExternalIDs(int32_t i_movieID);
-        void loadBackdrops(const QString& i_size = "original");
         void loadBackdrop(int i_index, const QString& i_size = "original");
-        void loadPosters(const QString& i_size = "original");
         void loadPoster(int i_index, const QString& i_size = "original");
-        void loadLogos(const QString& i_size = "original");
         void loadLogo(int i_index, const QString& i_size = "original");
         void loadWatchProviders(Country* i_region);
         void loadKeywords();
@@ -132,16 +129,10 @@ namespace tmdb::ASync
         void finishedLoadingSimilarReceived(void* i_data);
         void startedLoadingExternalIDsReceived();
         void finishedLoadingExternalIDsReceived(void* i_data);
-        void startedLoadingBackdropsReceived();
-        void finishedLoadingBackdropsReceived(void* i_data);
         void startedLoadingBackdropReceived();
         void finishedLoadingBackdropReceived(void* i_data);
-        void startedLoadingPostersReceived();
-        void finishedLoadingPostersReceived(void* i_data);
         void startedLoadingPosterReceived();
         void finishedLoadingPosterReceived(void* i_data);
-        void startedLoadingLogosReceived();
-        void finishedLoadingLogosReceived(void* i_data);
         void startedLoadingLogoReceived();
         void finishedLoadingLogoReceived(void* i_data);
         void startedLoadingWatchProvidersReceived();
@@ -170,13 +161,10 @@ namespace tmdb::ASync
         void finishedLoadingSimilar(std::vector<tmdb::ASync::Movie*> i_movies);
         void startedLoadingExternalIDs();
         void finishedLoadingExternalIDs(std::array<QString, 5> i_externalIDs);
-        void startedLoadingBackdrops();
         void startedLoadingBackdrop();
         void finishedLoadingBackdrop(QPixmap i_backdrop);
-        void startedLoadingPosters();
         void startedLoadingPoster();
         void finishedLoadingPoster(QPixmap i_poster);
-        void startedLoadingLogos();
         void startedLoadingLogo();
         void finishedLoadingLogo(QPixmap i_logo);
         void startedLoadingWatchProviders();
@@ -196,7 +184,7 @@ namespace tmdb::ASync
         QString m_homepage = "EMPTY_HOMEPAGE";
         int m_id = 0;
         QString m_imdbID = "EMPTY_IMDB_ID";
-        Language* m_originalLanguage = new Language();
+        Language* m_originalLanguage = Language::ENGLISH();
         QString m_originalTitle = "EMPTY_TITLE";
         QString m_overview = "EMPTY_OVERVIEW";
         float m_popularity = 0.0f;
@@ -215,7 +203,8 @@ namespace tmdb::ASync
         int m_voteCount = 0;
 
         int m_tempIndex = 0; // Used for loading backdrops, posters, and logos
-        Country* m_region = nullptr; // Used for loading watch providers
+        QString m_tempSize;
+        Country* m_region = Country::US(); // Used for loading watch providers
     };
 }
 #endif //ASYNC_MOVIE_H

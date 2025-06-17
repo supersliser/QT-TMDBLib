@@ -69,19 +69,19 @@ namespace tmdb::ASync
     protected:
         aQtmdb m_q;
         bool m_idAdult = true;
-        std::vector<QString> m_alsoKnownAs;
-        QString m_biography;
-        QDate m_birthday;
-        QDate m_deathday;
-        Gender m_gender = Gender::NA;
-        QString m_homepage;
+        std::vector<QString> m_alsoKnownAs = {};
+        QString m_biography = "BLANK_BIOGRAPHY";
+        QDate m_birthday = QDate();
+        QDate m_deathday = QDate();
+        Gender m_gender = NA;
+        QString m_homepage = "BLANK_HOMEPAGE";
         int m_id = 0;
-        QString imdb_id;
-        QString m_knownFor;
-        QString m_name;
-        QString m_placeOfBirth;
+        QString imdb_id = "BLANK_IMDB_ID";
+        QString m_knownFor = "BLANK_KNOWN_FOR";
+        QString m_name = "BLANK_NAME";
+        QString m_placeOfBirth = "BLANK_PLACE_OF_BIRTH";
         float m_popularity = 0.0f;
-        QString m_profilePath;
+        QString m_profilePath = "BLANK_PROFILE_PATH";
     };
 
     class Credit : public Person

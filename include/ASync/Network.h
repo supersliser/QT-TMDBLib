@@ -48,12 +48,12 @@ namespace tmdb::ASync::TV
 
     protected:
         aQtmdb m_q;
-        QString m_headquarters;
-        QString m_homepage;
+        QString m_headquarters = "BLANK_HEADQUARTERS";
+        QString m_homepage = "BLANK_HOMEPAGE";
         int m_id = 0;
-        QString m_logoPath;
-        QString m_name;
-        tmdb::ASync::Country* m_originCountry = nullptr;
+        QString m_logoPath = "BLANK_LOGO_PATH";
+        QString m_name = "BLANK_NAME";
+        Country* m_originCountry = Country::US();
     };
 }
 

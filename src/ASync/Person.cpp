@@ -216,6 +216,5 @@ void tmdb::ASync::Person::finishedLoadingPersonReceived(void* i_data)
 
 tmdb::ASync::Credit::Credit(const QJsonObject& i_json, const QString& i_access_token) : Person(i_access_token)
 {
-    setCreditID(i_json["credit_id"].toString());
-    setCharacter(i_json["character"].toString());
+    parseJson(i_json, i_access_token);
 }

@@ -43,8 +43,8 @@ tmdb::ASync::Department::Department(const QString& i_access_token) : m_q(i_acces
 
 void tmdb::ASync::Department::parseJson(const QJsonObject& i_json, const QString& i_access_token)
 {
-    m_deptName = i_json.value("dept_name").toString();
-    QJsonArray jobTitlesArray = i_json.value("job_titles").toArray();
+    m_deptName = i_json.value("department").toString();
+    QJsonArray jobTitlesArray = i_json.value("jobs").toArray();
     for (const auto& item : jobTitlesArray)
     {
         m_jobTitles.push_back(item.toString());
@@ -84,13 +84,14 @@ void tmdb::ASync::Department::finishedLoadingDepartmentReceived(void* i_data)
     QJsonArray json = *static_cast<QJsonArray*>(i_data);
     for (int i = 0; i < json.count(); i++)
     {
-        if (json[i].toObject().value("dept_name").toString() == m_deptName)
+        if (json[i].toObject().value("department").toString() == m_deptName)
         {
             parseJson(json[i].toObject(), m_q.accessToken().c_str());
             emit finishedLoadingDepartment(this);
-            break;
+            return;
         }
     }
+    emit finishedLoadingDepartment(nullptr);
 }
 
 void tmdb::ASync::Department::startedLoadingAllDepartmentsReceived()

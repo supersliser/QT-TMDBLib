@@ -73,7 +73,7 @@ void tmdb::ASync::Genre::finishedLoadingGenreReceived(void* i_data)
     auto json = *static_cast<QJsonObject*>(i_data);
     for (int i = 0; i < json["genres"].toArray().size(); ++i)
     {
-        if (json["id"].toInt() == m_id)
+        if (json["genres"].toArray()[i].toObject()["id"].toInt() == m_id)
         {
             parseJson(json["genres"].toArray().at(i).toObject(), m_q.accessToken().c_str());
             emit finishedLoadingGenre(this);

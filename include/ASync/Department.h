@@ -48,8 +48,8 @@ namespace tmdb::ASync
         void finishedLoadingAllDepartments(std::vector<tmdb::ASync::Department*> i_departments);
 
     protected:
-        QString m_deptName;
-        std::vector<QString> m_jobTitles;
+        QString m_deptName = "BLANK_DEPARTMENT_NAME";
+        std::vector<QString> m_jobTitles = {};
         aQtmdb m_q;
     };
 }

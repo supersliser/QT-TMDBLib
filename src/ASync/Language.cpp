@@ -60,7 +60,7 @@ void tmdb::ASync::Language::parseJson(const QJsonObject& i_json, const QString& 
 {
     m_iso_639_1 = i_json["iso_639_1"].toString();
     m_english_name = i_json["english_name"].toString();
-    m_native_name = i_json["native_name"].toString();
+    m_native_name = i_json["name"].toString();
 }
 
 void tmdb::ASync::Language::loadLanguage(const QString& i_iso_639_1)
@@ -69,6 +69,15 @@ void tmdb::ASync::Language::loadLanguage(const QString& i_iso_639_1)
     connect(&m_q, &aQtmdb::finishedLoadingData, this, &tmdb::ASync::Language::finishedLoadingLanguageReceived);
     m_iso_639_1 = i_iso_639_1;
     m_q.config_languages();
+}
+
+tmdb::ASync::Language* tmdb::ASync::Language::ENGLISH()
+{
+    static Language* english = new Language();
+        english->setIso6391("en");
+        english->setEnglishName("English");
+        english->setNativeName("English");
+    return english;
 }
 
 void tmdb::ASync::Language::loadAllLanguages()
