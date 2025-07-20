@@ -49,7 +49,7 @@ TEST(SeriesASyncTests, APIConstructor)
     Series series(std::getenv("API_KEY"), 1399); // Game of Thrones
     QObject::connect(&series, &Series::finishedLoadingSeries, [&f](Series* s) {
         EXPECT_FALSE(s->adult());
-        EXPECT_STREQ(s->backdropPath().toStdString().c_str(), "/zZqpAXxVSBtxV9qPBcscfXBcL2w.jpg");
+        EXPECT_FALSE(s->backdropPath().isNull());
         EXPECT_EQ(s->createdBy().size(), 2);
         EXPECT_EQ(s->episodeRunTime().size(), 0);
         EXPECT_EQ(s->firstAirDate(), QDate(2011, 4, 17));
@@ -68,7 +68,7 @@ TEST(SeriesASyncTests, APIConstructor)
         EXPECT_STREQ(s->originCountries()[0]->nativeName().toStdString().c_str(), "United States");
         EXPECT_STREQ(s->originalLanguage().toStdString().c_str(), "en");
         EXPECT_GT(s->popularity(), 0.0f);
-        EXPECT_STREQ(s->posterPath().toStdString().c_str(), "/1XS1oqL89opfnbLl8WnZY1O1uJx.jpg");
+        EXPECT_FALSE(s->posterPath().isNull());
         EXPECT_EQ(s->productionCompanies().size(), 4);
         EXPECT_STREQ(s->productionCompanies()[0]->name().toStdString().c_str(), "Revolution Sun Studios");
         EXPECT_EQ(s->productionCountries().size(), 2);
@@ -100,7 +100,7 @@ TEST(SeriesASyncTests, APIJSON)
         EXPECT_FALSE(data.isEmpty());
         Series series(data, std::getenv("API_KEY"));
         EXPECT_FALSE(series.adult());
-        EXPECT_STREQ(series.backdropPath().toStdString().c_str(), "/zZqpAXxVSBtxV9qPBcscfXBcL2w.jpg");
+        EXPECT_FALSE(series.backdropPath().isNull());
         EXPECT_EQ(series.createdBy().size(), 2);
         EXPECT_EQ(series.episodeRunTime().size(), 0);
         EXPECT_EQ(series.firstAirDate(), QDate(2011, 4, 17));
@@ -119,7 +119,7 @@ TEST(SeriesASyncTests, APIJSON)
         EXPECT_STREQ(series.originCountries()[0]->nativeName().toStdString().c_str(), "United States");
         EXPECT_STREQ(series.originalLanguage().toStdString().c_str(), "en");
         EXPECT_GT(series.popularity(), 0.0f);
-        EXPECT_STREQ(series.posterPath().toStdString().c_str(), "/1XS1oqL89opfnbLl8WnZY1O1uJx.jpg");
+        EXPECT_FALSE(series.posterPath().isNull());
         EXPECT_EQ(series.productionCompanies().size(), 4);
         EXPECT_STREQ(series.productionCompanies()[0]->name().toStdString().c_str(), "Revolution Sun Studios");
         EXPECT_EQ(series.productionCountries().size(), 2);

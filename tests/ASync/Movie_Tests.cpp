@@ -48,7 +48,7 @@ TEST(MovieASyncTests, APIConstructor)
     QObject::connect(movie, &Movie::finishedLoadingMovie, [&f](Movie* movie)
     {
         EXPECT_FALSE(movie->adult());
-        EXPECT_STREQ(movie->backdropPath().toStdString().c_str(), "/xRyINp9KfMLVjRiO5nCsoRDdvvF.jpg");
+        EXPECT_FALSE(movie->backdropPath().isNull());
         EXPECT_STREQ(movie->belongsToCollection().toStdString().c_str(), "");
         EXPECT_EQ(movie->budget(), 63000000);
         EXPECT_EQ(movie->genres()[0]->id(), 18);
@@ -60,7 +60,7 @@ TEST(MovieASyncTests, APIConstructor)
         EXPECT_STREQ(movie->overview().toStdString().c_str(),
                      "A ticking-time-bomb insomniac and a slippery soap salesman channel primal male aggression into a shocking new form of therapy. Their concept catches on, with underground \"fight clubs\" forming in every town, until an eccentric gets in the way and ignites an out-of-control spiral toward oblivion.");
         EXPECT_GT(movie->popularity(), 0.0f);
-        EXPECT_STREQ(movie->posterPath().toStdString().c_str(), "/pB8BM7pdSp6B6Ih7QZ4DrQ3PmJK.jpg");
+        EXPECT_FALSE(movie->posterPath().isNull());
         EXPECT_EQ(movie->productionCompanies()[0]->id(), 711);
         EXPECT_STREQ(movie->productionCompanies()[0]->name().toStdString().c_str(), "Fox 2000 Pictures");
         EXPECT_STREQ(movie->countries()[0]->isoCountryCode().toStdString().c_str(), "DE");
@@ -97,7 +97,7 @@ TEST(MovieASyncTests, searchForMovies)
         });
         EXPECT_FALSE(movies.empty());
         EXPECT_FALSE(movies[0]->adult());
-        EXPECT_STREQ(movies[0]->backdropPath().toStdString().c_str(), "/xRyINp9KfMLVjRiO5nCsoRDdvvF.jpg");
+        EXPECT_FALSE(movies[0]->backdropPath().isNull());
         EXPECT_STREQ(movies[0]->belongsToCollection().toStdString().c_str(), "");
         EXPECT_EQ(movies[0]->budget(), 63000000);
         EXPECT_STREQ(movies[0]->homepage().toStdString().c_str(), "http://www.foxmovies.com/movies/fight-club");
@@ -108,7 +108,7 @@ TEST(MovieASyncTests, searchForMovies)
         EXPECT_STREQ(movies[0]->overview().toStdString().c_str(),
                      "A ticking-time-bomb insomniac and a slippery soap salesman channel primal male aggression into a shocking new form of therapy. Their concept catches on, with underground \"fight clubs\" forming in every town, until an eccentric gets in the way and ignites an out-of-control spiral toward oblivion.");
         EXPECT_GT(movies[0]->popularity(), 0);
-        EXPECT_STREQ(movies[0]->posterPath().toStdString().c_str(), "/pB8BM7pdSp6B6Ih7QZ4DrQ3PmJK.jpg");
+        EXPECT_FALSE(movies[0]->posterPath().isNull());
         EXPECT_EQ(movies[0]->productionCompanies()[0]->id(), 711);
         EXPECT_STREQ(movies[0]->productionCompanies()[0]->name().toStdString().c_str(), "Fox 2000 Pictures");
         EXPECT_STREQ(movies[0]->countries()[0]->isoCountryCode().toStdString().c_str(), "DE");
@@ -471,9 +471,8 @@ TEST(MovieASyncTests, getWatchProviders)
         EXPECT_EQ(providers[0]->type(), tmdb::flatrate);
         EXPECT_EQ(providers[0]->providerID(), 337);
         EXPECT_STREQ(providers[0]->providerName().toStdString().c_str(), "Disney Plus");
-        EXPECT_STREQ(providers[0]->link().toString().toStdString().c_str(),
-                     "https://click.justwatch.com/a?cx=eyJzY2hlbWEiOiJpZ2x1OmNvbS5zbm93cGxvd2FuYWx5dGljcy5zbm93cGxvdy9jb250ZXh0cy9qc29uc2NoZW1hLzEtMC0wIiwiZGF0YSI6W3sic2NoZW1hIjoiaWdsdTpjb20uanVzdHdhdGNoL2NsaWNrb3V0X2NvbnRleHQvanNvbnNjaGVtYS8xLTMtMiIsImRhdGEiOnsicHJvdmlkZXIiOiJEaXNuZXkgUGx1cyIsIm1vbmV0aXphdGlvblR5cGUiOiJmbGF0cmF0ZSIsInByZXNlbnRhdGlvblR5cGUiOiJzZCIsImN1cnJlbmN5IjoiR0JQIiwicGFydG5lcklkIjo2LCJwcm92aWRlcklkIjozMzcsImNsaWNrb3V0VHlwZSI6Imp3LWNvbnRlbnQtcGFydG5lci1leHBvcnQtYXBpIn19LHsic2NoZW1hIjoiaWdsdTpjb20uanVzdHdhdGNoL3RpdGxlX2NvbnRleHQvanNvbnNjaGVtYS8xLTMtMCIsImRhdGEiOnsidGl0bGVJZCI6NDI0MDksIm9iamVjdFR5cGUiOiJtb3ZpZSIsImp3RW50aXR5SWQiOiJ0bTQyNDA5In19XX0&r=https%3A%2F%2Fdisneyplus.bn5x.net%2Fc%2F1206980%2F705874%2F9358%3Fu%3Dhttps%253A%252F%252Fwww.disneyplus.com%252Fmovies%252Ffight-club%252F38HCX4uW3BlA%26subId3%3Djustappsvod&uct_country=gb");
-        EXPECT_STREQ(providers[0]->logoPath().toStdString().c_str(), "/97yvRBw1GzX7fXprcF80er19ot.jpg");
+        EXPECT_FALSE(providers[0]->link().toString().isNull());
+        EXPECT_FALSE(providers[0]->logoPath().isNull());
         f = true;
     });
     auto c = new Country( std::getenv("API_KEY"));

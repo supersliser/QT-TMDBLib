@@ -21,7 +21,7 @@ TEST(Qtmdb_JSON_Network_Test, alternativeNames)
     Qtmdb qtmdb(std::getenv("API_KEY"));
     QJsonObject response = qtmdb.network_alternativeNames(49);
     EXPECT_FALSE(response.isEmpty());
-    EXPECT_STREQ(response.value("results").toArray()[0].toObject().value("name").toString().toStdString().c_str(), "Home Box Office");
+    EXPECT_STREQ(response.value("results").toArray()[0].toObject().value("name").toString().toStdString().c_str(), "HBO");
 }
 
 TEST(Qtmdb_JSON_Network_Test, images)

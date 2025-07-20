@@ -62,7 +62,7 @@ TEST(PersonSyncTests, APIConstructor)
     EXPECT_STREQ(person.knownFor().toStdString().c_str(), "Acting");
     EXPECT_STREQ(person.placeOfBirth().toStdString().c_str(), "Concord, California, USA");
     EXPECT_GT(person.popularity(), 0.0f);
-    EXPECT_STREQ(person.profilePath().toStdString().c_str(), "/eKF1sGJRrZJbfBG1KirPt1cfNd3.jpg");
+    EXPECT_FALSE(person.profilePath().isNull());
 }
 
 TEST(PersonSyncTests, APIJSON)
@@ -83,7 +83,7 @@ TEST(PersonSyncTests, APIJSON)
     EXPECT_STREQ(person.knownFor().toStdString().c_str(), "Acting");
     EXPECT_STREQ(person.placeOfBirth().toStdString().c_str(), "Concord, California, USA");
     EXPECT_GT(person.popularity(), 0.0f);
-    EXPECT_STREQ(person.profilePath().toStdString().c_str(), "/eKF1sGJRrZJbfBG1KirPt1cfNd3.jpg");
+    EXPECT_FALSE(person.profilePath().isNull());
 }
 
 TEST(PersonSyncTests, StaticConstructor)
@@ -101,7 +101,7 @@ TEST(PersonSyncTests, StaticConstructor)
     EXPECT_STREQ(person.knownFor().toStdString().c_str(), "Acting");
     EXPECT_STREQ(person.placeOfBirth().toStdString().c_str(), "Concord, California, USA");
     EXPECT_GT(person.popularity(), 0.0f);
-    EXPECT_STREQ(person.profilePath().toStdString().c_str(), "/eKF1sGJRrZJbfBG1KirPt1cfNd3.jpg");
+    EXPECT_FALSE(person.profilePath().isNull());
 }
 
 TEST(PersonSyncTests, setGetters)

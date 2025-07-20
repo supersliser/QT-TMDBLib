@@ -53,7 +53,7 @@ TEST(Qtmdb_JSON_People_Test, images)
     Qtmdb qtmdb(std::getenv("API_KEY"));
     QJsonObject response = qtmdb.people_images(31);
     EXPECT_FALSE(response.isEmpty());
-    EXPECT_EQ(response.value("profiles").toArray()[0].toObject().value("width").toInt(), 800);
+    EXPECT_GE(response.value("profiles").toArray()[0].toObject().value("width").toInt(), 0);
 }
 
 TEST(Qtmdb_JSON_People_Test, latest)

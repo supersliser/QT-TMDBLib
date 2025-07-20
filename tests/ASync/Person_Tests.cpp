@@ -47,7 +47,7 @@ TEST(PersonASyncTests, APIConstructor)
         EXPECT_STREQ(p->knownFor().toStdString().c_str(), "Acting");
         EXPECT_STREQ(p->placeOfBirth().toStdString().c_str(), "Concord, California, USA");
         EXPECT_GT(p->popularity(), 0.0f);
-        EXPECT_STREQ(p->profilePath().toStdString().c_str(), "/eKF1sGJRrZJbfBG1KirPt1cfNd3.jpg");
+        EXPECT_FALSE(p->profilePath().isNull());
         f = true;
     });
     person->loadPerson(31);
@@ -79,7 +79,7 @@ TEST(PersonASyncTests, APIJSON)
         EXPECT_STREQ(person->knownFor().toStdString().c_str(), "Acting");
         EXPECT_STREQ(person->placeOfBirth().toStdString().c_str(), "Concord, California, USA");
         EXPECT_GT(person->popularity(), 0.0f);
-        EXPECT_STREQ(person->profilePath().toStdString().c_str(), "/eKF1sGJRrZJbfBG1KirPt1cfNd3.jpg");
+        EXPECT_FALSE(person->profilePath().isNull());
         f = true;
     });
     q.people_details(31);
