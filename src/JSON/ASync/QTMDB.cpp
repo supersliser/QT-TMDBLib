@@ -14,6 +14,15 @@ aQtmdb::aQtmdb(std::string i_accessToken, QObject* parent) : QObject(parent)
     connect(_m_nam, &QNetworkAccessManager::finished, this, &aQtmdb::_received);
 }
 
+aQtmdb::~aQtmdb()
+{
+    // Clear the request queue to prevent any pending requests
+    _m_requestQueue.clear();
+    _m_requestInProgress = false;
+    
+    // The QNetworkAccessManager will be deleted automatically since it's a child of this object
+}
+
 std::string aQtmdb::accessToken()
 {
     return _m_accessToken;

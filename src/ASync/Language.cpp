@@ -23,6 +23,12 @@ tmdb::ASync::Language::Language(const QString& i_access_token, const QString& i_
     loadLanguage(i_iso_639_1);
 }
 
+tmdb::ASync::Language::~Language()
+{
+    // Disconnect all connections to prevent dangling references
+    disconnect(&m_q, nullptr, this, nullptr);
+}
+
 void tmdb::ASync::Language::setIso6391(const QString& i_iso_639_1)
 {
     m_iso_639_1 = i_iso_639_1;
@@ -65,6 +71,11 @@ void tmdb::ASync::Language::parseJson(const QJsonObject& i_json, const QString& 
 
 void tmdb::ASync::Language::loadLanguage(const QString& i_iso_639_1)
 {
+    // Disconnect any existing connections to avoid duplicates
+    disconnect(&m_q, &aQtmdb::startedLoadingData, this, &tmdb::ASync::Language::startedLoadingLanguageReceived);
+    disconnect(&m_q, &aQtmdb::finishedLoadingData, this, &tmdb::ASync::Language::finishedLoadingLanguageReceived);
+    
+    // Connect signals for this request
     connect(&m_q, &aQtmdb::startedLoadingData, this, &tmdb::ASync::Language::startedLoadingLanguageReceived);
     connect(&m_q, &aQtmdb::finishedLoadingData, this, &tmdb::ASync::Language::finishedLoadingLanguageReceived);
     m_iso_639_1 = i_iso_639_1;
@@ -82,6 +93,11 @@ tmdb::ASync::Language* tmdb::ASync::Language::ENGLISH()
 
 void tmdb::ASync::Language::loadAllLanguages()
 {
+    // Disconnect any existing connections to avoid duplicates
+    disconnect(&m_q, &aQtmdb::startedLoadingData, this, &tmdb::ASync::Language::startedLoadingAllLanguagesReceived);
+    disconnect(&m_q, &aQtmdb::finishedLoadingData, this, &tmdb::ASync::Language::finishedLoadingAllLanguagesReceived);
+    
+    // Connect signals for this request
     connect(&m_q, &aQtmdb::startedLoadingData, this, &tmdb::ASync::Language::startedLoadingAllLanguagesReceived);
     connect(&m_q, &aQtmdb::finishedLoadingData, this, &tmdb::ASync::Language::finishedLoadingAllLanguagesReceived);
     m_q.config_languages();

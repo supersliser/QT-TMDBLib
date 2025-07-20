@@ -25,7 +25,7 @@ namespace tmdb::ASync
         Language();
         explicit Language(const QString& i_access_token);
         Language(const QString& i_access_token, const QString& i_iso_639_1);
-        ~Language() override = default;
+        ~Language() override;
 
         Language(const QJsonObject& i_json, const QString& i_access_token = "");
 

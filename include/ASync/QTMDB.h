@@ -41,7 +41,7 @@ public:
     /// @param parent The parent QObject, default is nullptr. (You should probably leave this blank)
     explicit aQtmdb(std::string i_accessToken, QObject* parent = nullptr);
     /// @brief Default destructor for Qtmdb.
-    virtual ~aQtmdb() = default;
+    virtual ~aQtmdb();
     /// @brief Get the access token for the TMDB API.
     /// @return The access token for the TMDB API.
     std::string accessToken();
