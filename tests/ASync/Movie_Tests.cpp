@@ -370,10 +370,10 @@ TEST(MovieASyncTests, getPoster)
     {
         QApplication::processEvents();
     }
-    QObject::connect(movie, &Movie::finishedLoadingPoster, [&f](QPixmap logo)
+    QObject::connect(movie, &Movie::finishedLoadingPoster, [&f](QPixmap poster)
     {
-        EXPECT_EQ(logo.height(), 3000);
-        EXPECT_EQ(logo.width(), 2000);
+        EXPECT_EQ(poster.height(), 3000);
+        EXPECT_EQ(poster.width(), 2000);
         f = true;
     });
     movie->loadPoster(0, "original");
@@ -472,7 +472,11 @@ TEST(MovieASyncTests, getWatchProviders)
         EXPECT_EQ(providers[0]->providerID(), 337);
         EXPECT_STREQ(providers[0]->providerName().toStdString().c_str(), "Disney Plus");
         EXPECT_FALSE(providers[0]->link().toString().isNull());
+<<<<<<< HEAD
         EXPECT_FALSE(providers[0]->logoPath().isNull());
+=======
+        EXPECT_STREQ(providers[0]->logoPath().toStdString().c_str(), "/97yvRBw1GzX7fXprcF80er19ot.jpg");
+>>>>>>> 9d81f359eabe1110fb5ea77c9433c2092198b48c
         f = true;
     });
     auto c = new Country( std::getenv("API_KEY"));
