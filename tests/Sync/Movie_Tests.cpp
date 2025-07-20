@@ -414,11 +414,7 @@ TEST(MovieSyncTests, getWatchProviders)
     EXPECT_EQ(providers[0].providerID(), 337);
     EXPECT_STREQ(providers[0].providerName().toStdString().c_str(), "Disney Plus");
     EXPECT_FALSE(providers[0].link().toString().isNull());
-<<<<<<< HEAD
     EXPECT_FALSE(providers[0].logoPath().isNull());
-=======
-    EXPECT_STREQ(providers[0].logoPath().toStdString().c_str(), "/97yvRBw1GzX7fXprcF80er19ot.jpg");
->>>>>>> 9d81f359eabe1110fb5ea77c9433c2092198b48c
 }
 
 TEST(MovieSyncTests, getCredits)
