@@ -214,6 +214,7 @@ add_executable(TMDBTests
         tests/JSON/ASync/tvSeasons.cpp
         tests/JSON/ASync/tvSeries.cpp
         tests/JSON/ASync/watchProviders.cpp
+        tests/JSON/ASync/queue_system.cpp
         tests/ASync/Language_Tests.cpp
         tests/ASync/Movie_Tests.cpp
         tests/ASync/Network_Tests.cpp
