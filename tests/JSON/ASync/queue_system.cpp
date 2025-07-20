@@ -6,7 +6,6 @@
 #include <gtest/gtest.h>
 #include <QCoreApplication>
 #include <QTimer>
-#include <QSignalSpy>
 #include "ASync/QTMDB.h"
 
 // Test that verifies the queue system prevents simultaneous requests
@@ -18,7 +17,18 @@ TEST(AsyncQueueSystemTest, QueuePreventsSimultaneousRequests) {
     
     aQtmdb qtmdb("test_api_key");
     
-    QSignalSpy startSpy(&qtmdb, &aQtmdb::startedLoadingData);
+    int startCount = 0;
+    bool testCompleted = false;
+    
+    // Connect to the startedLoadingData signal to count how many times it's emitted
+    QObject::connect(&qtmdb, &aQtmdb::startedLoadingData, [&startCount]() {
+        startCount++;
+    });
+    
+    // Connect to finishedLoadingData to know when test is complete
+    QObject::connect(&qtmdb, &aQtmdb::finishedLoadingData, [&testCompleted](void*) {
+        testCompleted = true;
+    });
     
     // Make multiple requests quickly
     qtmdb.genres_movie();
@@ -30,7 +40,7 @@ TEST(AsyncQueueSystemTest, QueuePreventsSimultaneousRequests) {
     
     // With the queue system, only the first request should start immediately
     // The others should be queued
-    EXPECT_EQ(startSpy.count(), 1) << "Only one request should start immediately with queue system";
+    EXPECT_EQ(startCount, 1) << "Only one request should start immediately with queue system";
     
     // This test validates that the queue prevents the original issue where
     // multiple requests would be sent simultaneously causing data confusion
