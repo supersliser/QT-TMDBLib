@@ -14,15 +14,26 @@
 #include <QtConcurrent/QtConcurrent>
 #include <QNetworkAccessManager>
 #include <QNetworkReply>
+#include <QQueue>
+#include <map>
+#include <QQueue>
 
 class aQtmdb : public QObject
 {
     Q_OBJECT
 private:
+    struct RequestInfo {
+        std::string request;
+        std::map<std::string, std::string> params;
+    };
+    
     const std::string _m_baseUrl = "https://api.themoviedb.org/3/";
     void _runGetRequest(std::string i_request, std::map<std::string, std::string> i_params = {});
+    void _processNextRequest();
     std::string _m_accessToken;
     QNetworkAccessManager* _m_nam;
+    QQueue<RequestInfo> _m_requestQueue;
+    bool _m_requestInProgress;
 public:
     /// @brief Default constructor for Qtmdb.
     /// @note For this class to be functional, you must initialise a QApplication object beforehand.
