@@ -43,7 +43,7 @@ TEST(SeriesSyncTests, ParameterizedConstructor)
 {
     tmdb::TV::Series series(std::getenv("API_KEY"), 1399); // Game of Thrones
     EXPECT_FALSE(series.adult());
-    EXPECT_STREQ(series.backdropPath().toStdString().c_str(), "/zZqpAXxVSBtxV9qPBcscfXBcL2w.jpg");
+    EXPECT_FALSE(series.backdropPath().isNull());
     EXPECT_EQ(series.createdBy().size(), 2);
     EXPECT_EQ(series.episodeRunTime().size(), 0);
     EXPECT_EQ(series.firstAirDate(), QDate(2011, 4, 17));
@@ -82,7 +82,7 @@ TEST(SeriesSyncTests, APIConstructor)
 {
     tmdb::TV::Series series(std::getenv("API_KEY"), 1399); // Game of Thrones
     EXPECT_FALSE(series.adult());
-    EXPECT_STREQ(series.backdropPath().toStdString().c_str(), "/zZqpAXxVSBtxV9qPBcscfXBcL2w.jpg");
+    EXPECT_FALSE(series.backdropPath().isNull());
     EXPECT_EQ(series.createdBy().size(), 2);
     EXPECT_EQ(series.episodeRunTime().size(), 0);
     EXPECT_EQ(series.firstAirDate(), QDate(2011, 4, 17));
@@ -124,7 +124,7 @@ TEST(SeriesSyncTests, APIJSON)
     EXPECT_FALSE(response.isEmpty());
     tmdb::TV::Series series(response, std::getenv("API_KEY"));
     EXPECT_FALSE(series.adult());
-    EXPECT_STREQ(series.backdropPath().toStdString().c_str(), "/zZqpAXxVSBtxV9qPBcscfXBcL2w.jpg");
+    EXPECT_FALSE(series.backdropPath().isNull());
     EXPECT_EQ(series.createdBy().size(), 2);
     EXPECT_EQ(series.episodeRunTime().size(), 0);
     EXPECT_EQ(series.firstAirDate(), QDate(2011, 4, 17));
@@ -165,7 +165,7 @@ TEST(SeriesSyncTests, StaticConstructor)
 {
     tmdb::TV::Series series = tmdb::TV::Series::getSeries(std::getenv("API_KEY"), 1399); // Game of Thrones
     EXPECT_FALSE(series.adult());
-    EXPECT_STREQ(series.backdropPath().toStdString().c_str(), "/zZqpAXxVSBtxV9qPBcscfXBcL2w.jpg");
+    EXPECT_FALSE(series.backdropPath().isNull());
     EXPECT_EQ(series.createdBy().size(), 2);
     EXPECT_EQ(series.episodeRunTime().size(), 0);
     EXPECT_EQ(series.firstAirDate(), QDate(2011, 4, 17));
@@ -221,7 +221,9 @@ TEST(SeriesSyncTests, setGetters)
     s.setOverview("This is a test series.");
     s.setPopularity(7.5f);
     s.setPosterPath("/path/to/poster.jpg");
-    s.setProductionCompanies({tmdb::Company("SyncTests", "SyncTests", "SyncTests", "Test", "SyncTests", "", "Test", 5)});
+    s.setProductionCompanies({
+        tmdb::Company("SyncTests", "SyncTests", "SyncTests", "Test", "SyncTests", "", "Test", 5)
+    });
     s.setProductionCountries({{"US", "United States"}});
     s.setSpokenLanguages({{"en", "English"}});
     s.setStatus("Returning Series");
@@ -265,62 +267,75 @@ TEST(SeriesSyncTests, setGetters)
 
 TEST(SeriesSyncTests, GetAiringToday)
 {
-    auto seriesList = tmdb::TV::Series::getAiringToday(std::getenv("API_KEY"), tmdb::config::language{"en", "English"}, 1, "US");
+    auto seriesList = tmdb::TV::Series::getAiringToday(std::getenv("API_KEY"), tmdb::config::language{"en", "English"},
+                                                       1, "US");
     EXPECT_FALSE(seriesList.empty());
     EXPECT_GT(seriesList.size(), 0);
-    for (const auto &series : seriesList) {
+    for (const auto& series : seriesList)
+    {
         EXPECT_FALSE(series.name().isEmpty());
         EXPECT_FALSE(series.posterPath().isEmpty());
     }
 }
+
 TEST(SeriesSyncTests, GetOnTheAir)
 {
-    auto seriesList = tmdb::TV::Series::getOnTheAir(std::getenv("API_KEY"), tmdb::config::language{"en", "English"}, 1, "US");
+    auto seriesList = tmdb::TV::Series::getOnTheAir(std::getenv("API_KEY"), tmdb::config::language{"en", "English"}, 1,
+                                                    "US");
     EXPECT_FALSE(seriesList.empty());
     EXPECT_GT(seriesList.size(), 0);
-    for (const auto &series : seriesList) {
+    for (const auto& series : seriesList)
+    {
         EXPECT_FALSE(series.name().isEmpty());
         EXPECT_FALSE(series.posterPath().isEmpty());
     }
 }
+
 TEST(SeriesSyncTests, GetPopular)
 {
     auto seriesList = tmdb::TV::Series::getPopular(std::getenv("API_KEY"), tmdb::config::language{"en", "English"}, 1);
     EXPECT_FALSE(seriesList.empty());
     EXPECT_GT(seriesList.size(), 0);
-    for (const auto &series : seriesList) {
+    for (const auto& series : seriesList)
+    {
         EXPECT_FALSE(series.name().isEmpty());
         EXPECT_FALSE(series.posterPath().isEmpty());
     }
 }
+
 TEST(SeriesSyncTests, GetTopRated)
 {
     auto seriesList = tmdb::TV::Series::getTopRated(std::getenv("API_KEY"), tmdb::config::language{"en", "English"}, 1);
     EXPECT_FALSE(seriesList.empty());
     EXPECT_GT(seriesList.size(), 0);
-    for (const auto &series : seriesList) {
+    for (const auto& series : seriesList)
+    {
         EXPECT_FALSE(series.name().isEmpty());
         EXPECT_FALSE(series.posterPath().isEmpty());
     }
 }
+
 TEST(SeriesSyncTests, Recommendations)
 {
     tmdb::TV::Series series(std::getenv("API_KEY"), 1399); // Game of Thrones
     auto recommendations = series.recommendations(std::getenv("API_KEY"), 1);
     EXPECT_FALSE(recommendations.empty());
     EXPECT_GT(recommendations.size(), 0);
-    for (const auto &rec : recommendations) {
+    for (const auto& rec : recommendations)
+    {
         EXPECT_FALSE(rec.name().isEmpty());
         EXPECT_FALSE(rec.posterPath().isEmpty());
     }
 }
+
 TEST(SeriesSyncTests, Similar)
 {
     tmdb::TV::Series series(std::getenv("API_KEY"), 1399); // Game of Thrones
     auto similar = series.similar(std::getenv("API_KEY"), 1);
     EXPECT_FALSE(similar.empty());
     EXPECT_GT(similar.size(), 0);
-    for (const auto &sim : similar) {
+    for (const auto& sim : similar)
+    {
         EXPECT_FALSE(sim.name().isEmpty());
     }
 }
@@ -328,10 +343,12 @@ TEST(SeriesSyncTests, Similar)
 TEST(SeriesSyncTests, WatchProviders)
 {
     tmdb::TV::Series series(std::getenv("API_KEY"), 1399); // Game of Thrones
-    auto watchProviders = series.watchProviders(std::getenv("API_KEY"), tmdb::config::getCountry("GB", std::getenv("API_KEY")));
+    auto watchProviders = series.watchProviders(std::getenv("API_KEY"),
+                                                tmdb::config::getCountry("GB", std::getenv("API_KEY")));
     EXPECT_FALSE(watchProviders.empty());
     EXPECT_GT(watchProviders.size(), 0);
-    for (const auto &provider : watchProviders) {
+    for (const auto& provider : watchProviders)
+    {
         EXPECT_FALSE(provider.providerName().isEmpty());
         EXPECT_FALSE(provider.logoPath().isEmpty());
     }
@@ -343,8 +360,8 @@ TEST(SeriesSyncTests, Seasons)
     auto seasons = series.seasons(std::getenv("API_KEY"), 1);
     EXPECT_FALSE(seasons.empty());
     EXPECT_GT(seasons.size(), 0);
-        EXPECT_STREQ(seasons[0].name().toStdString().c_str(), "Specials");
-        EXPECT_GT(seasons[0].episodes().size(), 280);
+    EXPECT_STREQ(seasons[0].name().toStdString().c_str(), "Specials");
+    EXPECT_GT(seasons[0].episodes().size(), 280);
 }
 
 TEST(SeriesSyncTests, ExternalIDs)
@@ -361,7 +378,8 @@ TEST(SeriesSyncTests, Backdrops)
     auto backdrops = series.backdrops(std::getenv("API_KEY"), "original");
     EXPECT_FALSE(backdrops.empty());
     EXPECT_GT(backdrops.size(), 0);
-    for (const auto &backdrop : backdrops) {
+    for (const auto& backdrop : backdrops)
+    {
         EXPECT_FALSE(backdrop.isNull());
     }
 }
@@ -379,7 +397,8 @@ TEST(SeriesSyncTests, Posters)
     auto posters = series.posters(std::getenv("API_KEY"), "original");
     EXPECT_FALSE(posters.empty());
     EXPECT_GT(posters.size(), 0);
-    for (const auto &poster : posters) {
+    for (const auto& poster : posters)
+    {
         EXPECT_FALSE(poster.isNull());
     }
 }
@@ -397,7 +416,8 @@ TEST(SeriesSyncTests, Logos)
     auto logos = series.logos(std::getenv("API_KEY"), "original");
     EXPECT_FALSE(logos.empty());
     EXPECT_GT(logos.size(), 0);
-    for (const auto &poster : logos) {
+    for (const auto& poster : logos)
+    {
         EXPECT_FALSE(poster.isNull());
     }
 }

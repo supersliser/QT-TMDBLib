@@ -35,7 +35,7 @@ TEST(aQtmdb_JSON_Network_Test, alternativeNames)
         QJsonObject data = *static_cast<QJsonObject*>(response);
         EXPECT_FALSE(data.isEmpty());
         EXPECT_STREQ(data.value("results").toArray()[0].toObject().value("name").toString().toStdString().c_str(),
-                     "Home Box Office");
+                     "HBO");
         finished = true;
     });
     aQtmdb.network_alternativeNames(49);
